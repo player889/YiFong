@@ -14,7 +14,7 @@
         <dependent-module archiveName="yifong-dao-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/yifong-dao/yifong-dao">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="yifong-security-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/yifong-auth/yifong-auth">
+        <dependent-module archiveName="yifong-security-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/yifong-security/yifong-security">
             <dependency-type>uses</dependency-type>
         </dependent-module>
 		<property name="context-root" value="YiFong"/>
