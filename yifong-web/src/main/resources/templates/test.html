@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<!-- <meta name="_csrf" th:content="${_csrf.token}" /> -->
+<!-- <meta name="_csrf_header" th:content="${_csrf.headerName}" /> -->
+<meta th:name="_csrf" th:content="${_csrf.token}" />
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+<meta charset="UTF-8" />
+<title>Hello Thymeleaf!</title>
+<script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+<!-- <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script> -->
+<!-- <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" /> -->
+
+</head>
+<body>
+	<form id="form1">
+		<input type="text" name="id" value="abc" />
+		<input type="text" name="name" value="Jay" />
+		<select name="city">
+			<option value="1">11</option>
+			<option value="2">22</option>
+		</select>
+
+		<input type="checkbox" name="ck" value="h1" id="ck1">
+		<label for="ck1">c1</label>
+
+		<input type="checkbox" name="ck" value="h2" id="ck2">
+		<label for="ck2">c2</label>
+
+		<input type="radio" name="radio" value="r1">
+		<label for="r1">r1</label>
+		<input type="radio" name="radio" value="r2">
+		<label for="r2">r2</label>
+
+		<input type="button" onclick="query()" value="送出">
+		<!-- 		<button id="doAjax" onclick="query()">送出</button> -->
+	</form>
+</body>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/test.js"></script>
+</html>
