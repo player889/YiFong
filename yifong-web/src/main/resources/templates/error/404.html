@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta th:name="_csrf" th:content="${_csrf.token}" />
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+<meta charset="UTF-8" />
+<title>Index Page</title>
+</head>
+<body>
+	<form th:action="@{/login}" method="post">
+		<h1>
+			Page NOT FOUND <<a th:href="@{/login}">BACK!</a>
+		</h1>
+	</form>
+</body>
+</html>

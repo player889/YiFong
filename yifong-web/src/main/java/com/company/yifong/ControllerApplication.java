@@ -9,9 +9,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "com.company.yifong", "com.comany.yifong.auth", "com.comany.yifong.security",
-		"com.comany.yifong.exception", "com.comany.yifong.controller", "com.comany.yifong.service",
-		"com.comany.yifong.dao" })
+@ComponentScan(basePackages = { "com.company.yifong", "com.comany.yifong.security", "com.comany.yifong.repository", "com.comany.yifong.exception", "com.comany.yifong.controller", "com.comany.yifong.service", "com.comany.yifong.dao" })
 // Stop initial database setting
 @EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class })
 public class ControllerApplication extends SpringBootServletInitializer {
