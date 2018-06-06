@@ -19,7 +19,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.company.ts</groupId>
-			<artifactId>yifong-bean</artifactId>
+			<artifactId>yifong-repository</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

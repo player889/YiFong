@@ -3,3 +3,9 @@ function query() {
 	alert("AAA");
 	doAjax('/ajaxTest', $('#form1').serializeObject());
 }
+
+function jpa() {
+	doAjax('/jpaTest', $('#form1').serializeObject(), function(resp){
+		console.log(resp);
+	});
+}
