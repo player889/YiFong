@@ -11,4 +11,9 @@ public class MenuController {
 		return "menu";
 	}
 
+	@GetMapping(value = "/company")
+	public String companyPage() {
+		return "company";
+	}
+
 }

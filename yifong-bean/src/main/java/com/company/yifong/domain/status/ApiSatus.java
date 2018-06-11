@@ -7,6 +7,7 @@ package com.company.yifong.domain.status;
  */
 public enum ApiSatus {
 
+	// @formatter:off
 	ERR_SAVE("E001", "存檔錯誤"),
 	ERR_QUERY("E002", "存檔錯誤"),
 	ERR_UPDATE("E003", "更新錯誤"),
@@ -21,10 +22,12 @@ public enum ApiSatus {
 	ERR_SYS("E999", "系統錯誤"),
 
 	SUCC_SAVE("S001", "存檔成功"),
-	SUCC_QUERY("S002", "存檔成功"),
+	SUCC_QUERY("S002", "查詢成功"),
 	SUCC_UPDATE("S003", "更新成功"),
 	SUCC_DELETE("S004", "刪除成功");
-
+	// @formatter:off
+	
+	
 	private String code;
 	private String message;
 
