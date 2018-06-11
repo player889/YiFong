@@ -1,14 +1,14 @@
 package com.comany.yifong.controller.api;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.company.yifong.common.MyBeanUitls;
 import com.company.yifong.domain.AjaxResponse;
 import com.company.yifong.domain.request.CompanyRequest;
 import com.company.yifong.domain.status.ApiSatus;
@@ -49,10 +49,10 @@ public class CompanyController {
 
 		final AjaxResponse response = new AjaxResponse();
 		Company data = new Company();
-		data.setCompanyId(vo.getCompanyId());
-		data.setCompanyName(vo.getCompanyName());
 
-		List<Company> result = companyService.findByCondition(data);
+		MyBeanUitls.BeanCopy(vo, data);
+
+		Page<Company> result = companyService.findByCondition(data);
 		response.invoke(ApiSatus.SUCC_QUERY, result);
 
 		return response;

@@ -2,6 +2,8 @@ package com.company.yifong.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.company.yifong.entity.Company;
 
 public interface CompanyService {
@@ -14,6 +16,6 @@ public interface CompanyService {
 
 	List<Company> findByCompanyIdOrCompanyNameLike(String companyId, String companyName);
 
-	List<Company> findByCondition(Company company);
+	Page<Company> findByCondition(Company company);
 
 }
