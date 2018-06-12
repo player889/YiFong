@@ -50,17 +50,20 @@ public class CompanyServiceImp implements CompanyService {
 		return companyDetailRepository.findById(companyDetail.getId());
 	}
 	
-	public Page<CompanyDetail> findTest(CompanyDetail companyDetail) {
+	public Page<Company> findTest(CompanyDetail companyDetail) {
 		
 		System.out.println("XXXXXXXXXXXXXXXXXX");
 		// @formatter:off
 		ExampleMatcher matcher = ExampleMatcher.matching();
 		// @formatter:off
 		
-		Example<CompanyDetail> example = Example.of(companyDetail, matcher);
+		Company c = new Company();
+		c.setId(companyDetail.getId());
+		
+		Example<Company> example = Example.of(c, matcher);
 
 		Sort sort = new Sort(Direction.ASC, "id");
-		Page<CompanyDetail> webPage = companyDetailRepository.findAll(example, PageRequest.of(0, 10, sort));
+		Page<Company> webPage = companyRepository.findAll(example, PageRequest.of(0, 10, sort));
 		
 		return webPage;
 	}

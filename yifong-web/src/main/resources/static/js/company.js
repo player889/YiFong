@@ -46,6 +46,6 @@ function clearTable(tableId, isClear) {
 function doDetail(id) {
 //	doAjax('/company/detail/' + id, {}, function(resp) {
 	doAjax('/company/findTest/' + id, {}, function(resp) {
-		console.table(resp);
+		console.log(JSON.stringify(resp, null, '\t'));
 	});
 }

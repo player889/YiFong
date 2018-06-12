@@ -1,39 +1,46 @@
 package com.company.yifong.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+import com.company.yifong.enums.Destination;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 /**
  * The persistent class for the company_charge database table.
  * 
  */
 @Entity
-@Table(name="company_charge")
-@NamedQuery(name="CompanyCharge.findAll", query="SELECT c FROM CompanyCharge c")
+@Table(name = "company_charge")
+@NamedQuery(name = "CompanyCharge.findAll", query = "SELECT c FROM CompanyCharge c")
 public class CompanyCharge implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false)
+	@Column(unique = true, nullable = false)
 	private int seq;
 
-	@Column(nullable=false)
+	@Column(name = "destination_code", nullable = false, length = 5)
+	private Destination destinationCode;
+
+	@Column(nullable = false)
 	private int fee;
 
-	//bi-directional one-to-one association to Common
+	// bi-directional many-to-one association to Company
 	@JsonIgnore
-	@OneToOne
-	@JoinColumn(name="destination_code", nullable=false)
-	private Common common;
-
-	//bi-directional many-to-one association to CompanyDetail
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name="id", nullable=false)
-	private CompanyDetail companyDetail;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id", nullable = false)
+	private Company company;
 
 	public CompanyCharge() {
 	}
@@ -46,6 +53,15 @@ public class CompanyCharge implements Serializable {
 		this.seq = seq;
 	}
 
+	@Enumerated(EnumType.ORDINAL)
+	public String getDestinationCode() {
+		return destinationCode.getType();
+	}
+
+	public void setDestinationCode(Destination destinationCode) {
+		this.destinationCode = destinationCode;
+	}
+
 	public int getFee() {
 		return this.fee;
 	}
@@ -54,20 +70,17 @@ public class CompanyCharge implements Serializable {
 		this.fee = fee;
 	}
 
-	public Common getCommon() {
-		return this.common;
+	public Company getCompany() {
+		return this.company;
 	}
 
-	public void setCommon(Common common) {
-		this.common = common;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
-	public CompanyDetail getCompanyDetail() {
-		return this.companyDetail;
-	}
-
-	public void setCompanyDetail(CompanyDetail companyDetail) {
-		this.companyDetail = companyDetail;
+	@Override
+	public String toString() {
+		return "CompanyCharge [seq=" + seq + ", destinationCode=" + destinationCode + ", fee=" + fee + ", company=" + company + "]";
 	}
 
 }

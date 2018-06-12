@@ -1,8 +1,6 @@
 package com.comany.yifong.controller.api;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +16,7 @@ import com.company.yifong.domain.AjaxResponse;
 import com.company.yifong.domain.request.CompanyRequest;
 import com.company.yifong.domain.response.CompanyResponse;
 import com.company.yifong.domain.status.ApiSatus;
-import com.company.yifong.entity.Common;
 import com.company.yifong.entity.Company;
-import com.company.yifong.entity.CompanyCharge;
 import com.company.yifong.entity.CompanyDetail;
 import com.company.yifong.service.CompanyService;
 
@@ -66,21 +62,11 @@ public class CompanyController {
 		CompanyDetail companyDetail = new CompanyDetail();
 		companyDetail.setId(id);
 
-		//FIXME 
-		
-		Page<CompanyDetail> c = companyService.findTest(companyDetail);
-		
+		Page<Company> c = companyService.findTest(companyDetail);	
+
 		CompanyResponse resp = new CompanyResponse();
-		resp.setCharge(c.getContent().get(0).getCompanyCharges());
-		resp.setDetail(c.getContent());
-		
-		List<Common> list = new ArrayList<Common>();
-		for (CompanyCharge charge : c.getContent().get(0).getCompanyCharges()) {
-			list.add(charge.getCommon());
-		}
-		resp.setCommmon(list);
-		
-		response.invoke(ApiSatus.SUCC_QUERY, resp);
+
+		response.invoke(ApiSatus.SUCC_QUERY, c);
 
 		return response;
 	}

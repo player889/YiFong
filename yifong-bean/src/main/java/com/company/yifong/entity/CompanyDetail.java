@@ -1,48 +1,49 @@
 package com.company.yifong.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.List;
-
 
 /**
  * The persistent class for the company_detail database table.
  * 
  */
 @Entity
-@Table(name="company_detail")
-@NamedQuery(name="CompanyDetail.findAll", query="SELECT c FROM CompanyDetail c")
+@Table(name = "company_detail")
+@NamedQuery(name = "CompanyDetail.findAll", query = "SELECT c FROM CompanyDetail c")
 public class CompanyDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false, length=5)
+	@Column(unique = true, nullable = false, length = 5)
 	private String id;
 
-	@Column(nullable=false, length=45)
+	@Column(nullable = false, length = 45)
 	private String address;
 
-	@Column(nullable=false, length=45)
+	@Column(nullable = false, length = 45)
 	private String name;
 
-	@Column(nullable=false, length=45)
+	@Column(nullable = false, length = 45)
 	private String phone;
 
-	//bi-directional one-to-one association to Company
-	@OneToOne(mappedBy="companyDetail")
-	private Company company;
-
-	//bi-directional many-to-one association to CompanyCharge
+	// bi-directional one-to-one association to Company
 	@JsonIgnore
-	@OneToMany(mappedBy="companyDetail", fetch=FetchType.EAGER)
-	private List<CompanyCharge> companyCharges;
+	@OneToOne(mappedBy = "companyDetail", fetch = FetchType.EAGER)
+	private Company company;
 
 	public CompanyDetail() {
 	}
 
+	@JsonIgnore
 	public String getId() {
 		return this.id;
 	}
@@ -83,26 +84,9 @@ public class CompanyDetail implements Serializable {
 		this.company = company;
 	}
 
-	public List<CompanyCharge> getCompanyCharges() {
-		return this.companyCharges;
-	}
-
-	public void setCompanyCharges(List<CompanyCharge> companyCharges) {
-		this.companyCharges = companyCharges;
-	}
-
-	public CompanyCharge addCompanyCharge(CompanyCharge companyCharge) {
-		getCompanyCharges().add(companyCharge);
-		companyCharge.setCompanyDetail(this);
-
-		return companyCharge;
-	}
-
-	public CompanyCharge removeCompanyCharge(CompanyCharge companyCharge) {
-		getCompanyCharges().remove(companyCharge);
-		companyCharge.setCompanyDetail(null);
-
-		return companyCharge;
+	@Override
+	public String toString() {
+		return "CompanyDetail [id=" + id + ", address=" + address + ", name=" + name + ", phone=" + phone + ", company=" + company + "]";
 	}
 
 }

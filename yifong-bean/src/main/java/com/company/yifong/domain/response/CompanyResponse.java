@@ -2,7 +2,6 @@ package com.company.yifong.domain.response;
 
 import java.util.List;
 
-import com.company.yifong.entity.Common;
 import com.company.yifong.entity.CompanyCharge;
 import com.company.yifong.entity.CompanyDetail;
 
@@ -12,7 +11,6 @@ public class CompanyResponse {
 	private String name;
 	private List<CompanyCharge> charge;
 	private List<CompanyDetail> detail;
-	private List<Common> commmon;
 
 	public String getId() {
 		return id;
@@ -44,14 +42,6 @@ public class CompanyResponse {
 
 	public void setDetail(List<CompanyDetail> detail) {
 		this.detail = detail;
-	}
-
-	public List<Common> getCommmon() {
-		return commmon;
-	}
-
-	public void setCommmon(List<Common> commmon) {
-		this.commmon = commmon;
 	}
 
 }

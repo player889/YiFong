@@ -15,6 +15,6 @@ public interface CompanyService {
 
 	CompanyDetail findDetailById(CompanyDetail companyDetail);
 
-	Page<CompanyDetail> findTest(CompanyDetail companyDetail);
+	Page<Company> findTest(CompanyDetail companyDetail);
 
 }
