@@ -30,10 +30,10 @@ function addTableRows(table, data) {
 	} else {
 		let html = "";
 		data.forEach(function(item, index, array) {
-			let name = item.companyDetail.name;
-			let phone = item.companyDetail.phone;
-			let row = `<tr><td>${name}</td><td>${phone}</td></tr>`;
-			html += row;
+			// let name = item.name;
+			// let row = `<tr><td><a
+			// th:href="@{/query/id}">${name}</a></td>></tr>`;
+			html += '<input type="button" onclick="doDetail('+item.id+')" value="' + item.name + '"/ >'
 		});
 		$(table).append(html);
 	}
@@ -41,4 +41,11 @@ function addTableRows(table, data) {
 
 function clearTable(tableId, isClear) {
 	isClear && $(tableId).children().remove()
+}
+
+function doDetail(id) {
+//	doAjax('/company/detail/' + id, {}, function(resp) {
+	doAjax('/company/findTest/' + id, {}, function(resp) {
+		console.table(resp);
+	});
 }

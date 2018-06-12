@@ -1,46 +1,58 @@
 package com.company.yifong.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * The persistent class for the company database table.
  * 
  */
 @Entity
-@Table(name = "company")
-@NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c")
+@Table(name="company")
+@NamedQuery(name="Company.findAll", query="SELECT c FROM Company c")
 public class Company implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "company_id", unique = true, nullable = false, length = 5)
-	private String companyId;
+	@Column(unique=true, nullable=false, length=5)
+	private String id;
 
-	@Column(name = "company_name", nullable = false, length = 20)
-	private String companyName;
+	@Column(nullable=false, length=6)
+	private String name;
 
-	// bi-directional one-to-one association to CompanyDetail
-	@OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
+	//bi-directional one-to-one association to CompanyDetail
+	@JsonIgnore
+	@OneToOne
+	@JoinColumn(name="id", nullable=false, insertable=false, updatable=false)
 	private CompanyDetail companyDetail;
 
 	public Company() {
 	}
 
-	public String getCompanyId() {
-		return this.companyId;
+	public String getId() {
+		return this.id;
 	}
 
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String getCompanyName() {
-		return this.companyName;
+	public String getName() {
+		return this.name;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public CompanyDetail getCompanyDetail() {

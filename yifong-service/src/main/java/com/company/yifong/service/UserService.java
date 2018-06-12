@@ -1,10 +1,10 @@
 package com.company.yifong.service;
 
-import com.company.yifong.entity.UserInfo;
+import com.company.yifong.entity.User;
 
 public interface UserService {
 
-	void save(UserInfo user);
+	void save(User user);
 
-	UserInfo findByAccount(String username);
+	User findByAccount(String username);
 }

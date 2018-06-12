@@ -1,7 +1,5 @@
 package com.company.yifong.service.imp;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -13,6 +11,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.company.yifong.entity.Company;
+import com.company.yifong.entity.CompanyDetail;
+import com.company.yifong.repository.CompanyDetailRepository;
 import com.company.yifong.repository.CompanyRepository;
 import com.company.yifong.service.CompanyService;
 
@@ -22,17 +22,8 @@ public class CompanyServiceImp implements CompanyService {
 	@Autowired
 	private CompanyRepository companyRepository;
 
-	public List<Company> findAll() {
-		return companyRepository.findAll();
-	}
-
-	public Company findByCompanyId(String companyId) {
-		return companyRepository.findByCompanyId(companyId);
-	}
-
-	public List<Company> findByCompanyIdOrCompanyNameLike(String companyId, String companyName) {
-		return companyRepository.findByCompanyIdOrCompanyNameLike(companyId, companyName);
-	}
+	@Autowired
+	private CompanyDetailRepository companyDetailRepository;
 
 	public Company save(Company company) {
 		return companyRepository.saveAndFlush(company);
@@ -42,15 +33,37 @@ public class CompanyServiceImp implements CompanyService {
 		// @formatter:off
 		ExampleMatcher matcher = ExampleMatcher.matching()
 				.withIgnoreNullValues()
-				.withMatcher("companyName", GenericPropertyMatchers.startsWith());
+				.withMatcher("name", GenericPropertyMatchers.startsWith());
 		// @formatter:off
 		
 		Example<Company> example = Example.of(company, matcher);
-		
-		Sort sort = new Sort(Direction.DESC, "companyId");
-		Page<Company> webPage = companyRepository.findAll(example, PageRequest.of(0, 15, sort));
+
+		Sort sort = new Sort(Direction.ASC, "id");
+		Page<Company> webPage = companyRepository.findAll(example, PageRequest.of(0, 10, sort));
 		
 		return webPage;
 	}
+	
+
+	@Override
+	public CompanyDetail findDetailById(CompanyDetail companyDetail) {
+		return companyDetailRepository.findById(companyDetail.getId());
+	}
+	
+	public Page<CompanyDetail> findTest(CompanyDetail companyDetail) {
+		
+		System.out.println("XXXXXXXXXXXXXXXXXX");
+		// @formatter:off
+		ExampleMatcher matcher = ExampleMatcher.matching();
+		// @formatter:off
+		
+		Example<CompanyDetail> example = Example.of(companyDetail, matcher);
+
+		Sort sort = new Sort(Direction.ASC, "id");
+		Page<CompanyDetail> webPage = companyDetailRepository.findAll(example, PageRequest.of(0, 10, sort));
+		
+		return webPage;
+	}
+
 
 }

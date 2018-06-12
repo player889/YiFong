@@ -7,14 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.company.yifong.entity.Role;
-import com.company.yifong.entity.UserInfo;
 import com.company.yifong.repository.UserRepository;
 
 public class UserService implements UserDetailsService {
@@ -24,14 +21,17 @@ public class UserService implements UserDetailsService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserInfo userInfo = userRepository.findByAccount(username);
+	public User loadUserByUsername(String username) throws UsernameNotFoundException {
+
+		com.company.yifong.entity.User user = userRepository.findByAccount(username);
+
+		String role = user.getRole();
+		String account = user.getAccount();
+		String password = user.getPassword();
+
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+		grantedAuthorities.add(new SimpleGrantedAuthority(role));
 
-		for (Role role : userInfo.getRoles()) {
-			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-		}
-
-		return new User(userInfo.getAccount(), new BCryptPasswordEncoder().encode(userInfo.getPassword()), grantedAuthorities);
+		return new User(account, new BCryptPasswordEncoder().encode(password), grantedAuthorities);
 	}
 }

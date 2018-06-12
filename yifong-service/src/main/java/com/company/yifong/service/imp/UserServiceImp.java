@@ -1,13 +1,9 @@
 package com.company.yifong.service.imp;
 
-import java.util.HashSet;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.company.yifong.entity.Role;
-import com.company.yifong.entity.UserInfo;
-import com.company.yifong.repository.RoleRepository;
+import com.company.yifong.entity.User;
 import com.company.yifong.repository.UserRepository;
 import com.company.yifong.service.UserService;
 
@@ -16,18 +12,15 @@ public class UserServiceImp implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
-	@Autowired
-	private RoleRepository roleRepository;
 
-	public void save(UserInfo UserInfo) {
+	public void save(User UserInfo) {
 		UserInfo.setPassword(UserInfo.getPassword());
-		UserInfo.setRoles(new HashSet<Role>(roleRepository.findAll()));
+		UserInfo.setRole(UserInfo.getRole());
 		userRepository.save(UserInfo);
 	}
 
 	@Override
-	public UserInfo findByAccount(String username) {
+	public User findByAccount(String username) {
 		return userRepository.findByAccount(username);
 	}
 

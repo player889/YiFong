@@ -8,26 +8,41 @@
 <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
 
 </head>
+<style>
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
+	{
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type="number"] {
+	-moz-appearance: textfield;
+}
+</style>
+
 <body>
 	<a th:href="@{/company}"></a>
 
 	<form id="form1">
-		<input type="text" name="companyId" value="20" />
-		<input type="text" name="companyName" value="慶騰" />
+		<input type="number" name="id" value="7" />
+		<input type="text" name="name" value="" />
 		<br>
 		<input type="button" onclick="queryAll()" value="查詢全部" disabled />
 		<br>
 		<input type="button" onclick="save()" value="新增" disabled />
 		<br>
-		<input type="button" onclick="findByCompanyId()" value="條件查詢 - findByCompanyId" />
+		<input type="button" onclick="findByCompanyId()"
+			value="條件查詢 - findByCompanyId" />
 		<br>
-		<input type="button" onclick="findByCondition()" value="條件查詢 - findByCondition" />
+		<input type="button" onclick="findByCondition()"
+			value="條件查詢 - findByCondition" />
 	</form>
-	
+
 	<form id="form2">
 		<table id="resultTable"></table>
+		<table id="detailTable"></table>
 	</form>
-	
+
 </body>
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/company.js"></script>

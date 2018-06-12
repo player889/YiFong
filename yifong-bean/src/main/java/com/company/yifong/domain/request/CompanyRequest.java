@@ -1,24 +1,29 @@
 package com.company.yifong.domain.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 public class CompanyRequest {
 
-	private String companyId;
-	private String companyName;
+	@JsonInclude(Include.NON_NULL)
+	private String id;
+	@JsonInclude(Include.NON_NULL)
+	private String name;
 
-	public String getCompanyId() {
-		return companyId;
+	public String getId() {
+		return id;
 	}
 
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String getCompanyName() {
-		return companyName;
+	public String getName() {
+		return name;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

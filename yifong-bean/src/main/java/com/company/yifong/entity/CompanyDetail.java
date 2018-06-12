@@ -5,41 +5,58 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.List;
+
+
 /**
  * The persistent class for the company_detail database table.
  * 
  */
 @Entity
-@Table(name = "company_detail")
-@NamedQuery(name = "CompanyDetail.findAll", query = "SELECT c FROM CompanyDetail c")
+@Table(name="company_detail")
+@NamedQuery(name="CompanyDetail.findAll", query="SELECT c FROM CompanyDetail c")
 public class CompanyDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "fk_company_id", unique = true, nullable = false, length = 5)
-	private String fkCompanyId;
+	@Column(unique=true, nullable=false, length=5)
+	private String id;
 
-	@Column(nullable = false, length = 45)
+	@Column(nullable=false, length=45)
+	private String address;
+
+	@Column(nullable=false, length=45)
 	private String name;
 
-	@Column(nullable = false, length = 20)
+	@Column(nullable=false, length=45)
 	private String phone;
 
-	// bi-directional one-to-one association to Company
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fk_company_id", nullable = false, insertable = false, updatable = false)
-	@JsonIgnore
+	//bi-directional one-to-one association to Company
+	@OneToOne(mappedBy="companyDetail")
 	private Company company;
+
+	//bi-directional many-to-one association to CompanyCharge
+	@JsonIgnore
+	@OneToMany(mappedBy="companyDetail", fetch=FetchType.EAGER)
+	private List<CompanyCharge> companyCharges;
 
 	public CompanyDetail() {
 	}
 
-	public String getFkCompanyId() {
-		return this.fkCompanyId;
+	public String getId() {
+		return this.id;
 	}
 
-	public void setFkCompanyId(String fkCompanyId) {
-		this.fkCompanyId = fkCompanyId;
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getName() {
@@ -64,6 +81,28 @@ public class CompanyDetail implements Serializable {
 
 	public void setCompany(Company company) {
 		this.company = company;
+	}
+
+	public List<CompanyCharge> getCompanyCharges() {
+		return this.companyCharges;
+	}
+
+	public void setCompanyCharges(List<CompanyCharge> companyCharges) {
+		this.companyCharges = companyCharges;
+	}
+
+	public CompanyCharge addCompanyCharge(CompanyCharge companyCharge) {
+		getCompanyCharges().add(companyCharge);
+		companyCharge.setCompanyDetail(this);
+
+		return companyCharge;
+	}
+
+	public CompanyCharge removeCompanyCharge(CompanyCharge companyCharge) {
+		getCompanyCharges().remove(companyCharge);
+		companyCharge.setCompanyDetail(null);
+
+		return companyCharge;
 	}
 
 }

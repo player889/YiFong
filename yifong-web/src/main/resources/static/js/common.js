@@ -11,6 +11,13 @@ $.fn.serializeObject = function() {
 			o[this.name] = this.value || '';
 		}
 	});
+
+	$.each(o, function(key, value) {
+		if (value === "" || value === null) {
+			delete o[key];
+		}
+	});
+
 	return o;
 };
 
@@ -20,31 +27,31 @@ var doAjax = function(url, data, successFn) {
 	var token = $("meta[name='_csrf']").attr("content");
 
 	$.ajax({
-		url : url,
-		type : 'POST',
-		contentType : 'application/json; charset=utf-8',
-		dataType : 'json',
-		data : JSON.stringify(data),
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader(header, token);
-		},
-		success : function(data) {
-			if (!data.code.startsWith("S")) {
-				alert("!" + data.message);
-			} else {
-				if (typeof successFn === "function") {
-					successFn(data);
-				} else {
-					alert(data.message);
-				}
+	    url : url,
+	    type : 'POST',
+	    contentType : 'application/json; charset=utf-8',
+	    dataType : 'json',
+	    data : JSON.stringify(data),
+	    beforeSend : function(xhr) {
+		    xhr.setRequestHeader(header, token);
+	    },
+	    success : function(data) {
+		    if (!data.code.startsWith("S")) {
+			    alert("!" + data.message);
+		    } else {
+			    if (typeof successFn === "function") {
+				    successFn(data);
+			    } else {
+				    alert(data.message);
+			    }
 
-			}
-		},
-		error : function(jqXHR, exception) {
-			if (200 != jqXHR.status) {
-				alert("系統錯誤");
-			}
-		}
+		    }
+	    },
+	    error : function(jqXHR, exception) {
+		    if (200 != jqXHR.status) {
+			    alert("系統錯誤");
+		    }
+	    }
 	});
 
 }
