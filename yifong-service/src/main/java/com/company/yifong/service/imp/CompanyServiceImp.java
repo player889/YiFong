@@ -50,15 +50,14 @@ public class CompanyServiceImp implements CompanyService {
 		return companyDetailRepository.findById(companyDetail.getId());
 	}
 	
-	public Page<Company> findTest(CompanyDetail companyDetail) {
+	public Page<Company> findDetailById(String id) {
 		
-		System.out.println("XXXXXXXXXXXXXXXXXX");
 		// @formatter:off
 		ExampleMatcher matcher = ExampleMatcher.matching();
 		// @formatter:off
 		
 		Company c = new Company();
-		c.setId(companyDetail.getId());
+		c.setId(id);
 		
 		Example<Company> example = Example.of(c, matcher);
 

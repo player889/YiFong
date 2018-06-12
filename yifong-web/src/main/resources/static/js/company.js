@@ -16,7 +16,7 @@ function findByCompanyId() {
 }
 
 function findByCondition() {
-	doAjax('/company/findByCondition', $('#form1').serializeObject(), function(resp) {
+	doAjax('/company/find/list', $('#form1').serializeObject(), function(resp) {
 		let table = "#resultTable";
 		console.log(resp);
 		clearTable(table, true);
@@ -33,7 +33,7 @@ function addTableRows(table, data) {
 			// let name = item.name;
 			// let row = `<tr><td><a
 			// th:href="@{/query/id}">${name}</a></td>></tr>`;
-			html += '<input type="button" onclick="doDetail('+item.id+')" value="' + item.name + '"/ >'
+			html += '<input type="button" onclick="doDetail(' + item.id + ')" value="' + item.name + '"/ >'
 		});
 		$(table).append(html);
 	}
@@ -44,8 +44,7 @@ function clearTable(tableId, isClear) {
 }
 
 function doDetail(id) {
-//	doAjax('/company/detail/' + id, {}, function(resp) {
-	doAjax('/company/findTest/' + id, {}, function(resp) {
+	doAjax('/company/find/' + id, {}, function(resp) {
 		console.log(JSON.stringify(resp, null, '\t'));
 	});
 }

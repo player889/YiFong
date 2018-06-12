@@ -62,9 +62,6 @@ public class Company implements Serializable {
 	}
 
 	public void setCompanyCharges(List<CompanyCharge> companyCharges) {
-
-		System.out.println("FFFFFFF");
-
 		this.companyCharges = companyCharges;
 	}
 

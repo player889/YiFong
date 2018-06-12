@@ -22,9 +22,6 @@ public class Poi {
 		HSSFSheet sheet = wb.getSheetAt(0); // 取得Excel第一個sheet(從0開始)
 		HSSFCell cell;
 
-		System.out.println("================");
-		System.out.println(sheet.getPhysicalNumberOfRows());
-
 		// // getPhysicalNumberOfRows這個比較好 //getLastRowNum:這個好像會差1筆
 		// for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) { // 由於第 0 Row 為 title, 故 i 從 1 開始
 		// HSSFRow row = sheet.getRow(i); // 取得第 i Row

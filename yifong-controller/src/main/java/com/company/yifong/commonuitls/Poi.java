@@ -41,14 +41,14 @@ public class Poi {
 			while (cells.hasNext()) {
 				cell = (XSSFCell) cells.next();
 				if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-					System.out.print(cell.getStringCellValue() + " ");
+					// System.out.print(cell.getStringCellValue() + " ");
 				} else if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-					System.out.print(cell.getNumericCellValue() + " ");
+					// System.out.print(cell.getNumericCellValue() + " ");
 				} else {
 					// U Can Handel Boolean, Formula, Errors
 				}
 			}
-			System.out.println();
+			// System.out.println();
 		}
 
 	}
