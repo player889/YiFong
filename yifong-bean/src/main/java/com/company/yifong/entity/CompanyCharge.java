@@ -1,17 +1,7 @@
 package com.company.yifong.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.company.yifong.enums.Destination;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,18 +17,20 @@ public class CompanyCharge implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(unique = true, nullable = false)
 	private int seq;
 
-	@Column(name = "destination_code", nullable = false, length = 5)
+	@Column(name = "destination_code", nullable = false, length = 10)
+	@Enumerated(EnumType.ORDINAL)
 	private Destination destinationCode;
 
 	@Column(nullable = false)
 	private int fee;
 
-	// bi-directional many-to-one association to Company
+	// bi-directional many-to-oned association to Company
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "id", nullable = false)
 	private Company company;
 
@@ -53,7 +45,6 @@ public class CompanyCharge implements Serializable {
 		this.seq = seq;
 	}
 
-	@Enumerated(EnumType.ORDINAL)
 	public String getDestinationCode() {
 		return destinationCode.getType();
 	}
@@ -76,11 +67,6 @@ public class CompanyCharge implements Serializable {
 
 	public void setCompany(Company company) {
 		this.company = company;
-	}
-
-	@Override
-	public String toString() {
-		return "CompanyCharge [seq=" + seq + ", destinationCode=" + destinationCode + ", fee=" + fee + ", company=" + company + "]";
 	}
 
 }

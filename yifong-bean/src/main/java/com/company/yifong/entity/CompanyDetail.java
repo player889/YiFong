@@ -2,9 +2,11 @@ package com.company.yifong.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -23,8 +25,9 @@ public class CompanyDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique = true, nullable = false, length = 5)
-	private String id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(unique = true, nullable = false)
+	private int id;
 
 	@Column(nullable = false, length = 45)
 	private String address;
@@ -37,18 +40,18 @@ public class CompanyDetail implements Serializable {
 
 	// bi-directional one-to-one association to Company
 	@JsonIgnore
-	@OneToOne(mappedBy = "companyDetail", fetch = FetchType.EAGER)
+	@OneToOne(mappedBy = "companyDetail", cascade = { CascadeType.ALL })
 	private Company company;
 
 	public CompanyDetail() {
 	}
 
 	@JsonIgnore
-	public String getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -82,11 +85,6 @@ public class CompanyDetail implements Serializable {
 
 	public void setCompany(Company company) {
 		this.company = company;
-	}
-
-	@Override
-	public String toString() {
-		return "CompanyDetail [id=" + id + ", address=" + address + ", name=" + name + ", phone=" + phone + ", company=" + company + "]";
 	}
 
 }

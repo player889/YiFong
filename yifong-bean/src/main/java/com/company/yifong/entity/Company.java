@@ -1,51 +1,45 @@
 package com.company.yifong.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 /**
  * The persistent class for the company database table.
  * 
  */
 @Entity
-@Table(name = "company")
-@NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c")
+@Table(name="company")
+@NamedQuery(name="Company.findAll", query="SELECT c FROM Company c")
 public class Company implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique = true, nullable = false, length = 5)
-	private String id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false)
+	private int id;
 
-	@Column(nullable = false, length = 6)
+	@Column(nullable=false, length=6)
 	private String name;
 
-	// bi-directional many-to-one association to CompanyCharge
-	@OneToMany(mappedBy = "company")
-	private List<CompanyCharge> companyCharges;
-
-	// bi-directional one-to-one association to CompanyDetail
-	@OneToOne
-	@JoinColumn(name = "id", nullable = false, insertable = false, updatable = false)
+	//bi-directional one-to-one association to CompanyDetail
+	@OneToOne(cascade={CascadeType.ALL})
+	@JoinColumn(name="id", nullable=false, insertable=false, updatable=false)
 	private CompanyDetail companyDetail;
+
+	//bi-directional many-to-one association to CompanyCharge
+	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
+	private List<CompanyCharge> companyCharges;
 
 	public Company() {
 	}
 
-	public String getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -55,6 +49,14 @@ public class Company implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public CompanyDetail getCompanyDetail() {
+		return this.companyDetail;
+	}
+
+	public void setCompanyDetail(CompanyDetail companyDetail) {
+		this.companyDetail = companyDetail;
 	}
 
 	public List<CompanyCharge> getCompanyCharges() {
@@ -77,19 +79,6 @@ public class Company implements Serializable {
 		companyCharge.setCompany(null);
 
 		return companyCharge;
-	}
-
-	public CompanyDetail getCompanyDetail() {
-		return this.companyDetail;
-	}
-
-	public void setCompanyDetail(CompanyDetail companyDetail) {
-		this.companyDetail = companyDetail;
-	}
-
-	@Override
-	public String toString() {
-		return "Company [id=" + id + ", name=" + name + ", companyCharges=" + companyCharges + ", companyDetail=" + companyDetail + "]";
 	}
 
 }

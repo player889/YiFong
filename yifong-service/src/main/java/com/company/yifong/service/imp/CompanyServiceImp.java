@@ -11,8 +11,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.company.yifong.entity.Company;
-import com.company.yifong.entity.CompanyDetail;
-import com.company.yifong.repository.CompanyDetailRepository;
 import com.company.yifong.repository.CompanyRepository;
 import com.company.yifong.service.CompanyService;
 
@@ -22,14 +20,11 @@ public class CompanyServiceImp implements CompanyService {
 	@Autowired
 	private CompanyRepository companyRepository;
 
-	@Autowired
-	private CompanyDetailRepository companyDetailRepository;
-
 	public Company save(Company company) {
 		return companyRepository.saveAndFlush(company);
 	}
 
-	public Page<Company> findByCondition(Company company) {
+	public Page<Company> findList(Company company) {
 		// @formatter:off
 		ExampleMatcher matcher = ExampleMatcher.matching()
 				.withIgnoreNullValues()
@@ -44,28 +39,28 @@ public class CompanyServiceImp implements CompanyService {
 		return webPage;
 	}
 	
-
-	@Override
-	public CompanyDetail findDetailById(CompanyDetail companyDetail) {
-		return companyDetailRepository.findById(companyDetail.getId());
-	}
-	
-	public Page<Company> findDetailById(String id) {
-		
-		// @formatter:off
-		ExampleMatcher matcher = ExampleMatcher.matching();
-		// @formatter:off
-		
-		Company c = new Company();
-		c.setId(id);
-		
-		Example<Company> example = Example.of(c, matcher);
-
-		Sort sort = new Sort(Direction.ASC, "id");
-		Page<Company> webPage = companyRepository.findAll(example, PageRequest.of(0, 10, sort));
-		
-		return webPage;
+	public Company findDetail(int id) {
+		return 	companyRepository.findById(id);
 	}
 
+	//NOTE Querydsl
+	// @formatter:off
+//	public Page<Company> findDetailById(String id) {
+//		
+//		// @formatter:off
+//		ExampleMatcher matcher = ExampleMatcher.matching();
+//		// @formatter:off
+//		
+//		Company c = new Company();
+//		c.setId(Integer.parseInt(id));
+//		
+//		Example<Company> example = Example.of(c, matcher);
+//
+//		Sort sort = new Sort(Direction.ASC, "id");
+//		Page<Company> webPage = companyRepository.findAll(example, PageRequest.of(0, 10, sort));
+//		
+//		return webPage;
+//	}
+	// @formatter:off
 
 }

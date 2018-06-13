@@ -33,7 +33,7 @@ function addTableRows(table, data) {
 			// let name = item.name;
 			// let row = `<tr><td><a
 			// th:href="@{/query/id}">${name}</a></td>></tr>`;
-			html += '<input type="button" onclick="doDetail(' + item.id + ')" value="' + item.name + '"/ >'
+			html += '<a href="javascript:void(0);" onclick="doDetail(' + item.id + ')">' + item.name + '</a>';
 		});
 		$(table).append(html);
 	}

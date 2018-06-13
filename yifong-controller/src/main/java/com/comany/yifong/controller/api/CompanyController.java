@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.company.yifong.common.EnumMap;
 import com.company.yifong.domain.AjaxResponse;
 import com.company.yifong.domain.request.CompanyRequest;
 import com.company.yifong.domain.status.ApiSatus;
@@ -28,18 +27,18 @@ public class CompanyController {
 	private CompanyService companyService;
 
 	@PostMapping(value = "/find/list", produces = "application/json; charset=utf-8")
-	public AjaxResponse findByCondition(@RequestBody final CompanyRequest vo, final BindingResult errors) throws IllegalAccessException, InvocationTargetException {
+	public AjaxResponse findList(@RequestBody final CompanyRequest vo, final BindingResult errors) throws IllegalAccessException, InvocationTargetException {
 		Company data = new Company();
 		BeanUtils.copyProperties(data, vo);
-		return new AjaxResponse(ApiSatus.SUCC_QUERY, companyService.findByCondition(data));
+		return new AjaxResponse(ApiSatus.SUCC_QUERY, companyService.findList(data));
 	}
 
 	@PostMapping(value = "/find/{id}", produces = "application/json; charset=utf-8")
-	public AjaxResponse findTest(@PathVariable(value = "id") String id) throws IllegalAccessException, InvocationTargetException, JsonProcessingException {
-		System.out.println(EnumMap.getDestination());
-		return new AjaxResponse(ApiSatus.SUCC_QUERY, companyService.findDetailById(id));
+	public AjaxResponse findDetail(@PathVariable(value = "id") int id) throws IllegalAccessException, InvocationTargetException, JsonProcessingException {
+		return new AjaxResponse(ApiSatus.SUCC_QUERY, companyService.findDetail(id));
 	}
 
+	// NOTE
 	@PostMapping(value = "/save", produces = "application/json; charset=utf-8")
 	public AjaxResponse save(@RequestBody final CompanyRequest vo, final BindingResult errors) {
 		companyService.save(this.mockData());
@@ -48,7 +47,7 @@ public class CompanyController {
 
 	private Company mockData() {
 		Company company = new Company();
-		company.setId("7");
+		company.setId(7);
 		company.setName("伍氏");
 
 		CompanyDetail companyDetail = new CompanyDetail();

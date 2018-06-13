@@ -8,6 +8,6 @@ import com.company.yifong.entity.CompanyDetail;
 @Repository
 public interface CompanyDetailRepository extends JpaRepository<CompanyDetail, Long> {
 	
-	CompanyDetail findById(String id);
+	CompanyDetail findById(int id);
 
 }
