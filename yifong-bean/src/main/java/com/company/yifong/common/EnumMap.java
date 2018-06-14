@@ -10,10 +10,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class EnumMap {
 
 	public static String getDestination() throws JsonProcessingException {
-		Map<String, String> temp = new LinkedHashMap<String, String>();
-		for (Destination destination : Destination.values()) {
-			temp.put(destination.name(), destination.getType());
+		Map<Integer, String> temp = new LinkedHashMap<Integer, String>();
+		for (int i = 0; i < Destination.values().length; i++) {
+			temp.put(i, Destination.values()[i].getType());
 		}
+		// for (Destination destination : Destination.values()) {
+		// temp.put(destination.name(), destination.getType());
+		// }
 		return new ObjectMapper().writeValueAsString(temp);
 	}
 }

@@ -16,9 +16,9 @@ public class Company implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
-	private int id;
+//	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false, length=5)
+	private String id;
 
 	@Column(nullable=false, length=6)
 	private String name;
@@ -29,17 +29,17 @@ public class Company implements Serializable {
 	private CompanyDetail companyDetail;
 
 	//bi-directional many-to-one association to CompanyCharge
-	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
 	private List<CompanyCharge> companyCharges;
 
 	public Company() {
 	}
 
-	public int getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

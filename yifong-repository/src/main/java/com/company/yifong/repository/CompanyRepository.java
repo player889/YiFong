@@ -8,8 +8,10 @@ import com.company.yifong.entity.Company;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
-	Company findById(int id);
+	Company findById(String id);
 
+	Company findByIdOrNameLike(String id , String name);
+	
 	// List<Company> findByIdOrNameLike(String companyId, String companName);
 	//
 	// Page<CompanyDetail> findAll(Example<CompanyDetail> example, PageRequest of);

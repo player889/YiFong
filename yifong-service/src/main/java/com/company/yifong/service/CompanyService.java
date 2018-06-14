@@ -10,6 +10,6 @@ public interface CompanyService {
 
 	Page<Company> findList(Company company);
 
-	Company findDetail(int id);
-	
+	Company findDetail(String id);
+
 }

@@ -6,7 +6,7 @@
 <meta charset="UTF-8" />
 <title>公司基本資料</title>
 <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
-
+<script src="/webjars/underscorejs/1.8.3/underscore-min.js"></script>
 </head>
 <style>
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
@@ -17,32 +17,27 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 
 input[type="number"] {
 	-moz-appearance: textfield;
+	text-align: right;
+}
+
+option:disabled {
+	background: DarkGray;
 }
 </style>
-
 <body>
 	<a th:href="@{/company}"></a>
-
 	<form id="form1">
-		<input type="number" name="id" value="7" />
+		<input type="number" name="id" value="480" />
 		<input type="text" name="name" value="" />
-		<br>
-		<input type="button" onclick="queryAll()" value="查詢全部" disabled />
 		<br>
 		<input type="button" onclick="save()" value="新增" disabled />
 		<br>
-		<input type="button" onclick="findByCompanyId()"
-			value="條件查詢 - findByCompanyId" />
-		<br>
-		<input type="button" onclick="findByCondition()"
-			value="條件查詢 - findByCondition" />
+		<input type="button" onclick="findList()" value="條件查詢 - findList" />
 	</form>
-
 	<form id="form2">
 		<table id="resultTable"></table>
 		<table id="detailTable"></table>
 	</form>
-
 </body>
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/company.js"></script>

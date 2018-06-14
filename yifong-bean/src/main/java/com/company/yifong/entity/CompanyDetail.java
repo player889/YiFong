@@ -1,16 +1,7 @@
 package com.company.yifong.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,11 +17,14 @@ public class CompanyDetail implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(unique = true, nullable = false)
-	private int id;
+	@Column(unique = true, nullable = false, length = 5)
+	private String id;
 
 	@Column(nullable = false, length = 45)
 	private String address;
+
+	@Column(name = "gui_number", length = 8)
+	private String guiNumber;
 
 	@Column(nullable = false, length = 45)
 	private String name;
@@ -47,11 +41,11 @@ public class CompanyDetail implements Serializable {
 	}
 
 	@JsonIgnore
-	public int getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -61,6 +55,14 @@ public class CompanyDetail implements Serializable {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getGuiNumber() {
+		return this.guiNumber;
+	}
+
+	public void setGuiNumber(String guiNumber) {
+		this.guiNumber = guiNumber;
 	}
 
 	public String getName() {

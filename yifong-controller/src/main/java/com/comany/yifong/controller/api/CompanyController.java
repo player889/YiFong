@@ -27,14 +27,14 @@ public class CompanyController {
 	private CompanyService companyService;
 
 	@PostMapping(value = "/find/list", produces = "application/json; charset=utf-8")
-	public AjaxResponse findList(@RequestBody final CompanyRequest vo, final BindingResult errors) throws IllegalAccessException, InvocationTargetException {
+	public AjaxResponse findList(@RequestBody final CompanyRequest vo, final BindingResult errors) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Company data = new Company();
 		BeanUtils.copyProperties(data, vo);
 		return new AjaxResponse(ApiSatus.SUCC_QUERY, companyService.findList(data));
 	}
 
 	@PostMapping(value = "/find/{id}", produces = "application/json; charset=utf-8")
-	public AjaxResponse findDetail(@PathVariable(value = "id") int id) throws IllegalAccessException, InvocationTargetException, JsonProcessingException {
+	public AjaxResponse findDetail(@PathVariable(value = "id") String id) throws IllegalAccessException, InvocationTargetException, JsonProcessingException {
 		return new AjaxResponse(ApiSatus.SUCC_QUERY, companyService.findDetail(id));
 	}
 
@@ -47,7 +47,7 @@ public class CompanyController {
 
 	private Company mockData() {
 		Company company = new Company();
-		company.setId(7);
+		company.setId("7");
 		company.setName("伍氏");
 
 		CompanyDetail companyDetail = new CompanyDetail();

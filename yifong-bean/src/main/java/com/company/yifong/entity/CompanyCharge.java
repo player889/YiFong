@@ -6,37 +6,39 @@ import javax.persistence.*;
 import com.company.yifong.enums.Destination;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 /**
  * The persistent class for the company_charge database table.
  * 
  */
 @Entity
-@Table(name = "company_charge")
-@NamedQuery(name = "CompanyCharge.findAll", query = "SELECT c FROM CompanyCharge c")
+@Table(name="company_charge")
+@NamedQuery(name="CompanyCharge.findAll", query="SELECT c FROM CompanyCharge c")
 public class CompanyCharge implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(unique = true, nullable = false)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false)
 	private int seq;
 
-	@Column(name = "destination_code", nullable = false, length = 10)
+	@Column(name="destination_code", nullable=false, length=10)
 	@Enumerated(EnumType.ORDINAL)
 	private Destination destinationCode;
 
-	@Column(nullable = false)
+	@Column(nullable=false)
 	private int fee;
 
-	// bi-directional many-to-oned association to Company
+	//bi-directional many-to-one association to Company
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "id", nullable = false)
+	@JoinColumn(name="id", nullable=false)
 	private Company company;
 
 	public CompanyCharge() {
 	}
 
+	@JsonIgnore
 	public int getSeq() {
 		return this.seq;
 	}

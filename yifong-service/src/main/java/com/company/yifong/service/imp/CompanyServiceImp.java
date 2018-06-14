@@ -24,7 +24,10 @@ public class CompanyServiceImp implements CompanyService {
 		return companyRepository.saveAndFlush(company);
 	}
 
+	// NOTE Querydsl
+
 	public Page<Company> findList(Company company) {
+
 		// @formatter:off
 		ExampleMatcher matcher = ExampleMatcher.matching()
 				.withIgnoreNullValues()
@@ -32,35 +35,18 @@ public class CompanyServiceImp implements CompanyService {
 		// @formatter:off
 		
 		Example<Company> example = Example.of(company, matcher);
-
+		
 		Sort sort = new Sort(Direction.ASC, "id");
 		Page<Company> webPage = companyRepository.findAll(example, PageRequest.of(0, 10, sort));
 		
 		return webPage;
 	}
 	
-	public Company findDetail(int id) {
+	public Company findDetail(String id) {
 		return 	companyRepository.findById(id);
 	}
 
-	//NOTE Querydsl
-	// @formatter:off
-//	public Page<Company> findDetailById(String id) {
-//		
-//		// @formatter:off
-//		ExampleMatcher matcher = ExampleMatcher.matching();
-//		// @formatter:off
-//		
-//		Company c = new Company();
-//		c.setId(Integer.parseInt(id));
-//		
-//		Example<Company> example = Example.of(c, matcher);
-//
-//		Sort sort = new Sort(Direction.ASC, "id");
-//		Page<Company> webPage = companyRepository.findAll(example, PageRequest.of(0, 10, sort));
-//		
-//		return webPage;
-//	}
-	// @formatter:off
+
+
 
 }
