@@ -21,7 +21,15 @@ $.fn.serializeObject = function() {
 	return o;
 };
 
-var doAjax = function(url, data, successFn) {
+var doAjax = function(url, data, successFn, extraData) {
+
+	var serializeSettings = {
+	    parseNumbers : true,
+	    skipFalsyValuesForTypes : [ "string", "number" ],
+	    parseWithFunction : function(val, inputName) {
+		    return ("" === val || 0 === val) ? null : val;
+	    }
+	};
 
 	var header = $("meta[name='_csrf_header']").attr("content");
 	var token = $("meta[name='_csrf']").attr("content");
@@ -31,9 +39,19 @@ var doAjax = function(url, data, successFn) {
 	    type : 'POST',
 	    contentType : 'application/json; charset=utf-8',
 	    dataType : 'json',
-	    data : JSON.stringify(data),
-	    beforeSend : function(xhr) {
+	    data : JSON.stringify($(data).serializeJSON(serializeSettings)),
+	    beforeSend : function(xhr, settings) {
+
 		    xhr.setRequestHeader(header, token);
+
+		    if (false === $.isEmptyObject(extraData)) {
+			    settings.data = JSON.parse(settings.data);
+			    let key = Object.keys(extraData)[0];
+			    let json = (undefined === settings.data[key]) ? settings.data : settings.data[key];
+			    _.extend(json, extraData[key]);
+			    settings.data = JSON.stringify(settings.data);
+		    }
+
 	    },
 	    success : function(data) {
 		    if (!data.code.startsWith("S")) {

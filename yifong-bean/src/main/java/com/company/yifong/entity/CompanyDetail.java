@@ -16,7 +16,6 @@ public class CompanyDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(unique = true, nullable = false, length = 5)
 	private String id;
 
@@ -25,6 +24,9 @@ public class CompanyDetail implements Serializable {
 
 	@Column(name = "gui_number", length = 8)
 	private String guiNumber;
+
+	@Lob
+	private String memo;
 
 	@Column(nullable = false, length = 45)
 	private String name;
@@ -40,7 +42,6 @@ public class CompanyDetail implements Serializable {
 	public CompanyDetail() {
 	}
 
-	@JsonIgnore
 	public String getId() {
 		return this.id;
 	}
@@ -63,6 +64,14 @@ public class CompanyDetail implements Serializable {
 
 	public void setGuiNumber(String guiNumber) {
 		this.guiNumber = guiNumber;
+	}
+
+	public String getMemo() {
+		return this.memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 
 	public String getName() {

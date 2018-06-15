@@ -12,4 +12,6 @@ public interface CompanyService {
 
 	Company findDetail(String id);
 
+	void delete(Company company);
+
 }

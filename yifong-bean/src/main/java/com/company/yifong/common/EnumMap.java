@@ -1,22 +1,18 @@
 package com.company.yifong.common;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.company.yifong.enums.Destination;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EnumMap {
 
-	public static String getDestination() throws JsonProcessingException {
-		Map<Integer, String> temp = new LinkedHashMap<Integer, String>();
-		for (int i = 0; i < Destination.values().length; i++) {
-			temp.put(i, Destination.values()[i].getType());
+	public static List<String> getDestination() throws JsonProcessingException {
+		List<String> list = new LinkedList<String>();
+		for (Destination destination : Destination.values()) {
+			list.add(destination.getType());
 		}
-		// for (Destination destination : Destination.values()) {
-		// temp.put(destination.name(), destination.getType());
-		// }
-		return new ObjectMapper().writeValueAsString(temp);
+		return list;
 	}
 }

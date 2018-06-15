@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "com.company.yifong", "com.comany.yifong.security", "com.comany.yifong.repository", "com.comany.yifong.exception", "com.comany.yifong.controller", "com.comany.yifong.service", "com.comany.yifong.dao" })
+@ComponentScan(basePackages = { "com.company.yifong", "com.comany.yifong.security", "com.comany.yifong.repository", "com.comany.yifong.exception", "com.comany.yifong.controller", "com.comany.yifong.service", "com.comany.yifong.dao", "com.company.yifong.commonuitls" })
 // @EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class }) // NOTE Stop initial database setting
 @EnableJpaRepositories("com.company.yifong.repository")
 public class ControllerApplication extends SpringBootServletInitializer {

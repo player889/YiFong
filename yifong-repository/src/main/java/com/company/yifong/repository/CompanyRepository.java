@@ -1,7 +1,9 @@
 package com.company.yifong.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.company.yifong.entity.Company;
 
@@ -10,10 +12,8 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
 	Company findById(String id);
 
-	Company findByIdOrNameLike(String id , String name);
-	
-	// List<Company> findByIdOrNameLike(String companyId, String companName);
-	//
-	// Page<CompanyDetail> findAll(Example<CompanyDetail> example, PageRequest of);
+	@Modifying
+	@Transactional
+	void removeById(String id);
 
 }

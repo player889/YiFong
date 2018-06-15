@@ -45,8 +45,10 @@ public class CompanyServiceImp implements CompanyService {
 	public Company findDetail(String id) {
 		return 	companyRepository.findById(id);
 	}
-
-
-
+	
+	public void delete(Company company) {
+//		companyRepository.findB
+		companyRepository.removeById(company.getId());
+	}
 
 }

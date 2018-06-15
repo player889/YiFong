@@ -1,62 +1,65 @@
-var trunk = {
-	destination : ''
-};
-
 var fn = {
-	init : function() {
-		doAjax('/common/destination/', {}, function(resp) {
-			// {0: "基隆", 1: "台北港", 2: "桃園", 3: "楊梅", 4: "湖口", 5: "台中", 6: "高雄", 7: "銅鑼"}
-			trunk.destination = Object.values(JSON.parse(resp.data));
-		});
-	}
+    init : function() {
+	    doAjax('/common/destination/', {}, function(resp) {
+		    fn.initData.trunk.destination = resp.data;
+	    });
+	    ShowHideForm('#form1', [ '#form3', '#form4' ]);
+    },
+    initData : {
+	    trunk : {
+		    destination : ''
+	    }
+    }
 };
 
 fn.init();
 
-function findList() {
-	doAjax('/company/find/list', $('#form1').serializeObject(), function(resp) {
+function findList(isShowDetail) {
+	doAjax('/company/find/list', '#form1', function(resp) {
 
-		clearTable([ '#resultTable', '#detailTable' ]);
+		clearTable([ '#resultTable', '#detailTable', '#chargeTable' ]);
 
 		var data = resp.data.content;
-		if (0 === data.length) {
+		if ($.isEmptyObject(data)) {
 			alert("無資料");
 		} else {
 			let html = "";
 			data.forEach(function(item, index, array) {
-				html += '<a href="javascript:void(0);" onclick="findDetail(' + item.id + ',\'#detailTable\')">' + item.name + '</a><br>';
+				html += '<a href="javascript:void(0);" id="showDetail" onclick="findDetail(' + item.id + ')">' + item.name + '</a><br>';
 			});
 			$('#resultTable').append(html);
-		}
 
+			(1 >= data.length || isShowDetail) && $('#showDetail').click();
+
+		}
 	});
 };
 
-function findDetail(detailId, tableId) {
+function findDetail(detailId) {
 	doAjax('/company/find/' + detailId, {}, function(resp) {
 
-		clearTable(tableId);
+		clearTable([ "#detailTable", "#chargeTable" ]);
 
-		let html = "";
 		let main = resp.data;
 		let detail = main.companyDetail;
 		let charges = main.companyCharges;
 
-		html += '<tr><td>' + main.id + '</td><td>' + detail.name + '</td><td>' + detail.address + '</td><td>' + detail.phone + '</td><td>' + detail.guiNumber + '</td></tr>';
-
-		// {基隆: 7300, 台北港: 7300, 桃園: 4800, 楊梅: 4800, 台中: 5300}
 		var chargeMaps = _.object(_.map(charges, function(item) {
 			return [ item.destinationCode, item.fee ];
 		}));
 
-		for (var i = 0; i <= trunk.destination.length - 1; i++) {
-			let text = trunk.destination[i];
+		let detailHtml = '<tr><td>' + main.id + '</td><td>' + detail.name + '</td><td>' + detail.address + '</td><td>' + detail.phone + '</td><td>' + detail.guiNumber + '</td></tr>';
+		detailHtml += '<tr><td>' + detail.memo + '</td></tr>';
+		$('#detailTable').append(detailHtml);
+
+		let chargeHtml = "";
+		for (var i = 0; i <= fn.initData.trunk.destination.length - 1; i++) {
+			let text = fn.initData.trunk.destination[i];
 			let tmp = _.propertyOf(chargeMaps)(text);
 			let fee = (undefined === tmp) ? 0 : tmp;
-			html += '<tr><td>' + text + '</td><td>' + fee + '</td></tr>';
+			chargeHtml += '<tr><td>' + text + '</td><td align="right">' + fee + '</td></tr>';
 		}
-
-		$(tableId).append(html);
+		$('#chargeTable').append(chargeHtml);
 
 	});
 };
@@ -64,13 +67,38 @@ function findDetail(detailId, tableId) {
 function clearTable(tableIds) {
 	if (tableIds instanceof Array) {
 		for (var i = 0; i <= tableIds.length - 1; i++) {
-			$(tableIds[i]).children().remove()
+			$(tableIds[i]).children().remove();
 		}
 	} else {
-		$(tableIds).children().remove()
+		$(tableIds).children().remove();
 	}
 };
 
-function save() {
-	doAjax('/company/save', $('#form1').serializeObject());
+function saveFn() {
+	ShowHideForm('#form1', [ '#form3', '#form4' ]);
+	var id = $('#form3 input[name="id"]').val();
+	let extraData = {
+		companyDetail : {
+			id : id
+		}
+	};
+	doAjax('/company/save', '#form3', function(data) {
+		$('#form1 input[name="id"]').val(id);
+		findList(true);
+		alert(data.message);
+	}, extraData);
+
+};
+
+function deleteFn() {
+	doAjax('/company/delete', '#form4');
+	ShowHideForm('#form1', [ '#form3', '#form4' ]);
+};
+
+function ShowHideForm(showId, hideIds) {
+	clearTable([ '#resultTable', '#detailTable', '#chargeTable' ])
+	$(showId).trigger('reset').show();
+	$.each(hideIds, function(i, id) {
+		$(id).hide();
+	});
 };
