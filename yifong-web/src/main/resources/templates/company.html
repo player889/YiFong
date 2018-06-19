@@ -26,41 +26,74 @@ option:disabled {
 .RbtnMargin {
 	margin-right: 5px;
 }
+
+.list-group-item-action:focus, .list-group-item-action:hover {
+	background-color: LightGreen;
+}
 </style>
 <body>
-	<!-- Query -->
 	<div class="container">
+		<!-- Query -->
 		<form>
-			<div class="form-row justify-content-center">
+			<div class="form-row">
 				<div class="col-md-5">
-					<input type="text" class="form-control" placeholder="客戶代碼或名稱" name="input" id="input">
+					<input type="text" class="form-control" placeholder="客戶代碼或名稱" name="input" id="input" value="一">
 				</div>
 				<div class="col-md-3">
 					<input type="button" class="btn btn-default" onclick="findList(false);" value="查詢" />
-					<input type="button" class="btn btn-success" value="新增" onclick="saveFn();" />
+					<input type="button" class="btn btn-success" value="新增" onclick="saveFn();" disabled="disabled" />
+				</div>
+			</div>
+		</form>
+		<!-- List -->
+		<form id="form2">
+			<div class="form-row">
+				<div class="col-md-5">
+					<div class="list-group" id="resultList"></div>
+				</div>
+			</div>
+			<table id="detailTable"></table>
+			<table id="chargeTable"></table>
+		</form>
+		<!-- Detail -->
+		<form id="form3">
+			<div class="form-row">
+				<div class="form-group col-md-1">
+					<label for="detail_id">代號</label>
+					<input type="text" class="form-control" id="main_id" placeholder="代號" maxlength="5">
+				</div>
+				<div class="form-group col-md-2">
+					<label for="detail_name">簡稱</label>
+					<input type="text" class="form-control" id="main_name" placeholder="簡稱">
+				</div>
+				<div class="form-group col-md-6">
+					<label for="detail_fullName">全名</label>
+					<input type="text" class="form-control" id="detail_name" placeholder="全名">
+				</div>
+				<div class="form-group col-md-3">
+					<label for="detail_guiNumber">統一編號</label>
+					<input type="text" class="form-control" id="detail_guiNumber" placeholder="統一編號" maxlength="8">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-4">
+					<label for="detail_address">地址</label>
+					<input type="text" class="form-control" id="detail_address" placeholder="地址">
+				</div>
+				<div class="form-group col-md-4">
+					<label for="detail_phone">電話</label>
+					<input type="text" class="form-control" id="detail_phone" placeholder="電話">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-4">
+					<label for="detail_memo">備註</label>
+					<input type="text" class="form-control" id="detail_memo" placeholder="備註">
 				</div>
 			</div>
 		</form>
 	</div>
-	<button value="dasdsa" onclick="listModal()">dasdada</button>
 	<div id="content"></div>
-	<!-- 		代號: -->
-	<!-- 		<br> -->
-	<!-- 		<input type="number" name="id" value="2030" /> -->
-	<!-- 		<br> -->
-	<!-- 		簡稱: -->
-	<!-- 		<br> -->
-	<!-- 		<input type="text" name="name" value="" /> -->
-	<!-- 		<input type="button" onclick="ShowHideForm('#form3', ['#form1', '#form4'])" value="新增頁" /> -->
-	<!-- 		<input type="button" onclick="ShowHideForm('#form4', ['#form1', '#form3'])" value="刪除頁" /> -->
-	<!-- 		<br> -->
-	<!-- 		<input type="button" onclick="findList(false)" value="條件查詢 - findList" /> -->
-	<!-- List Detail -->
-	<form id="form2" style="display: none;">
-		<table id="resultTable"></table>
-		<table id="detailTable"></table>
-		<table id="chargeTable"></table>
-	</form>
 	<!-- Add -->
 	<form id="form3" style="display: none;">
 		代號:

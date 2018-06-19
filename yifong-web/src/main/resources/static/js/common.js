@@ -59,7 +59,8 @@ var doModal = function(url, data, contentId) {
 	    url : url,
 	    type : 'POST',
 	    dataType : 'html',
-	    data : {},
+	    data : JSON.stringify(data),
+	    contentType: "application/json",
 	    beforeSend : function(xhr, settings) {
 		    xhr.setRequestHeader(header, token);
 	    },

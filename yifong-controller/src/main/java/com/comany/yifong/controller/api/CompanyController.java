@@ -1,10 +1,10 @@
 package com.comany.yifong.controller.api;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +38,7 @@ public class CompanyController {
 
 	@PostMapping(value = "/find/{id}", produces = "application/json; charset=utf-8")
 	public AjaxResponse findDetail(@PathVariable(value = "id") String id) {
+		System.out.println("===============");
 		return new AjaxResponse(ApiSatus.SUCC_QUERY, companyService.findDetail(id));
 	}
 
@@ -56,10 +57,12 @@ public class CompanyController {
 		return new AjaxResponse(ApiSatus.SUCC_DELETE);
 	}
 
-	// MODAL
-	@PostMapping(value = "/list/modal")
-	public ModelAndView loadModal() {
-		return new ModelAndView("modal/companyList");
-	}
+//	// MODAL
+//	@PostMapping(value = "/list/modal")
+//	public ModelAndView loadModal(@RequestBody List<CompanyRequest> data) {
+//		return new ModelAndView("modal/companyList", "data", data);
+//	}
+	
+
 
 }

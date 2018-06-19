@@ -3,7 +3,7 @@ var fn = {
 	    doAjax('/common/destination/', {}, function(resp) {
 		    fn.initData.trunk.destination = resp.data;
 	    });
-	    ShowHideForm('#form1', [ '#form3', '#form4' ]);
+	    // ShowHideForm('#form1', [ '#form2', '#form3', '#form4' ]);
     },
     initData : {
 	    trunk : {
@@ -18,34 +18,32 @@ function findList(isShowDetail) {
 
 	var data = {};
 
-	var isNumber = /^\d+$/.test($('#input').val());
-
-	if (isNumber) {
+	if (/^\d+$/.test($('#input').val())) {
 		data.id = $('#input').val();
 	} else {
 		data.name = $('#input').val();
 	}
 
-	console.log(data);
-
 	doAjax('/company/find/list', data, function(resp) {
 
-		console.log("OK");
-
-		clearTable([ '#resultTable', '#detailTable', '#chargeTable' ]);
+		// clearTable([ '#resultList', '#detailTable', '#chargeTable' ]);
 
 		var data = resp.data.content;
 		if ($.isEmptyObject(data)) {
 			alert("無資料");
-		} else if (1 == 1) {
-			listModal();
-		} else {
+		} else if (1 === data.length) {
 
-			let html = "";
+			// listModal(data);
+		} else if (1 < data.length) {
+
+			// ShowHideForm('#form2', [ '#form3', '#form4' ]);
+
+			let html = '<div class="list-group col-md-5">';
 			data.forEach(function(item, index, array) {
-				html += '<a href="javascript:void(0);" id="showDetail" onclick="findDetail(' + item.id + ')">' + item.name + '</a><br>';
+				html += '<a href="javascript:void(0);" class="list-group-item list-group-item-action" id="showDetail" onclick="findDetail(' + item.id + ')">' + item.name + '</a>';
 			});
-			$('#resultTable').append(html);
+			html += '</div>';
+			$('#resultList').append(html);
 
 			(1 >= data.length || isShowDetail) && $('#showDetail').click();
 
@@ -54,39 +52,46 @@ function findList(isShowDetail) {
 };
 
 function findDetail(detailId) {
-	doAjax('/company/find/' + detailId, {}, function(resp) {
 
-		clearTable([ "#detailTable", "#chargeTable" ]);
+	// clearTable([ '#resultList', '#detailTable', '#chargeTable' ]);
+
+	doAjax('/company/find/' + detailId, {}, function(resp) {
 
 		let main = resp.data;
 		let detail = main.companyDetail;
-		let detailHtml = '<tr><td>' + main.id + '</td><td>' + detail.name + '</td><td>' + detail.address + '</td><td>' + detail.phone + '</td><td>' + detail.guiNumber + '</td></tr>';
-		detailHtml += (undefined == detail.memo) ? '' : '<tr><td>' + detail.memo + '</td></tr>';
-		$('#detailTable').append(detailHtml);
 
-		let chargeHtml = '';
-		let charges = main.companyCharges;
-		for (let i = 0; i <= fn.initData.trunk.destination.length - 1; i++) {
-			let text = fn.initData.trunk.destination[i];
-			chargeHtml += '<tr><td><b>' + text + '</b></td></tr>';
+		$('#main_id').val(main.id);
+		$('#main_name').val(main.name);
 
-			let count = 0;
-			$.each(charges, function(i, item) {
-				if (text === item['destinationCode']) {
-					chargeHtml += '<tr><td>應收費用</td><td>外調費用</td><td>司機運費</td><td>櫃子呎吋</td></tr>';
-					let size = (3 === item.size) ? '20/40呎 ' : (1 === item.size) ? '20呎' : '40呎';
-					chargeHtml += '<tr><td>' + item.pay + '</td><td>' + item.outsourcing + '</td><td>' + item.fee + '</td><td>' + size + '</td></tr>';
-					count++;
-				}
-			});
-			if (0 == count) {
-				chargeHtml += '<tr><td>應收費用</td><td>外調費用</td><td>司機運費</td><td>櫃子呎吋</td></tr>';
-				chargeHtml += '<tr><td>0</td><td>0</td><td>0</td><td>無</td></tr>';
-			}
+		$.each(Object.keys(detail), function(i, item) {
+			$('#detail_' + item).val(detail[item]);
+		});
 
-		}
+		// ShowHideForm('#form3', [ '#form2', '#form4' ]);
 
-		$('#chargeTable').append(chargeHtml);
+		// let chargeHtml = '';
+		// let charges = main.companyCharges;
+		// for (let i = 0; i <= fn.initData.trunk.destination.length - 1; i++) {
+		// let text = fn.initData.trunk.destination[i];
+		// chargeHtml += '<tr><td><b>' + text + '</b></td></tr>';
+		//
+		// let count = 0;
+		// $.each(charges, function(i, item) {
+		// if (text === item['destinationCode']) {
+		// chargeHtml += '<tr><td>應收費用</td><td>外調費用</td><td>司機運費</td><td>櫃子呎吋</td></tr>';
+		// let size = (3 === item.size) ? '20/40呎 ' : (1 === item.size) ? '20呎' : '40呎';
+		// chargeHtml += '<tr><td>' + item.pay + '</td><td>' + item.outsourcing + '</td><td>' + item.fee + '</td><td>' + size + '</td></tr>';
+		// count++;
+		// }
+		// });
+		// if (0 == count) {
+		// chargeHtml += '<tr><td>應收費用</td><td>外調費用</td><td>司機運費</td><td>櫃子呎吋</td></tr>';
+		// chargeHtml += '<tr><td>0</td><td>0</td><td>0</td><td>無</td></tr>';
+		// }
+
+		// }
+
+		// $('#chargeTable').append(chargeHtml);
 
 		// var chargeMaps = _.object(_.map(charges, function(item) {
 		// let size = (3 === item.size) ? '20/40呎 ' : (1=== item.size) ? '20呎' : '40呎';
@@ -98,29 +103,34 @@ function findDetail(detailId) {
 	});
 };
 
-function listModal() {
+// function listModal(data) {
 
-//	var header = $("meta[name='_csrf_header']").attr("content");
-//	var token = $("meta[name='_csrf']").attr("content");
-//	console.log("@@@@@@@");
-	
-	doModal('/company/list/modal', {} , '#content');
-	
-//	$.ajax({
-//	    url : ,
-//	    type : 'GET',
-//	    // contentType : 'application/json; charset=utf-8',
-//	    dataType : 'html',
-//	    data : {},
-//	    beforeSend : function(xhr, settings) {
-//		    xhr.setRequestHeader(header, token);
-//	    },
-//	    success : function(data) {
-//		    $('#content').html(data);
-//	    }
-//	});
+// console.log(data);
 
-}
+// var header = $("meta[name='_csrf_header']").attr("content");
+// var token = $("meta[name='_csrf']").attr("content");
+// console.log("@@@@@@@");
+
+//	
+// var strList = [{"id":"7","name":"asdad"},{"id":"7","name":"asdad"}];
+//	
+// doModal('/company/list/modal', {"data" : data}, '#content');
+
+// $.ajax({
+// url : ,
+// type : 'GET',
+// // contentType : 'application/json; charset=utf-8',
+// dataType : 'html',
+// data : {},
+// beforeSend : function(xhr, settings) {
+// xhr.setRequestHeader(header, token);
+// },
+// success : function(data) {
+// $('#content').html(data);
+// }
+// });
+
+// }
 
 function doFilter(data) {
 	var json = [];
@@ -168,7 +178,7 @@ function deleteFn() {
 };
 
 function ShowHideForm(showId, hideIds) {
-	clearTable([ '#resultTable', '#detailTable', '#chargeTable' ])
+	// clearTable([ '#resultList', '#detailTable', '#chargeTable' ])
 	$(showId).trigger('reset').show();
 	$.each(hideIds, function(i, id) {
 		$(id).hide();
