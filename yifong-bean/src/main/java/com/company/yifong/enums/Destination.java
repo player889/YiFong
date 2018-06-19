@@ -3,23 +3,18 @@ package com.company.yifong.enums;
 public enum Destination {
 
 	KEELUNG("基隆"),
+	KEELUNG_TAICHUNG("基隆-台中"),
+	KEELUNG_CHANGHUA("基隆-彰化"),
 	TAIPEI("台北港"),
 	TAOYUAN("桃園"),
+	GUANYIN("觀音"),
 	YANGMEI("楊梅"),
 	HUKOU("湖口"),
 	TAICHUNG("台中"),
-	KAOHSIUNG("高雄"),
-	TONGLUO("銅鑼");
-	// NOTE
-//	FORTYPLUS("40尺加"),
-//	INSPECTION("貼儀檢"),
-//	TWO_PLACE("下2處貼"),
-//	TWO_CABINET("2櫃優待"),
-//	OTHER("貼其他"),
-//	POUNDS("過磅"),
-//	COMMENTS("備註"),
-//	OIL("油價標準"),
-//	SEND_PRICE("指送單價");
+	TAICHUNG_TONGLUO("台中-銅鑼"),
+	TAICHUNG_CHANGHUA("台中-彰化"),
+	CHIAYI("嘉義"),
+	KAOHSIUNG("高雄");
 
 	private String type;
 

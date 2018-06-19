@@ -4,11 +4,13 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.company.yifong.domain.AjaxResponse;
 import com.company.yifong.domain.request.CompanyRequest;
@@ -43,7 +45,7 @@ public class CompanyController {
 	public AjaxResponse save(@RequestBody final CompanyRequest vo, final BindingResult errors) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Company data = objectMapper.convertValue(vo, Company.class);
 		return new AjaxResponse(ApiSatus.SUCC_SAVE, companyService.save(data));
-//		return new AjaxResponse(ApiSatus.SUCC_SAVE);
+		// return new AjaxResponse(ApiSatus.SUCC_SAVE);
 	}
 
 	@PostMapping(value = "/delete", produces = "application/json; charset=utf-8")
@@ -52,6 +54,12 @@ public class CompanyController {
 		System.out.println(objectMapper.writeValueAsString(company));
 		companyService.delete(objectMapper.convertValue(vo, Company.class));
 		return new AjaxResponse(ApiSatus.SUCC_DELETE);
+	}
+
+	// MODAL
+	@PostMapping(value = "/list/modal")
+	public ModelAndView loadModal() {
+		return new ModelAndView("modal/companyList");
 	}
 
 }

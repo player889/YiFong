@@ -1,26 +1,3 @@
-$.fn.serializeObject = function() {
-	var o = {};
-	var a = this.serializeArray();
-	$.each(a, function() {
-		if (o[this.name]) {
-			if (!o[this.name].push) {
-				o[this.name] = [ o[this.name] ];
-			}
-			o[this.name].push(this.value.trim() || '');
-		} else {
-			o[this.name] = this.value.trim() || '';
-		}
-	});
-
-	$.each(o, function(key, value) {
-		if (value === "" || value === null) {
-			delete o[key];
-		}
-	});
-
-	return o;
-};
-
 var doAjax = function(url, data, successFn, extraData) {
 
 	var serializeSettings = {
@@ -39,7 +16,7 @@ var doAjax = function(url, data, successFn, extraData) {
 	    type : 'POST',
 	    contentType : 'application/json; charset=utf-8',
 	    dataType : 'json',
-	    data : JSON.stringify($(data).serializeJSON(serializeSettings)),
+	    data : (typeof data === 'object') ? JSON.stringify(data) : JSON.stringify($(data).serializeJSON(serializeSettings)),
 	    beforeSend : function(xhr, settings) {
 
 		    xhr.setRequestHeader(header, token);
@@ -71,5 +48,24 @@ var doAjax = function(url, data, successFn, extraData) {
 		    }
 	    }
 	});
-
 }
+
+var doModal = function(url, data, contentId) {
+
+	var header = $("meta[name='_csrf_header']").attr("content");
+	var token = $("meta[name='_csrf']").attr("content");
+
+	$.ajax({
+	    url : url,
+	    type : 'POST',
+	    dataType : 'html',
+	    data : {},
+	    beforeSend : function(xhr, settings) {
+		    xhr.setRequestHeader(header, token);
+	    },
+	    success : function(data) {
+		    $(contentId).html(data);
+	    }
+	});
+
+};

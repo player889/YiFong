@@ -5,8 +5,7 @@
 <meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
 <meta charset="UTF-8" />
 <title>公司基本資料</title>
-<script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
-<script src="/webjars/underscorejs/1.8.3/underscore-min.js"></script>
+<link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 </head>
 <style>
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
@@ -23,54 +22,90 @@ input[type="number"] {
 option:disabled {
 	background: DarkGray;
 }
+
+.RbtnMargin {
+	margin-right: 5px;
+}
 </style>
 <body>
-
 	<!-- Query -->
-	<form id="form1">
-		代號:<br>
-		<input type="number" name="id" value="9999" />
-		<br> 簡稱:<br>
-		<input type="text" name="name" value="" />
-		<input type="button" onclick="ShowHideForm('#form3', ['#form1', '#form4'])" value="新增頁" />
-		<input type="button" onclick="ShowHideForm('#form4', ['#form1', '#form3'])" value="刪除頁" />
-		<br>
-		<input type="button" onclick="findList(false)" value="條件查詢 - findList" />
-	</form>
+	<div class="container">
+		<form>
+			<div class="form-row justify-content-center">
+				<div class="col-md-5">
+					<input type="text" class="form-control" placeholder="客戶代碼或名稱" name="input" id="input">
+				</div>
+				<div class="col-md-3">
+					<input type="button" class="btn btn-default" onclick="findList(false);" value="查詢" />
+					<input type="button" class="btn btn-success" value="新增" onclick="saveFn();" />
+				</div>
+			</div>
+		</form>
+	</div>
+	<button value="dasdsa" onclick="listModal()">dasdada</button>
+	<div id="content"></div>
+	<!-- 		代號: -->
+	<!-- 		<br> -->
+	<!-- 		<input type="number" name="id" value="2030" /> -->
+	<!-- 		<br> -->
+	<!-- 		簡稱: -->
+	<!-- 		<br> -->
+	<!-- 		<input type="text" name="name" value="" /> -->
+	<!-- 		<input type="button" onclick="ShowHideForm('#form3', ['#form1', '#form4'])" value="新增頁" /> -->
+	<!-- 		<input type="button" onclick="ShowHideForm('#form4', ['#form1', '#form3'])" value="刪除頁" /> -->
+	<!-- 		<br> -->
+	<!-- 		<input type="button" onclick="findList(false)" value="條件查詢 - findList" /> -->
 	<!-- List Detail -->
-	<form id="form2">
+	<form id="form2" style="display: none;">
 		<table id="resultTable"></table>
 		<table id="detailTable"></table>
 		<table id="chargeTable"></table>
 	</form>
 	<!-- Add -->
-	<form id="form3">
-		代號:<br>
+	<form id="form3" style="display: none;">
+		代號:
+		<br>
 		<input type="text" name="id" value="9999">
-		<br> 簡稱:<br>
+		<br>
+		簡稱:
+		<br>
 		<input type="text" name="name" value="測試">
-		<br> 全名:<br>
+		<br>
+		全名:
+		<br>
 		<input type="text" name="companyDetail[name]" value="測試有限公司" />
-		<br> 地址:<br>
+		<br>
+		地址:
+		<br>
 		<input type="text" name="companyDetail[address]" value=" 台北市信義區信義路五段7號73樓">
-		<br> 電話:<br>
+		<br>
+		電話:
+		<br>
 		<input type="text" name="companyDetail[phone]" value="037-460213">
-		<br> 統一編號:<br>
+		<br>
+		統一編號:
+		<br>
 		<input type="text" name="companyDetail[guiNumber]" value="00955531">
-		<br> 備註:<br>
+		<br>
+		備註:
+		<br>
 		<input type="text" name="companyDetail[memo]" value="這是備註">
 		<br>
 		<input type="button" onclick="saveFn()" value="存檔" />
 		<input type="button" onclick="ShowHideForm('#form1', ['#form3', '#form4'])" value="回上一頁" />
 	</form>
 	<!-- Delete -->
-	<form id="form4">
-		代號:<br>
+	<form id="form4" style="display: none;">
+		代號:
+		<br>
 		<input type="text" name="id" value="9999">
 		<input type="button" onclick="deleteFn()" value="刪除" />
 		<input type="button" onclick="ShowHideForm('#form1', ['#form3', '#form4'])" value="回上一頁" />
 	</form>
 </body>
+<script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+<script src="/webjars/underscorejs/1.8.3/underscore-min.js"></script>
+<script src="/webjars/bootstrap/4.1.1/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/jquery.serializejson.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/company.js"></script>

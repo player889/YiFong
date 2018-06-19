@@ -28,6 +28,13 @@ public class CompanyCharge implements Serializable {
 	@Column(nullable=false)
 	private int fee;
 
+	private int outsourcing;
+
+	private int pay;
+
+	@Column(nullable=false)
+	private int size;
+
 	//bi-directional many-to-one association to Company
 	@JsonIgnore
 	@ManyToOne
@@ -60,6 +67,30 @@ public class CompanyCharge implements Serializable {
 
 	public void setFee(int fee) {
 		this.fee = fee;
+	}
+
+	public int getOutsourcing() {
+		return this.outsourcing;
+	}
+
+	public void setOutsourcing(int outsourcing) {
+		this.outsourcing = outsourcing;
+	}
+
+	public int getPay() {
+		return this.pay;
+	}
+
+	public void setPay(int pay) {
+		this.pay = pay;
+	}
+
+	public int getSize() {
+		return this.size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 
 	public Company getCompany() {

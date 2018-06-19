@@ -57,5 +57,12 @@
 			<version>3.17</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
+		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>4.1.1</version>
+		</dependency>
+
 	</dependencies>
 </project>
