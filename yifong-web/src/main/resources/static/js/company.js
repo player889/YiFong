@@ -3,7 +3,6 @@ var fn = {
 	    doAjax('/common/destination/', {}, function(resp) {
 		    fn.initData.trunk.destination = resp.data;
 	    });
-	    // ShowHideForm('#form1', [ '#form2', '#form3', '#form4' ]);
     },
     initData : {
 	    trunk : {
@@ -26,138 +25,85 @@ function findList(isShowDetail) {
 
 	doAjax('/company/find/list', data, function(resp) {
 
-		// clearTable([ '#resultList', '#detailTable', '#chargeTable' ]);
+		$('#companyList, #companyDetail').empty();
+		$('#chargesTable').remove();
 
 		var data = resp.data.content;
 		if ($.isEmptyObject(data)) {
 			alert("無資料");
-		} else if (1 === data.length) {
+		} else {
 
-			// listModal(data);
-		} else if (1 < data.length) {
-
-			// ShowHideForm('#form2', [ '#form3', '#form4' ]);
-
-			let html = '<div class="list-group col-md-5">';
 			data.forEach(function(item, index, array) {
-				html += '<a href="javascript:void(0);" class="list-group-item list-group-item-action" id="showDetail" onclick="findDetail(' + item.id + ')">' + item.name + '</a>';
+				let charges = (undefined === item.companyCharges) ? '{}' : JSON.stringify(item.companyCharges);
+				$('#companyList').append('<a class="list-group-item list-group-item-action" data-toggle="list" href="#detail" role="tab" data-charges=' + charges + ' data-detail=' + JSON.stringify(item.companyDetail) + '>' + item.id + '  ' + item.name + '</a>');
 			});
-			html += '</div>';
-			$('#resultList').append(html);
 
-			(1 >= data.length || isShowDetail) && $('#showDetail').click();
+			$('a[data-toggle="list"]').on('shown.bs.tab', function(e) {
+				$('#companyDetail').empty();
+				doDetail($(this).data("detail"), $(this).data("charges"));
+			});
+
+			if (data.length === 1) {
+				$('#companyList a:first-child').tab('show');
+			}
 
 		}
 	});
 };
 
-function findDetail(detailId) {
+function showDetail(detailData) {
 
-	// clearTable([ '#resultList', '#detailTable', '#chargeTable' ]);
+	let name = detailData.name;
+	let address = detailData.address;
+	let phone = detailData.phone;
+	let guiNumber = detailData.guiNumber;
+	let memo = detailData.memo;
 
-	doAjax('/company/find/' + detailId, {}, function(resp) {
+	var html = `<input type="button" class="btn btn-outline-secondary float-right" onclick="" value="修改" />${name} <br>地址:  ${address} <br>電話:  ${phone} <br>統一編號 ${guiNumber} <br>備註: ${memo}`;
 
-		let main = resp.data;
-		let detail = main.companyDetail;
+	$('#companyDetail').append(html);
+}
 
-		$('#main_id').val(main.id);
-		$('#main_name').val(main.name);
+function doDetail(detailData, chargeData) {
 
-		$.each(Object.keys(detail), function(i, item) {
-			$('#detail_' + item).val(detail[item]);
-		});
+	showDetail(detailData);
 
-		// ShowHideForm('#form3', [ '#form2', '#form4' ]);
-
-		// let chargeHtml = '';
-		// let charges = main.companyCharges;
-		// for (let i = 0; i <= fn.initData.trunk.destination.length - 1; i++) {
-		// let text = fn.initData.trunk.destination[i];
-		// chargeHtml += '<tr><td><b>' + text + '</b></td></tr>';
-		//
-		// let count = 0;
-		// $.each(charges, function(i, item) {
-		// if (text === item['destinationCode']) {
-		// chargeHtml += '<tr><td>應收費用</td><td>外調費用</td><td>司機運費</td><td>櫃子呎吋</td></tr>';
-		// let size = (3 === item.size) ? '20/40呎 ' : (1 === item.size) ? '20呎' : '40呎';
-		// chargeHtml += '<tr><td>' + item.pay + '</td><td>' + item.outsourcing + '</td><td>' + item.fee + '</td><td>' + size + '</td></tr>';
-		// count++;
-		// }
-		// });
-		// if (0 == count) {
-		// chargeHtml += '<tr><td>應收費用</td><td>外調費用</td><td>司機運費</td><td>櫃子呎吋</td></tr>';
-		// chargeHtml += '<tr><td>0</td><td>0</td><td>0</td><td>無</td></tr>';
-		// }
-
-		// }
-
-		// $('#chargeTable').append(chargeHtml);
-
-		// var chargeMaps = _.object(_.map(charges, function(item) {
-		// let size = (3 === item.size) ? '20/40呎 ' : (1=== item.size) ? '20呎' : '40呎';
-		// return [ item.destinationCode, item.fee, item.outsourcing, item.pay, size];
-		// }));
-
-		// console.log(chargeMaps);
-
-	});
-};
-
-// function listModal(data) {
-
-// console.log(data);
-
-// var header = $("meta[name='_csrf_header']").attr("content");
-// var token = $("meta[name='_csrf']").attr("content");
-// console.log("@@@@@@@");
-
-//	
-// var strList = [{"id":"7","name":"asdad"},{"id":"7","name":"asdad"}];
-//	
-// doModal('/company/list/modal', {"data" : data}, '#content');
-
-// $.ajax({
-// url : ,
-// type : 'GET',
-// // contentType : 'application/json; charset=utf-8',
-// dataType : 'html',
-// data : {},
-// beforeSend : function(xhr, settings) {
-// xhr.setRequestHeader(header, token);
-// },
-// success : function(data) {
-// $('#content').html(data);
-// }
-// });
-
-// }
-
-function doFilter(data) {
-	var json = [];
-	$.each(data, function(i, item) {
-		let size = (3 === item.size) ? '20/40呎 ' : (1 === item.size) ? '20呎' : '40呎';
-		json.push({
-		    pay : item.pay,
-		    fee : item.fee,
-		    outsourcing : item.outsourcing,
-		    size : size
-		});
-	});
-	return json;
-};
-
-function clearTable(tableIds) {
-	if (tableIds instanceof Array) {
-		for (let i = 0; i <= tableIds.length - 1; i++) {
-			$(tableIds[i]).children().remove();
-		}
-	} else {
-		$(tableIds).children().remove();
+	$('#chargesTable').remove();
+	if (false === $.isEmptyObject(chargeData)) {
+		showCharges(chargeData);
 	}
-};
+}
+
+function showCharges(chargeData) {
+
+	if (false === $.isEmptyObject(chargeData)) {
+
+		let chargeHtml = '<table id="chargesTable">';
+		for (let i = 0; i <= fn.initData.trunk.destination.length - 1; i++) {
+			let text = fn.initData.trunk.destination[i];
+			chargeHtml += '<tr><td><b>' + text + '</b></td></tr>';
+
+			let count = 0;
+			$.each(chargeData, function(i, item) {
+				if (text === item['destinationCode']) {
+					chargeHtml += '<tr><td>應收費用</td><td>外調費用</td><td>司機運費</td><td>櫃子呎吋</td></tr>';
+					let size = (3 === item.size) ? '20/40呎 ' : (1 === item.size) ? '20呎' : '40呎';
+					chargeHtml += '<tr><td>' + item.pay + '</td><td>' + item.outsourcing + '</td><td>' + item.fee + '</td><td>' + size + '</td></tr>';
+					count++;
+				}
+			});
+			if (0 == count) {
+				chargeHtml += '<tr><td>應收費用</td><td>外調費用</td><td>司機運費</td><td>櫃子呎吋</td></tr>';
+				chargeHtml += '<tr><td>0</td><td>0</td><td>0</td><td>無</td></tr>';
+			}
+		}
+		chargeHtml += '</table>';
+		$('#companyDetail').after(chargeHtml);
+	}
+
+}
 
 function saveFn() {
-	ShowHideForm('#form1', [ '#form3', '#form4' ]);
 	var id = $('#form3 input[name="id"]').val();
 	let extraData = {
 		companyDetail : {
@@ -174,13 +120,5 @@ function saveFn() {
 
 function deleteFn() {
 	doAjax('/company/delete', '#form4');
-	ShowHideForm('#form1', [ '#form3', '#form4' ]);
 };
 
-function ShowHideForm(showId, hideIds) {
-	// clearTable([ '#resultList', '#detailTable', '#chargeTable' ])
-	$(showId).trigger('reset').show();
-	$.each(hideIds, function(i, id) {
-		$(id).hide();
-	});
-};

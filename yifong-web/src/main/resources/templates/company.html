@@ -8,27 +8,35 @@
 <link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 </head>
 <style>
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
-	{
-	-webkit-appearance: none;
-	margin: 0;
-}
 
-input[type="number"] {
-	-moz-appearance: textfield;
-	text-align: right;
-}
+/* input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button */
+/* 	{ */
+/* 	-webkit-appearance: none; */
+/* 	margin: 0; */
+/* } */
 
-option:disabled {
-	background: DarkGray;
-}
+/* input[type="number"] { */
+/* 	-moz-appearance: textfield; */
+/* 	text-align: right; */
+/* } */
 
+/* option:disabled { */
+/* 	background: DarkGray; */
+/* } */
 .RbtnMargin {
 	margin-right: 5px;
 }
 
-.list-group-item-action:focus, .list-group-item-action:hover {
-	background-color: LightGreen;
+.scrollBar {
+	height: 90vh;
+	overflow-y: auto;
+}
+
+/* .table-hover tbody tr:hover td, .table-hover tbody tr:hover th { */
+/* 	background-color: green; */
+/* } */
+.table-striped>tbody>tr:nth-child(2n+1)>td, .table-striped>tbody>tr:nth-child(2n+1)>th {
+	background-color: #66ccff;
 }
 </style>
 <body>
@@ -40,101 +48,157 @@ option:disabled {
 					<input type="text" class="form-control" placeholder="客戶代碼或名稱" name="input" id="input" value="一">
 				</div>
 				<div class="col-md-3">
-					<input type="button" class="btn btn-default" onclick="findList(false);" value="查詢" />
-					<input type="button" class="btn btn-success" value="新增" onclick="saveFn();" disabled="disabled" />
+					<input type="button" class="btn btn-outline-secondary" onclick="findList(false);" value="查詢" />
+					<input type="button" class="btn btn-outline-success" value="新增" onclick="saveFn();" disabled="disabled" />
 				</div>
 			</div>
-		</form>
-		<!-- List -->
-		<form id="form2">
-			<div class="form-row">
-				<div class="col-md-5">
-					<div class="list-group" id="resultList"></div>
-				</div>
-			</div>
-			<table id="detailTable"></table>
-			<table id="chargeTable"></table>
 		</form>
 		<!-- Detail -->
-		<form id="form3">
-			<div class="form-row">
-				<div class="form-group col-md-1">
-					<label for="detail_id">代號</label>
-					<input type="text" class="form-control" id="main_id" placeholder="代號" maxlength="5">
+		<form id="form2">
+			<div class="row">
+				<div class="col-2">
+					<div class="list-group" id="companyList" role="tablist">
+						<a class="list-group-item list-group-item-action" data-toggle="list" href="#detail" role="tab" data-charges="{}" data-detail="{&quot;id&quot;:&quot;112&quot;,&quot;address&quot;:&quot;苗栗縣後龍鎮南龍里勝利街236號&quot;,&quot;guiNumber&quot;:&quot;49673101&quot;,&quot;name&quot;:&quot;一昌實業股份有限公司&quot;,&quot;phone&quot;:&quot;037-723111&quot;}">112 一昌</a>
+						<a class="list-group-item list-group-item-action active show" data-toggle="list" href="#detail" role="tab" data-charges="[{&quot;destinationCode&quot;:&quot;台中&quot;,&quot;fee&quot;:0,&quot;outsourcing&quot;:4800,&quot;pay&quot;:6000,&quot;size&quot;:3}]"
+							data-detail="{&quot;id&quot;:&quot;133&quot;,&quot;address&quot;:&quot;竹南鎮和誠街28-1號&quot;,&quot;guiNumber&quot;:&quot;86648288&quot;,&quot;name&quot;:&quot;一品新實業股份有限公司&quot;,&quot;phone&quot;:&quot;037-583392&quot;}" aria-selected="true">133 一品新</a>
+					</div>
 				</div>
-				<div class="form-group col-md-2">
-					<label for="detail_name">簡稱</label>
-					<input type="text" class="form-control" id="main_name" placeholder="簡稱">
-				</div>
-				<div class="form-group col-md-6">
-					<label for="detail_fullName">全名</label>
-					<input type="text" class="form-control" id="detail_name" placeholder="全名">
-				</div>
-				<div class="form-group col-md-3">
-					<label for="detail_guiNumber">統一編號</label>
-					<input type="text" class="form-control" id="detail_guiNumber" placeholder="統一編號" maxlength="8">
+				<div class="col-10 scrollBar">
+					<div class="tab-content" id="companyDetail">
+						<!-- 						<div class="card bg-light"> -->
+						<!-- 							<div class="card-header">Header</div> -->
+						<!-- 							<div class="card-body"> -->
+						<!-- 								<h5 class="card-title">Light card title</h5> -->
+						<!-- 								<p class="card-text"> -->
+						<!-- 								<input type="button" class="btn btn-outline-secondary float-right" onclick="" value="修改"> -->
+						<!-- 								Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+						<!-- 							</div> -->
+						<!-- 						</div> -->
+						<div class="card">
+							<div class="card-body">
+								<input type="button" class="btn btn-outline-secondary float-right" onclick="" value="修改">
+								一品新實業股份有限公司
+								<br>
+								地址: 竹南鎮和誠街28-1號
+								<br>
+								電話: 037-583392
+								<br>
+								統一編號 86648288
+								<br>
+								備註: undefined
+							</div>
+							<table id="chargesTable" class="table table-sm table-striped">
+								<thead>
+									<tr>
+										<th scope="col">地點</th>
+										<th scope="col">應收費用</th>
+										<th scope="col">司機運費</th>
+										<th scope="col">櫃子呎吋</th>
+										<th scope="col">外調費用</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>基隆</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>無</td>
+									</tr>
+									<tr>
+										<td>基隆</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>無</td>
+									</tr>
+									<tr>
+										<td>基隆</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>無</td>
+									</tr>
+									<tr>
+										<td>基隆</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>無</td>
+									</tr>
+									<tr>
+										<td>基隆</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>無</td>
+									</tr>
+									<tr>
+										<td>基隆</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>無</td>
+									</tr>
+									<tr>
+										<td>基隆</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>無</td>
+									</tr>
+									<tr>
+										<td>基隆</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>無</td>
+									</tr>
+									<tr>
+										<td>基隆</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>無</td>
+									</tr>
+									<tr>
+										<td>基隆</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>無</td>
+									</tr>
+									<tr>
+										<td>基隆</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>無</td>
+									</tr>
+									<tr>
+										<td>基隆</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>無</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="form-row">
-				<div class="form-group col-md-4">
-					<label for="detail_address">地址</label>
-					<input type="text" class="form-control" id="detail_address" placeholder="地址">
-				</div>
-				<div class="form-group col-md-4">
-					<label for="detail_phone">電話</label>
-					<input type="text" class="form-control" id="detail_phone" placeholder="電話">
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="form-group col-md-4">
-					<label for="detail_memo">備註</label>
-					<input type="text" class="form-control" id="detail_memo" placeholder="備註">
-				</div>
-			</div>
+			<!-- 			<div class="row"> -->
+			<!-- 				<div class="col-2"> -->
+			<!-- 					<div class="list-group" id="companyList" role="tablist"></div> -->
+			<!-- 				</div> -->
+			<!-- 				<div class="col-10 scrollBar"> -->
+			<!-- 					<div class="tab-content" id="companyDetail"></div> -->
+			<!-- 				</div> -->
+			<!-- 			</div> -->
 		</form>
 	</div>
-	<div id="content"></div>
-	<!-- Add -->
-	<form id="form3" style="display: none;">
-		代號:
-		<br>
-		<input type="text" name="id" value="9999">
-		<br>
-		簡稱:
-		<br>
-		<input type="text" name="name" value="測試">
-		<br>
-		全名:
-		<br>
-		<input type="text" name="companyDetail[name]" value="測試有限公司" />
-		<br>
-		地址:
-		<br>
-		<input type="text" name="companyDetail[address]" value=" 台北市信義區信義路五段7號73樓">
-		<br>
-		電話:
-		<br>
-		<input type="text" name="companyDetail[phone]" value="037-460213">
-		<br>
-		統一編號:
-		<br>
-		<input type="text" name="companyDetail[guiNumber]" value="00955531">
-		<br>
-		備註:
-		<br>
-		<input type="text" name="companyDetail[memo]" value="這是備註">
-		<br>
-		<input type="button" onclick="saveFn()" value="存檔" />
-		<input type="button" onclick="ShowHideForm('#form1', ['#form3', '#form4'])" value="回上一頁" />
-	</form>
-	<!-- Delete -->
-	<form id="form4" style="display: none;">
-		代號:
-		<br>
-		<input type="text" name="id" value="9999">
-		<input type="button" onclick="deleteFn()" value="刪除" />
-		<input type="button" onclick="ShowHideForm('#form1', ['#form3', '#form4'])" value="回上一頁" />
-	</form>
+	<!-- 	<div id="content"></div> -->
 </body>
 <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
 <script src="/webjars/underscorejs/1.8.3/underscore-min.js"></script>
