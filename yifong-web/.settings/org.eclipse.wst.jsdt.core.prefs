@@ -1,5 +1,5 @@
 eclipse.preferences.version=1
-org.eclipse.wst.jsdt.core.formatter.align_type_members_on_columns=true
+org.eclipse.wst.jsdt.core.formatter.align_type_members_on_columns=false
 org.eclipse.wst.jsdt.core.formatter.alignment_for_arguments_in_allocation_expression=16
 org.eclipse.wst.jsdt.core.formatter.alignment_for_arguments_in_enum_constant=16
 org.eclipse.wst.jsdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call=16

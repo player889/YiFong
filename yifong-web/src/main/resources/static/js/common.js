@@ -1,3 +1,14 @@
+$.fn.enterKey = function(fnc) {
+	return this.each(function() {
+		$(this).keypress(function(ev) {
+			var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+			if (keycode == '13') {
+				fnc.call(this, ev);
+			}
+		})
+	})
+};
+
 var doAjax = function(url, data, successFn, extraData) {
 
 	var serializeSettings = {
@@ -60,7 +71,7 @@ var doModal = function(url, data, contentId) {
 	    type : 'POST',
 	    dataType : 'html',
 	    data : JSON.stringify(data),
-	    contentType: "application/json",
+	    contentType : "application/json",
 	    beforeSend : function(xhr, settings) {
 		    xhr.setRequestHeader(header, token);
 	    },
