@@ -89,7 +89,7 @@ function query(isShowDetail) {
 				let info = item.companyDetail;
 				let name = info.name;
 				let address = info.address;
-				let phone = info.phone;
+				let phone = phoneFilter(info.phone);
 				let guiNumber = commonUtils.getValue(info.guiNumber);
 				let memo = commonUtils.getValue(info.memo);
 
@@ -97,7 +97,7 @@ function query(isShowDetail) {
 				html += `		<div class="card">`;
 				html += `			<div class="card-body">`;
 				html += ` 				<input type="button" class="btn btn-outline-warning float-right" value="修改" onclick="test();"/>`;
-				html += ` 				${name} <br>地址: ${address} <br>電話: ${phone} <br>統一編號 ${guiNumber} <br>備註: ${memo}`;
+				html += `<pre>${name}<br>${address}<br>${phone}<br>${guiNumber}<br>${memo}</pre>`;
 				html += getCharges(item.companyCharges);
 				html += `			</div>`;
 				html += `		</div>`;
@@ -145,6 +145,16 @@ function getCharges(charges) {
 function test() {
 	$('#form3').append(fn.getDestinationDDL());
 }
+
+function phoneFilter(phone) {
+	let icon = commonUtils.getSkypIcon();
+	let arr = phone.split("-");
+	let arrLen = arr.length;
+	if (3 === arrLen) {
+		return arr[0] + arr[1] + icon + '分機' + arr[2];
+	}
+	return phone + icon;
+};
 
 function saveFn() {
 
