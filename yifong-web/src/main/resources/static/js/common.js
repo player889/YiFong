@@ -9,6 +9,12 @@ $.fn.enterKey = function(fnc) {
 	})
 };
 
+var commonUtils = {
+	getValue : function(val) {
+		return (typeof val === 'undefined') ? '' : val;
+	}
+}
+
 var doAjax = function(url, data, successFn, extraData) {
 
 	var serializeSettings = {

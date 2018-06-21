@@ -1,20 +1,37 @@
-var fn = {
+let fn = {
     init : function() {
 
 	    doAjax('/common/destination/', {}, function(resp) {
-		    fn.initData.trunk.destination = resp.data;
+		    fn.initData.trunk.defaultDestination = resp.data;
 	    });
 
 	    $("#input").enterKey(function(e) {
 		    e.preventDefault();
-		    findList(false);
+		    query(false);
 	    });
 
     },
     initData : {
 	    trunk : {
-		    destination : ''
+	        defaultDestination : '',
+	        useDestination : []
 	    }
+    },
+    getDestinationDDL : function() {
+
+	    let defaultArr = fn.initData.trunk.defaultDestination;
+	    let existArr = fn.initData.trunk.useDestination;
+
+	    let html = '<select>';
+	    let data = defaultArr.filter(function(obj) {
+		    return existArr.indexOf(obj) == -1;
+	    });
+
+	    $.each(data, function(i, item) {
+		    html += '<option>' + item + '</option>';
+	    });
+
+	    return html;
     }
 };
 
@@ -31,38 +48,77 @@ function detailRemoveToggle(removeClazz) {
 }
 
 function getVo() {
-	var vo = {};
-	if (/^\d+$/.test($('#input').val())) {
-		vo.id = $('#input').val();
-	} else {
-		vo.name = $('#input').val();
+
+	let data = $('#input').val();
+
+	let vo = {};
+	if (/^\d+$/.test(data)) {
+		vo.id = data;
+	} else if (data) {
+		vo.name = data;
 	}
+
 	return vo;
 }
 
-function findList(isShowDetail) {
+function query(isShowDetail) {
 
-	form2RemoveToggle('show');
-	detailRemoveToggle('show');
+	let data = getVo();
+	// if ($.isEmptyObject(data)) {
+	// alert("請輸入資料");
+	// return;
+	// }
 
-	doAjax('/company/find/list', getVo(), function(resp) {
+	$('#form2').empty();
 
-		$('#companyList, #companyDetail').empty();
+	// form2RemoveToggle('show');
+	// detailRemoveToggle('show');
 
-		var data = resp.data.content;
+	doAjax('/company/find/list', data, function(resp) {
+
+		// $('#companyList, #companyDetail').empty();
+
+		let data = resp.data.content;
 		if ($.isEmptyObject(data)) {
 			alert("無資料");
-			form2RemoveToggle('hidden');
 		} else {
-			form2RemoveToggle('show');
+
+			let html = `<div class="row" id="content">`;
+
+			let temp = {};
+
 			data.forEach(function(item, index, array) {
+
+				if (0 === index) {
+					html += `<div class="col-2">`;
+					html += `<div class="list-group" id="companyList" role="tablist">`;
+				}
+
+				let id = item.id;
+				let name = item.name;
 				let charges = (undefined === item.companyCharges) ? '{}' : JSON.stringify(item.companyCharges);
-				$('#companyList').append('<a class="list-group-item list-group-item-action" data-toggle="list" href="#detail" role="tab" data-charges=' + charges + ' data-detail=' + JSON.stringify(item.companyDetail) + '>' + item.id + '  ' + item.name + '</a>');
+				let detail = JSON.stringify(item.companyDetail);
+				html += `<a class="list-group-item list-group-item-action" href="#detail" role="tab" data-toggle="list" `;
+				html += `data-charges=${charges} data-detail=${detail} >${id} ${name}</a>`;
+
+				if (index === data.length - 1) {
+					html += `</div>`;
+					html += `</div>`;
+				}
+
+				temp = item.companyDetail;
+
 			});
 
-			$('a[data-toggle="list"]').on('shown.bs.tab', function(e) {
-				doDetail($(this).data("detail"), $(this).data("charges"));
-			});
+			$('#form2').append(html);
+
+			var h2 = getDetailHtml(temp);
+
+			$('#content').append(h2);
+
+			// $('a[data-toggle="list"]').on('shown.bs.tab', function(e) {
+			// doDetail($(this).data("detail"), $(this).data("charges"));
+			// });
 
 			if (data.length === 1) {
 				$('#companyList a:first-child').tab('show');
@@ -77,11 +133,19 @@ function getDetailHtml(detailData) {
 	let name = detailData.name;
 	let address = detailData.address;
 	let phone = detailData.phone;
-	let guiNumber = detailData.guiNumber;
-	let memo = detailData.memo;
+	let guiNumber = commonUtils.getValue(detailData.guiNumber);
+	let memo = commonUtils.getValue(detailData.memo);
 
-	var html = `<div class="card-body" id="detail">`;
+	let html = `<div class="col-10 scrollBar">`;
+
+	html += `<div class="tab-content" id="nav-tabContent">`;
+	html += `<div class="card" id="companyDetail">`;
+	html += `<div class="card-body" id="detail">`;
 	html += `<input type="button" class="btn btn-outline-warning float-right" onclick="" value="修改" />${name} <br>地址:  ${address} <br>電話:  ${phone} <br>統一編號 ${guiNumber} <br>備註: ${memo}`;
+	html += `</div>`;
+	html += `</div>`;
+	html += `</div>`;
+	html += `</div>`;
 
 	return html;
 
@@ -89,32 +153,35 @@ function getDetailHtml(detailData) {
 
 function doDetail(detailData, chargeData) {
 
-	detailRemoveToggle('hidden');
+	// detailRemoveToggle('hidden');
 
-	let detailHTML = getDetailHtml(detailData) + getChargeHtml(chargeData);
+	let detailHTML = '<div class="col-10 scrollBar"><div class="tab-content"><div class="card" id="companyDetail">'
 
-	$('#companyDetail').append(detailHTML);
+	detailHTML += getDetailHtml(detailData) + getChargeHtml(chargeData);
+
+	detailHTML += '</div></div></div>'
+
+	$('#content').append(detailHTML);
 }
 
 function getChargeHtml(chargeData) {
 
 	let html = '';
+	fn.initData.trunk.useDestination = [];
+
 	if (false === $.isEmptyObject(chargeData)) {
 		html += '<table class="table table-sm ">';
 		html += '<thead><tr> <th scope="col">地點</th> <th scope="col">應收費用</th> <th scope="col">司機運費</th> <th scope="col">櫃子呎吋</th> <th scope="col">外調費用</th> </tr></thead>';
 		html += '<tbody>';
-		for (let i = 0; i <= fn.initData.trunk.destination.length - 1; i++) {
-			let text = fn.initData.trunk.destination[i];
 
-			let count = 0;
-			$.each(chargeData, function(i, item) {
-				if (text === item['destinationCode']) {
-					let size = (3 === item.size) ? '20/40呎 ' : (1 === item.size) ? '20呎' : '40呎';
-					html += '<tr><td>' + text + '</td><td>' + item.pay + '</td><td>' + item.fee + '</td><td>' + size + '</td><td>' + item.outsourcing + '</td></tr>';
-					count++;
-				}
-			});
-		}
+		let count = 0;
+		$.each(chargeData, function(i, item) {
+			let size = (3 === item.size) ? '20/40呎 ' : (1 === item.size) ? '20呎' : '40呎';
+			html += '<tr><td>' + item.destinationCode + '</td><td>' + item.pay + '</td><td>' + item.fee + '</td><td>' + size + '</td><td>' + item.outsourcing + '</td></tr>';
+			count++;
+
+			fn.initData.trunk.useDestination.push(item.destinationCode);
+		});
 		html += '</tbody></table></div>';
 	}
 
@@ -123,7 +190,7 @@ function getChargeHtml(chargeData) {
 }
 
 function saveFn() {
-	var id = $('#form3 input[name="id"]').val();
+	let id = $('#form3 input[name="id"]').val();
 	let extraData = {
 		companyDetail : {
 			id : id
@@ -131,7 +198,7 @@ function saveFn() {
 	};
 	doAjax('/company/save', '#form3', function(data) {
 		$('#form1 input[name="id"]').val(id);
-		findList(true);
+		query(true);
 		alert(data.message);
 	}, extraData);
 
@@ -140,4 +207,3 @@ function saveFn() {
 function deleteFn() {
 	doAjax('/company/delete', '#form4');
 };
-

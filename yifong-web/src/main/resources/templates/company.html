@@ -49,6 +49,11 @@
 .spacing {
 	margin-top: 10px;
 }
+
+.rightBtn {
+	position: absolute;
+	right: 0;
+}
 </style>
 <body>
 	<div class="container">
@@ -59,24 +64,13 @@
 					<input type="text" class="form-control" placeholder="客戶代碼或名稱" name="input" id="input" value="">
 				</div>
 				<div class="col-md-3">
-					<input type="button" class="btn btn-outline-secondary" onclick="findList(false);" value="查詢" />
+					<input type="button" class="btn btn-outline-secondary" onclick="query(false);" value="查詢" />
 					<input type="button" class="btn btn-outline-success" value="新增" onclick="saveFn();" disabled="disabled" />
 				</div>
 			</div>
 		</form>
 		<!-- Detail -->
-		<form id="form2 hidden" class="spacing">
-			<div class="row">
-				<div class="col-2">
-					<div class="list-group" id="companyList" role="tablist"></div>
-				</div>
-				<div class="col-10 scrollBar">
-					<div class="tab-content">
-						<div class="card hidden" id="companyDetail"></div>
-					</div>
-				</div>
-			</div>
-		</form>
+		<form id="form2" class="spacing"></form>
 	</div>
 </body>
 <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
