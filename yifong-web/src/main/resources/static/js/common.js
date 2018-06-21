@@ -10,9 +10,12 @@ $.fn.enterKey = function(fnc) {
 };
 
 var commonUtils = {
-	getValue : function(val) {
-		return (typeof val === 'undefined') ? '' : val;
-	}
+    getValue : function(val) {
+	    return (typeof val === 'undefined') ? '' : val;
+    },
+    getSkypIcon : function() {
+	    return '<a href="skype:echo123?call"><img src="images/skype.png" width="20" height="20"/></a>';
+    }
 }
 
 var doAjax = function(url, data, successFn, extraData) {

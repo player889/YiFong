@@ -32,22 +32,23 @@ public class CompanyServiceImp implements CompanyService {
 		ExampleMatcher matcher = ExampleMatcher.matching()
 				.withIgnoreNullValues()
 				.withMatcher("name", GenericPropertyMatchers.startsWith());
-		// @formatter:off
-		
+		//@formatter:on
+
 		Example<Company> example = Example.of(company, matcher);
-		
-		Sort sort = new Sort(Direction.ASC, "id");
+
+		Sort sort = new Sort(Direction.ASC, "name");
+		// PageRequest.of(0, Integer.MAX_VALUE,sort); //NOTE max values
 		Page<Company> webPage = companyRepository.findAll(example, PageRequest.of(0, 10, sort));
-		
+
 		return webPage;
 	}
-	
+
 	public Company findDetail(String id) {
-		return 	companyRepository.findById(id);
+		return companyRepository.findById(id);
 	}
-	
+
 	public void delete(Company company) {
-//		companyRepository.findB
+		// companyRepository.findB
 		companyRepository.removeById(company.getId());
 	}
 

@@ -37,16 +37,6 @@ let fn = {
 
 fn.init();
 
-function form2RemoveToggle(removeClazz) {
-	let addClazz = ('show' === removeClazz) ? 'hidden' : 'show';
-	$('#form2').removeClass(removeClazz).addClass(addClazz);
-}
-
-function detailRemoveToggle(removeClazz) {
-	let addClazz = ('show' === removeClazz) ? 'hidden' : 'show';
-	$('#companyDetail').empty().removeClass(removeClazz).addClass(addClazz);
-}
-
 function getVo() {
 
 	let data = $('#input').val();
@@ -71,125 +61,93 @@ function query(isShowDetail) {
 
 	$('#form2').empty();
 
-	// form2RemoveToggle('show');
-	// detailRemoveToggle('show');
-
 	doAjax('/company/find/list', data, function(resp) {
-
-		// $('#companyList, #companyDetail').empty();
 
 		let data = resp.data.content;
 		if ($.isEmptyObject(data)) {
 			alert("無資料");
 		} else {
 
-			let html = `<div class="row" id="content">`;
+			let show = (0 === data.length - 1) ? 'show active' : '';
 
-			let temp = {};
+			let html = ``;
 
+			html += `<div class="row" id="content">`;
+			html += `<div class="col-2">`;
+			html += `	<div class="list-group" id="companyList" role="tablist">`;
 			data.forEach(function(item, index, array) {
-
-				if (0 === index) {
-					html += `<div class="col-2">`;
-					html += `<div class="list-group" id="companyList" role="tablist">`;
-				}
-
 				let id = item.id;
 				let name = item.name;
-				let charges = (undefined === item.companyCharges) ? '{}' : JSON.stringify(item.companyCharges);
-				let detail = JSON.stringify(item.companyDetail);
-				html += `<a class="list-group-item list-group-item-action" href="#detail" role="tab" data-toggle="list" `;
-				html += `data-charges=${charges} data-detail=${detail} >${id} ${name}</a>`;
+				html += `	<a class="list-group-item list-group-item-action ${show}" href="#info_${index}" role="tab" data-toggle="list" id="infoList_${index}">${id} ${name}</a>`;
+			});
+			html += `	</div>`;
+			html += `</div>`;
 
-				if (index === data.length - 1) {
-					html += `</div>`;
-					html += `</div>`;
-				}
+			html += `<div class="col-10 scrollBar">`;
+			html += `	<div class="tab-content">`;
+			data.forEach(function(item, index, array) {
+				let info = item.companyDetail;
+				let name = info.name;
+				let address = info.address;
+				let phone = info.phone;
+				let guiNumber = commonUtils.getValue(info.guiNumber);
+				let memo = commonUtils.getValue(info.memo);
 
-				temp = item.companyDetail;
-
+				html += `	<div class="tab-pane fade ${show}" id="info_${index}" role="tabpanel" aria-labelledby="infoList_${index}">`;
+				html += `		<div class="card">`;
+				html += `			<div class="card-body">`;
+				html += ` 				<input type="button" class="btn btn-outline-warning float-right" value="修改" onclick="test();"/>`;
+				html += ` 				${name} <br>地址: ${address} <br>電話: ${phone} <br>統一編號 ${guiNumber} <br>備註: ${memo}`;
+				html += getCharges(item.companyCharges);
+				html += `			</div>`;
+				html += `		</div>`;
+				html += `	</div>`;
 			});
 
+			html += `	</div>`;
+			html += `</div>`;
+
 			$('#form2').append(html);
-
-			var h2 = getDetailHtml(temp);
-
-			$('#content').append(h2);
-
-			// $('a[data-toggle="list"]').on('shown.bs.tab', function(e) {
-			// doDetail($(this).data("detail"), $(this).data("charges"));
-			// });
-
-			if (data.length === 1) {
-				$('#companyList a:first-child').tab('show');
-			}
-
 		}
 	});
 };
 
-function getDetailHtml(detailData) {
+function getCharges(charges) {
 
-	let name = detailData.name;
-	let address = detailData.address;
-	let phone = detailData.phone;
-	let guiNumber = commonUtils.getValue(detailData.guiNumber);
-	let memo = commonUtils.getValue(detailData.memo);
+	let html = ``;
 
-	let html = `<div class="col-10 scrollBar">`;
-
-	html += `<div class="tab-content" id="nav-tabContent">`;
-	html += `<div class="card" id="companyDetail">`;
-	html += `<div class="card-body" id="detail">`;
-	html += `<input type="button" class="btn btn-outline-warning float-right" onclick="" value="修改" />${name} <br>地址:  ${address} <br>電話:  ${phone} <br>統一編號 ${guiNumber} <br>備註: ${memo}`;
-	html += `</div>`;
-	html += `</div>`;
-	html += `</div>`;
-	html += `</div>`;
-
-	return html;
-
-}
-
-function doDetail(detailData, chargeData) {
-
-	// detailRemoveToggle('hidden');
-
-	let detailHTML = '<div class="col-10 scrollBar"><div class="tab-content"><div class="card" id="companyDetail">'
-
-	detailHTML += getDetailHtml(detailData) + getChargeHtml(chargeData);
-
-	detailHTML += '</div></div></div>'
-
-	$('#content').append(detailHTML);
-}
-
-function getChargeHtml(chargeData) {
-
-	let html = '';
 	fn.initData.trunk.useDestination = [];
+	if (false === $.isEmptyObject(charges)) {
+		html += ` <table class="table table-sm ">`;
+		html += ` <thead><tr> <th scope="col">地點</th> <th scope="col">應收費用</th> <th scope="col">司機運費</th> <th scope="col">櫃子呎吋</th> <th scope="col">外調費用</th> </tr></thead>`;
+		html += ` <tbody>`;
+	}
 
-	if (false === $.isEmptyObject(chargeData)) {
-		html += '<table class="table table-sm ">';
-		html += '<thead><tr> <th scope="col">地點</th> <th scope="col">應收費用</th> <th scope="col">司機運費</th> <th scope="col">櫃子呎吋</th> <th scope="col">外調費用</th> </tr></thead>';
-		html += '<tbody>';
+	$.each(charges, function(i, item) {
 
-		let count = 0;
-		$.each(chargeData, function(i, item) {
-			let size = (3 === item.size) ? '20/40呎 ' : (1 === item.size) ? '20呎' : '40呎';
-			html += '<tr><td>' + item.destinationCode + '</td><td>' + item.pay + '</td><td>' + item.fee + '</td><td>' + size + '</td><td>' + item.outsourcing + '</td></tr>';
-			count++;
+		let size = (3 === item.size) ? '20/40呎 ' : (1 === item.size) ? '20呎' : '40呎';
+		let destination = item.destinationCode;
+		let pay = item.pay;
+		let fee = item.fee;
+		let os = item.outsourcing;
+		html += `<tr><td>${destination}</td><td>${pay}</td><td>${fee}</td><td>${size}</td><td>${os}</td></tr>`;
+		fn.initData.trunk.useDestination.push(item.destinationCode);
+	});
 
-			fn.initData.trunk.useDestination.push(item.destinationCode);
-		});
-		html += '</tbody></table></div>';
+	if (false === $.isEmptyObject(charges)) {
+		html += `</tbody></table>`;
 	}
 
 	return html;
 
 }
 
+function test() {
+	$('#form3').append(fn.getDestinationDDL());
+}
+
 function saveFn() {
+
 	let id = $('#form3 input[name="id"]').val();
 	let extraData = {
 		companyDetail : {
