@@ -8,17 +8,12 @@
 <link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 </head>
 <style>
-
-/* input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button */
-/* 	{ */
-/* 	-webkit-appearance: none; */
-/* 	margin: 0; */
-/* } */
-
-/* input[type="number"] { */
-/* 	-moz-appearance: textfield; */
-/* 	text-align: right; */
-/* } */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+	/* 	-moz-appearance: textfield; */
+	/* 	text-align: right; */
+}
 
 /* option:disabled { */
 /* 	background: DarkGray; */
@@ -54,6 +49,18 @@
 	position: absolute;
 	right: 0;
 }
+
+.modal-lg {
+	max-width: 90%;
+}
+
+textarea {
+	resize: none;
+}
+
+.borderless td, .borderless th {
+	border: none;
+}
 </style>
 <body>
 	<div class="container">
@@ -61,7 +68,7 @@
 		<form>
 			<div class="form-row spacing">
 				<div class="col-md-5">
-					<input type="text" class="form-control" placeholder="客戶代碼或名稱" name="input" id="input" value="">
+					<input type="text" class="form-control" placeholder="客戶代碼或名稱" name="input" id="input" value="7">
 				</div>
 				<div class="col-md-3">
 					<input type="button" class="btn btn-outline-secondary" onclick="query(false);" value="查詢" />
@@ -71,7 +78,60 @@
 		</form>
 		<!-- Detail -->
 		<form id="form2" class="spacing"></form>
-		<form id="form3" class="spacing">dasda</form>
+		<!-- Edit / Add -->
+		<form id="form3">
+			<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-body" id="editContent">
+							<div class="form-row">
+								<div class="form-group col-md-1">
+									<label for="form3-id">代號</label>
+									<input type="text" class="form-control" id="form3-id" name="form3-id" />
+								</div>
+								<div class="form-group col-md-2">
+									<label for="form3-name">簡稱</label>
+									<input type="text" class="form-control" id="form3-name" />
+								</div>
+								<div class="form-group col-md-6">
+									<label for="form3-companyDetail[name]">全名</label>
+									<input type="text" class="form-control" id="form3-companyDetail[name]" name="companyDetail[name]" />
+								</div>
+								<div class="form-group col-md-3">
+									<label for="form3-companyDetail[phone]">電話</label>
+									<input type="text" class="form-control" id="form3-companyDetail[phone]" name="companyDetail[phone]" />
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-3">
+									<label for="form3-companyDetail[guiNumber]">統一編號</label>
+									<input type="text" class="form-control" id="form3-companyDetail[guiNumber]" name="companyDetail[guiNumber]" />
+								</div>
+								<div class="form-group col-md-9">
+									<label for="form3-companyDetail[address]">地址</label>
+									<input type="text" class="form-control" id="form3-companyDetail[address]" name="companyDetail[address]" />
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-12">
+									<label for="form3-companyDetail[memo]">備註</label>
+									<textarea rows="3" class="form-control" id="form3-companyDetail[memo]" name="companyDetail[memo]"></textarea>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-12">
+									<table class="table borderless" id="form3-companyCharges">
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
 	</div>
 </body>
 <script type="text/javascript" src="/webjars/jquery/3.2.1/jquery.min.js"></script>
