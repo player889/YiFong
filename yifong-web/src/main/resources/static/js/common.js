@@ -1,3 +1,4 @@
+//(function($) {
 $.fn.enterKey = function(fnc) {
 	return this.each(function() {
 		$(this).keypress(function(ev) {
@@ -15,6 +16,12 @@ var commonUtils = {
     },
     getSkypIcon : function() {
 	    return '<a href="skype:echo123?call"><img src="images/skype.png" width="20" height="20"/></a>';
+    },
+    toCurrency : function(str) {
+	    return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+    isNotEmpty : function(val){
+    	return ('' === val || 0 === val) ? true : false;
     }
 }
 

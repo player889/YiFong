@@ -2,13 +2,8 @@ let fn = {
     init : function() {
 
 	    doAjax('/common/destination/', {}, function(resp) {
-
-		    resp.data['台中'][1] = false;
-		    resp.data['台中'][2] = false;
-		    resp.data['台中'][3] = false;
-
 		    fn.initData.defaultDestination = resp.data;
-		    fn.initData.usedDestination = resp.data;
+		    fn.initData.destinationIndex = Object.keys(resp.data);
 	    });
 
 	    $("#input").enterKey(function(e) {
@@ -17,50 +12,56 @@ let fn = {
 	    });
 
 	    $('#editModal').on('hidden.bs.modal', function(e) {
-		    // $('#editContent').empty();
-		    fn.initData.usedDestination = fn.initData.defaultDestination;
+		    $('#form3-companyCharges').empty();
 		    console.log("close");
 	    });
 
     },
     initData : {
+        destinationIndex : [],
         defaultDestination : {},
         usedDestination : {}
     },
-    followUp : function() {
-	    $.each(fn.initData.usedDestination, function(k, v) {
-		    let data = fn.initData.usedDestination[k];
-		    data['disable'] = dd(data);
-	    });
-    },
     getDestinationDDL : function() {
-	    fn.followUp();
-	    var data = fn.initData.usedDestination;
-	    console.log(data);
-	    var options = '';
-	    $.each(data, function(k, v) {
-		    if (false === data[k]['disable']) {
-			    options += '<option>' + k + '</option>';
-		    } else {
-			    options += '';
-		    }
+	    let html = '';
+	    let count = 0;
+	    $.each(fn.initData.defaultDestination, function(k, v) {
+		    html += '<option value="' + count + '">' + k + '</option>';
+		    count++;
 	    });
-	    var html = '<select>' + options + '</select>';
-
-	    // FIXME contniue
-	    console.log(html);
+	    return '<select class="form-control" name="form3-companyCharges[destinationCode]">' + html + '</select>';
+    },
+    getSizeDDL : function(val) {
+	    let html = '';
+	    [ '20呎', '40呎', "20/40呎" ].forEach(function(item, index, array) {
+		    let selected = (undefined === val) ? '' : (index === val) ? 'selected' : 'disabled';
+		    html += '<option value="' + index + '" ' + selected + '>' + item + '</option>';
+	    });
+	    return '<select class="form-control" name="form3-companyCharges[size]">' + html + '</select>';
     }
+
 };
 
-function dd(data) {
-	var result = true;
-	for ( var i in data) {
+function allFalse(data) {
+	let result = true;
+	for ( let i in data) {
 		if (data[i] === true) {
 			result = false;
 			break;
 		}
 	}
 	return result
+}
+
+function setSizeDDL(data) {
+	let html = '';
+	let fistOption = Object.keys(data)[0];
+	$.each(data[fistOption], function(key, value) {
+		if (value == true && 'disable' != key) {
+			html += '<option value="' + key + '">' + sizeTxt(key) + '</option>';
+		}
+	});
+	return html;
 }
 
 fn.init();
@@ -125,7 +126,7 @@ function query(isShowDetail) {
 				html += `	<div class="tab-pane fade ${show}" id="info_${index}" role="tabpanel" aria-labelledby="infoList_${index}">`;
 				html += `		<div class="card">`;
 				html += `			<div class="card-body">`;
-				html += ` 				<input type="button" class="btn btn-outline-warning float-right" value="修改" onclick="doEdit('${id}');"/>`;
+				html += ` 				<input type="button" class="btn btn-outline-warning float-right" value="修改" onclick="doEditModal('${id}');"/>`;
 				html += `<pre>${name}<br>${address}<br>${phone}<br>${guiNumber}<br>${memo}</pre>`;
 				html += getCharges(item.companyCharges);
 				html += `			</div>`;
@@ -137,6 +138,7 @@ function query(isShowDetail) {
 			html += `</div>`;
 
 			$('#form2').append(html);
+
 		}
 	});
 };
@@ -146,126 +148,119 @@ function getCharges(charges) {
 	let html = ``;
 
 	if (false === $.isEmptyObject(charges)) {
-		html += ` <table class="table table-sm ">`;
-		html += ` <thead><tr> <th scope="col">地點</th> <th scope="col">應收費用</th> <th scope="col">司機運費</th> <th scope="col">櫃子呎吋</th> <th scope="col">外調費用</th> </tr></thead>`;
+		html += ` <table class="table table-sm table-condensed">`;
+		html += ` <thead><tr> <th scope="col">地點</th> <th scope="col">櫃子呎吋</th>  <th scope="col">應收費用</th> <th scope="col">司機運費</th> <th scope="col">外調費用</th> </tr></thead>`;
 		html += ` <tbody>`;
 	}
 
 	$.each(charges, function(i, item) {
 
-		let size = (3 === item.size) ? '20/40呎 ' : (1 === item.size) ? '20呎' : '40呎';
+		let size = (2 === item.size) ? '20/40呎 ' : (0 === item.size) ? '20呎' : '40呎';
 		let destination = item.destinationCode;
-		let pay = item.pay;
-		let fee = item.fee;
-		let os = item.outsourcing;
-		html += `<tr><td>${destination}</td><td>${pay}</td><td>${fee}</td><td>${size}</td><td>${os}</td></tr>`;
+		let pay = $.number(item.pay, 0);
+		let fee = $.number(item.fee, 0);
+		let os = $.number(item.outsourcing, 0);
 
-		if (fn.initData.usedDestination.hasOwnProperty(item.destinationCode)) {
-			fn.initData.usedDestination[item.destinationCode][item.size] = false;
-		}
-
+		html += `<tr><td>${destination}</td><td>${size}</td><td>${pay}</td><td>${fee}</td><td>${os}</td></tr>`;
 	});
 
 	if (false === $.isEmptyObject(charges)) {
 		html += `</tbody></table>`;
 	}
 
-	console.log(fn.initData.usedDestination);
-
 	return html;
 
 };
 
-function getEditCharges(charges) {
+function findDesinationVal(key) {
+	return fn.initData.destinationIndex.indexOf(key);
+}
+
+function editRow(charges) {
 
 	let html = ``;
 
-	html += ` <table class="table table-sm ">`;
-	html += ` <thead><tr> <th scope="col">地點</th> <th scope="col">應收費用</th> <th scope="col">司機運費</th> <th scope="col">櫃子呎吋</th> <th scope="col">外調費用</th> </tr></thead>`;
+	html += ` <table class="table table-sm">`;
+	html += ` <thead><tr> <th scope="col">地點</th> <th scope="col">櫃子呎吋</th> <th scope="col">應收費用</th> <th scope="col">司機運費</th> <th scope="col">外調費用</th> </tr></thead>`;
 	html += ` <tbody>`;
 
 	$.each(charges, function(i, item) {
 
-		let size = (3 === item.size) ? '20/40呎 ' : (1 === item.size) ? '20呎' : '40呎';
+		let sizeTxt = fn.getSizeDDL(item.size);
 		let destination = item.destinationCode;
-		let pay = item.pay;
-		let fee = item.fee;
-		let os = item.outsourcing;
-		let payInput = `<input type="number" name="form3-companyCharges[pay]" value="${pay}" />`;
-		let feeInput = `<input type="number" name="form3-companyCharges[fee]" value="${fee}" />`;
-		let osInput = `<input type="number" name="form3-companyCharges[outsourcing]" value="${os}" />`;
+		let desinationIndex = findDesinationVal(destination);
+		let pay = $.number(item.pay, 0);
+		let fee = $.number(item.fee, 0);
+		let os = $.number(item.outsourcing, 0);
+		let destinationDDL = `<select class="form-control" name="form3-companyCharges[destinationCode]"><option value="${desinationIndex}">${destination}</option></select>`;
+		let payInput = moenySign(`<input type="text" class="form-control currency" name="form3-companyCharges[pay]" value="${pay}" />`);
+		let feeInput = moenySign(`<input type="text" class="form-control currency"name="form3-companyCharges[fee]" value="${fee}" />`);
+		let osInput = moenySign(`<input type="text" class="form-control currency" name="form3-companyCharges[outsourcing]" value="${os}" />`);
 
-		// let options1 = item.size === 1 ? `selected` : ``;
-		// let options2 = item.size === 2 ? `selected` : ``;
-		// let options3 = item.size === 3 ? `selected` : ``;
-		// let osOptions = `<option value="1" ${options1}>20呎`;
-		// osOptions += `</option><option value="2" ${options2}>40呎</option>`;
-		// osOptions += `<option value="3" ${options3}>20/40呎 </option>`;
-		// let osSelect = `<select name=name="form3-companyCharges[size]">${osOptions}<selected>`;
-
-		html += `<tr><td>${destination}</td><td>${payInput}</td><td>${feeInput}</td><td>${size}</td><td>${osInput}</td></tr>`;
+		html += `<tr><td>${destinationDDL}</td><td styel="width:20%">${sizeTxt}</td><td>${payInput}</td><td>${feeInput}</td><td>${osInput}</td></tr>`;
 	});
 
-	html += `<tr><td><input type="button" class="btn btn-outline-success" value="新增運費" onclick="test();" /></td></tr>`;
+	html += `<tr><td><input type="button" class="btn btn-outline-success" value="新增運費" onclick="addRow();" /></td></tr>`;
 	html += `</tbody></table>`;
 
 	return html;
 
 };
 
-function test() {
-
-	fn.getDestinationDDL();
-
-	// var ddls = $('select[name="form3-companyCharges[destinationCode]"').last();
-	// var text = $('option:selected', ddls).text();
-	//
-	// if ('' != text) {
-	// fn.initData.useDestination.push(text);
-	// }
-	//
-	// let html = '';
-	// html = '<tr><td>' + fn.getDestinationDDL('form3-companyCharges[destinationCode]') + '</td></tr>';
-	// $('#form3-companyCharges tr:last').before(html);
-	//
-	// ss();
+function moenySign(val) {
+	return `<div class="input-group"><div class="input-group-prepend"><span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span></div>${val}</div>`;
 }
 
-// function ss() {
-// let previous = '';
-// var dom = $('select[name="form3-companyCharges[destinationCode]"');
-// dom.each(function() {
-// let isRepeat;
-// $(this).on('focus', function() {
-// previous = this.value;
-// }).on('change', function() {
-// var arr = [];
-// dom.each(function() {
-// arr.push($('option:selected', this).text());
-// });
-// if (hasDuplicates(arr)) {
-// alert("新增重覆");
-// $(this).val(previous);
-// return;
-// }
-// previous = this.value;
-//
-// });
-// });
-// }
+function getEnum(txt) {
+	return ('20/40呎' === txt) ? 2 : ('20呎' === txt) ? 0 : 1;
+};
 
-function hasDuplicates(array) {
-	return (new Set(array)).size !== array.length;
+function sizeTxt(key) {
+	return ((2 == key) ? '20/40呎' : (0 == key) ? '20呎' : '40呎');
+};
+
+function addTd(html) {
+	return '<td>' + html + '</td>';
 }
 
-function doEdit(id) {
+function addRow() {
+
+	let pay = 0;
+	let fee = 0;
+	let os = 0;
+	let payInput = moenySign(`<input type="text" class="form-control currency" dir="rtl" name="form3-companyCharges[pay]" value="" />`);
+	let feeInput = moenySign(`<input type="text" class="form-control currency" name="form3-companyCharges[fee]" value="" />`);
+	let osInput = moenySign(`<input type="text" class="form-control currency" name="form3-companyCharges[outsourcing]" value="" />`);
+
+	let html = '';
+	html += '<tr>';
+	html += addTd(fn.getDestinationDDL());
+	html += addTd(fn.getSizeDDL());
+	html += addTd(payInput);
+	html += addTd(feeInput);
+	html += addTd(osInput);
+
+	html += '</tr>';
+
+	$('#form3-companyCharges tr:last').before(html);
+
+	$('.currency').number(true, 0);
+}
+
+function doEditModal(id) {
 	doAjax('/company/find/' + id, {}, function(resp) {
-		var html = getEditCharges(resp.data.companyCharges);
-		$('#form3-companyCharges').append(html);
+		let detail = resp.data.companyDetail;
+		$('#form3-id').val(detail.id);
+		$('#form3-name').val(resp.data.name);
+		$('#form3-companyDetail\\[name\\]').val(detail.name);
+		$('#form3-companyDetail\\[phone\\]').val(detail.phone);
+		$('#form3-companyDetail\\[guiNumber\\]').val(detail.guiNumber);
+		$('#form3-companyDetail\\[address\\]').val(detail.address);
+		$('#form3-companyDetail\\[memo\\]').val(detail.memo);
+		$('#form3-companyCharges').append(editRow(resp.data.companyCharges));
 		$("#editModal").modal();
+		$('.currency').number(true, 0);
 	});
-
-	// $('#form3').append(fn.getDestinationDDL());
 }
 
 function phoneFilter(phone) {
@@ -278,9 +273,82 @@ function phoneFilter(phone) {
 	return phone + icon;
 };
 
-function saveFn() {
+function doEdit() {
 
-	// let id = $('#form3 input[name="id"]').val();
+	let JSON = getEditData();
+	if (false === JSON) {
+		alert("重複運費設定，請確認!");
+		return;
+	}
+
+	if (true === confirm("是否確定更改資料")) {
+		console.log(JSON);
+	}
+
+};
+
+function getEditData() {
+
+	let JSON = {
+	    id : $('#form3-id').val(),
+	    name : $('#form3-name').val(),
+	    companyCharges : [],
+	    companyDetail : {
+	        id : $('#form3-id').val(),
+	        name : $('#form3-name').val(),
+	        phone : $('#form3-companyDetail\\[name\\]').val(),
+	        address : $('#form3-companyDetail\\[phone\\]').val(),
+	        guiNumber : $('#form3-companyDetail\\[guiNumber\\]').val(),
+	        memo : $('#form3-companyDetail\\[memo\\]').val()
+	    }
+	};
+
+	let row = $('[name="form3-companyCharges\\[destinationCode\\]"]');
+
+	$.each(row, function(index, dom) {
+
+		let size = $('[name="form3-companyCharges\\[size\\]"]').eq(index).val();
+		let pay = $('[name="form3-companyCharges\\[pay\\]"]').eq(index).val();
+		let fee = $('[name="form3-companyCharges\\[fee\\]"]').eq(index).val();
+		let os = $('[name="form3-companyCharges\\[outsourcing\\]"]').eq(index).val();
+
+		if (commonUtils.isNotEmpty(pay) || (commonUtils.isNotEmpty(fee) && commonUtils.isNotEmpty(os))) {
+			return true;
+		}
+
+		let obj = {
+		    destinationCode : $(this).val(),
+		    size : size,
+		    pay : pay,
+		    fee : fee,
+		    outsourcing : os
+		};
+
+		JSON.companyCharges.push(obj);
+
+	});
+
+	if (hasSameJsonInJsonArray(JSON.companyCharges)) {
+		return false;
+	}
+
+	return JSON;
+}
+
+function hasSameJsonInJsonArray(JSON) {
+	let isSame = false;
+	let len = JSON.length;
+	for (let i = 0; i <= len - 1 && !isSame; i++) {
+		for (let j = i + 1; j <= len - 1 && !isSame; j++) {
+			isSame = _.isEqual(JSON[i], JSON[j]);
+		}
+	}
+	return isSame;
+}
+
+function doSave() {
+
+	// // let id = $('#form3 input[name="id"]').val();
 	// let extraData = {
 	// companyDetail : {
 	// id : id
@@ -290,8 +358,7 @@ function saveFn() {
 	// $('#form1 input[name="id"]').val(id);
 	// query(true);
 	// alert(data.message);
-	// }, extraData);
-
+	// }, extraData); }
 };
 
 function deleteFn() {

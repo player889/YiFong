@@ -61,6 +61,10 @@ textarea {
 .borderless td, .borderless th {
 	border: none;
 }
+
+.currency {
+	text-align: right;
+}
 </style>
 <body>
 	<div class="container">
@@ -87,7 +91,7 @@ textarea {
 							<div class="form-row">
 								<div class="form-group col-md-1">
 									<label for="form3-id">代號</label>
-									<input type="text" class="form-control" id="form3-id" name="form3-id" />
+									<input type="text" class="form-control" id="form3-id" name="form3-id" readonly />
 								</div>
 								<div class="form-group col-md-2">
 									<label for="form3-name">簡稱</label>
@@ -126,7 +130,8 @@ textarea {
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-warning" onclick="doEdit()">修改</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
 						</div>
 					</div>
 				</div>
@@ -139,6 +144,7 @@ textarea {
 <script type="text/javascript" src="/webjars/bootstrap/4.1.1/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/lib/jquery.serializejson.min.js"></script>
 <script type="text/javascript" src="/js/lib/skypeCheck.js"></script>
+<script type="text/javascript" src="/js/lib/jquery.number.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/company.js"></script>
 </html>
