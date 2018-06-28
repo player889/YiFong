@@ -21,7 +21,32 @@ var commonUtils = {
     },
     isNotEmpty : function(val) {
 	    return ('' === val || 0 === parseInt(val)) ? true : false;
+    },
+    createOptions : function(name, className, data, val) {
+	    return $('<select/>', {
+	        'class' : className,
+	        'name' : name
+	    }).html($.map(data, function(text, index) {
+		    return $('<option/>', {
+		        'value' : index,
+		        'text' : text,
+		        'selected' : (undefined === val || index != val) ? false : true,
+		        'disabled' : (undefined === val || index === val) ? false : true
+		    });
+	    })).prop("outerHTML");
     }
+
+// NOTE
+// function allFalse(data) {
+// let result = true;
+// for ( let i in data) {
+// if (data[i] === true) {
+// result = false;
+// break;
+// }
+// }
+// return result
+// }
 }
 
 var doAjax = function(url, data, successFn, extraData) {
