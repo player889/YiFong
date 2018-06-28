@@ -13,7 +13,6 @@ let fn = {
 
 	    $('#editModal').on('hidden.bs.modal', function(e) {
 		    $('#form3-companyCharges').empty();
-		    console.log("close");
 	    });
 
     },
@@ -80,7 +79,7 @@ function getVo() {
 	return vo;
 }
 
-function query(isShowDetail) {
+function query() {
 
 	let data = getVo();
 	// if ($.isEmptyObject(data)) {
@@ -114,6 +113,7 @@ function query(isShowDetail) {
 
 			html += `<div class="col-10 scrollBar">`;
 			html += `	<div class="tab-content">`;
+
 			data.forEach(function(item, index, array) {
 				let info = item.companyDetail;
 				let id = item.id;
@@ -282,7 +282,10 @@ function doEdit() {
 	}
 
 	if (true === confirm("是否確定更改資料")) {
-		console.log(JSON);
+		doAjax('/company/edit', JSON, function(data) {
+			alert(data.message);
+			query();
+		});
 	}
 
 };
@@ -296,8 +299,8 @@ function getEditData() {
 	    companyDetail : {
 	        id : $('#form3-id').val(),
 	        name : $('#form3-name').val(),
-	        phone : $('#form3-companyDetail\\[name\\]').val(),
-	        address : $('#form3-companyDetail\\[phone\\]').val(),
+	        phone : $('#form3-companyDetail\\[phone\\]').val(),
+	        address : $('#form3-companyDetail\\[address\\]').val(),
 	        guiNumber : $('#form3-companyDetail\\[guiNumber\\]').val(),
 	        memo : $('#form3-companyDetail\\[memo\\]').val()
 	    }
@@ -314,17 +317,17 @@ function getEditData() {
 
 		if (commonUtils.isNotEmpty(pay) || (commonUtils.isNotEmpty(fee) && commonUtils.isNotEmpty(os))) {
 			return true;
+		} else {
+			let obj = {
+			    destinationCode : $(this).val(),
+			    size : size,
+			    pay : pay,
+			    fee : fee,
+			    outsourcing : os
+			};
+
+			JSON.companyCharges.push(obj);
 		}
-
-		let obj = {
-		    destinationCode : $(this).val(),
-		    size : size,
-		    pay : pay,
-		    fee : fee,
-		    outsourcing : os
-		};
-
-		JSON.companyCharges.push(obj);
 
 	});
 
@@ -359,8 +362,4 @@ function doSave() {
 	// query(true);
 	// alert(data.message);
 	// }, extraData); }
-};
-
-function deleteFn() {
-	doAjax('/company/delete', '#form4');
 };

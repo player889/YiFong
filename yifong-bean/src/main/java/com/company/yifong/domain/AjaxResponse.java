@@ -20,7 +20,7 @@ public class AjaxResponse {
 	public AjaxResponse(final ApiSatus status) {
 		this.invoke(status, null);
 	}
-	
+
 	public AjaxResponse(final ApiSatus status, final Object data) {
 		this.invoke(status, data);
 	}

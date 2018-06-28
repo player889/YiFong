@@ -14,6 +14,7 @@ import com.company.yifong.domain.AjaxResponse;
 import com.company.yifong.domain.request.CompanyRequest;
 import com.company.yifong.domain.status.ApiSatus;
 import com.company.yifong.entity.Company;
+import com.company.yifong.entity.CompanyCharge;
 import com.company.yifong.service.CompanyService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,6 +40,13 @@ public class CompanyController {
 		return new AjaxResponse(ApiSatus.SUCC_QUERY, companyService.findDetail(id));
 	}
 
+	@PostMapping(value = "/edit", produces = "application/json; charset=utf-8")
+	public AjaxResponse edit(@RequestBody final CompanyRequest vo, final BindingResult errors) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		Company data = this.editDataFilter(objectMapper.convertValue(vo, Company.class));
+		companyService.edit(data);
+		return new AjaxResponse(ApiSatus.SUCC_UPDATE);
+	}
+
 	@PostMapping(value = "/save", produces = "application/json; charset=utf-8")
 	public AjaxResponse save(@RequestBody final CompanyRequest vo, final BindingResult errors) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Company data = objectMapper.convertValue(vo, Company.class);
@@ -46,12 +54,14 @@ public class CompanyController {
 		// return new AjaxResponse(ApiSatus.SUCC_SAVE);
 	}
 
-	@PostMapping(value = "/delete", produces = "application/json; charset=utf-8")
-	public AjaxResponse delete(@RequestBody final CompanyRequest vo, final BindingResult errors) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Company company = objectMapper.convertValue(vo, Company.class);
-		System.out.println(objectMapper.writeValueAsString(company));
-		companyService.delete(objectMapper.convertValue(vo, Company.class));
-		return new AjaxResponse(ApiSatus.SUCC_DELETE);
+	private Company editDataFilter(Company data) {
+		String id = data.getId();
+		for (CompanyCharge charge : data.getCompanyCharges()) {
+			Company c = new Company();
+			c.setId(id);
+			charge.setCompany(c);
+		}
+		return data;
 	}
 
 }

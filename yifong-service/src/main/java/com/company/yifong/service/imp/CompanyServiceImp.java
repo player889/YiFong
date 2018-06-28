@@ -9,13 +9,24 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.company.yifong.entity.Company;
 import com.company.yifong.repository.CompanyRepository;
+import com.company.yifong.security.exception.JpaException;
+import com.company.yifong.service.CompanyChargesService;
+import com.company.yifong.service.CompanyDetailService;
 import com.company.yifong.service.CompanyService;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class CompanyServiceImp implements CompanyService {
+
+	@Autowired
+	private CompanyDetailService compayDetailService;
+
+	@Autowired
+	private CompanyChargesService companyChargesService;
 
 	@Autowired
 	private CompanyRepository companyRepository;
@@ -24,8 +35,17 @@ public class CompanyServiceImp implements CompanyService {
 		return companyRepository.saveAndFlush(company);
 	}
 
-	// NOTE Querydsl
+	@Transactional(rollbackFor = Exception.class)
+	public void edit(Company company) {
+		try {
+			compayDetailService.update(company.getCompanyDetail());
+			companyChargesService.update(company);
+		} catch (Exception e) {
+			throw new JpaException("系統發生錯誤");
+		}
+	}
 
+	// NOTE Querydsl
 	public Page<Company> findList(Company company) {
 
 		// @formatter:off
@@ -35,9 +55,7 @@ public class CompanyServiceImp implements CompanyService {
 		//@formatter:on
 
 		Example<Company> example = Example.of(company, matcher);
-
 		Sort sort = new Sort(Direction.ASC, "name");
-		// PageRequest.of(0, Integer.MAX_VALUE,sort); //NOTE max values
 		Page<Company> webPage = companyRepository.findAll(example, PageRequest.of(0, 10, sort));
 
 		return webPage;
@@ -45,11 +63,6 @@ public class CompanyServiceImp implements CompanyService {
 
 	public Company findDetail(String id) {
 		return companyRepository.findById(id);
-	}
-
-	public void delete(Company company) {
-		// companyRepository.findB
-		companyRepository.removeById(company.getId());
 	}
 
 }

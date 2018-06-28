@@ -47,4 +47,22 @@ public class ApiExceptionHandler {
 		return new AjaxResponse(ApiSatus.ERR_INPUT, StringUtils.isEmpty(e.getMessage()) ? null : e.getMessage());
 	}
 
+	@ExceptionHandler(JpaException.class)
+	@ResponseBody
+	public final AjaxResponse handlerCustomizedException(final JpaException e) {
+		return new AjaxResponse(ApiSatus.ERR_SYS, StringUtils.isEmpty(e.getMessage()) ? null : e.getMessage());
+	}
+
+	@ExceptionHandler(DataNotFoundException.class)
+	@ResponseBody
+	public final AjaxResponse handlerCustomizedException(final DataNotFoundException e) {
+		return new AjaxResponse(ApiSatus.ERR_DATA_NOT_FOUND, StringUtils.isEmpty(e.getMessage()) ? null : e.getMessage());
+	}
+
+	@ExceptionHandler(DataNotMatch.class)
+	@ResponseBody
+	public final AjaxResponse handlerCustomizedException(final DataNotMatch e) {
+		return new AjaxResponse(ApiSatus.ERR_DATA_NOT_FOUND, StringUtils.isEmpty(e.getMessage()) ? null : e.getMessage());
+	}
+
 }

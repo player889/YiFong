@@ -16,6 +16,7 @@ public class Company implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false, length=5)
 	private String id;
 

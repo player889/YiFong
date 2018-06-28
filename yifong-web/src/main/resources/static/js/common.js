@@ -1,4 +1,3 @@
-//(function($) {
 $.fn.enterKey = function(fnc) {
 	return this.each(function() {
 		$(this).keypress(function(ev) {
@@ -20,8 +19,8 @@ var commonUtils = {
     toCurrency : function(str) {
 	    return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
-    isNotEmpty : function(val){
-    	return ('' === val || 0 === val) ? true : false;
+    isNotEmpty : function(val) {
+	    return ('' === val || 0 === parseInt(val)) ? true : false;
     }
 }
 

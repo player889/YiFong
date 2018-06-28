@@ -1,6 +1,7 @@
 package com.company.yifong.domain.request;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -12,6 +13,7 @@ public class CompanyRequest implements Serializable {
 	private String id;
 	private String name;
 	private CompanyDetail companyDetail;
+	private List<CompanyCharge> companyCharges;
 
 	public String getId() {
 		return id;
@@ -35,6 +37,14 @@ public class CompanyRequest implements Serializable {
 
 	public void setCompanyDetail(CompanyDetail companyDetail) {
 		this.companyDetail = companyDetail;
+	}
+
+	public List<CompanyCharge> getCompanyCharges() {
+		return companyCharges;
+	}
+
+	public void setCompanyCharges(List<CompanyCharge> companyCharges) {
+		this.companyCharges = companyCharges;
 	}
 
 }
