@@ -11,7 +11,7 @@ $.fn.enterKey = function(fnc) {
 
 var commonUtils = {
     getValue : function(val) {
-	    return (typeof val === 'undefined') ? '' : val;
+	    return (undefined === val) ? '' : val;
     },
     getSkypIcon : function() {
 	    return '<a href="skype:echo123?call"><img src="images/skype.png" width="20" height="20"/></a>';
@@ -19,19 +19,22 @@ var commonUtils = {
     toCurrency : function(str) {
 	    return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
-    isNotEmpty : function(val) {
+    isNotEmptyNum : function(val) {
 	    return ('' === val || 0 === parseInt(val)) ? true : false;
     },
-    createOptions : function(name, className, data, val) {
+    isEmptyObject : function(val){
+    	return (undefined === val || null === val) ? true : false; 
+    },
+    createOptions : function(name, data, val) {
 	    return $('<select/>', {
-	        'class' : className,
+	        'class' : 'form-control',
 	        'name' : name
 	    }).html($.map(data, function(text, index) {
 		    return $('<option/>', {
 		        'value' : index,
 		        'text' : text,
-		        'selected' : (undefined === val || index != val) ? false : true,
-		        'disabled' : (undefined === val || index === val) ? false : true
+		        'selected' : (commonUtils.isEmptyObject(val) || index != val) ? false : true,
+		        'disabled' : (commonUtils.isEmptyObject(val) || index === val) ? false : true
 		    });
 	    })).prop("outerHTML");
     }

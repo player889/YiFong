@@ -31,6 +31,7 @@ public class CompanyController {
 
 	@PostMapping(value = "/find/list", produces = "application/json; charset=utf-8")
 	public AjaxResponse findList(@RequestBody final CompanyRequest vo, final BindingResult errors) throws IllegalAccessException, InvocationTargetException {
+		System.out.println("++++++++++++++++++++++++++++++++++");
 		Company data = objectMapper.convertValue(vo, Company.class);
 		return new AjaxResponse(ApiSatus.SUCC_QUERY, companyService.findList(data));
 	}
