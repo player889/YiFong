@@ -1,17 +1,22 @@
-class Company extends companyTemplate{
+class Company extends companyTemplate {
 
 	constructor() {
 		super();
 		this._CNTRSize = ['20呎', '40呎', "20/40呎"];
 		this.initData();
 		this.initEvent();
-		
 	}
 	initData() {
 		let self = this;
 		commonUtils.doAjax('/common/destination/', {}, function (resp) {
 			self._dest = resp.data;
 		});
+	}
+	setTempData(json) {
+		this._tempData = json;
+	}
+	getTempData(index) {
+		return this._tempData[index];
 	}
 	initEvent() {
 		$("#input").enterKey(function (e) {
@@ -26,18 +31,24 @@ class Company extends companyTemplate{
 	phoneFilter(val) {
 		let icon = commonUtils.getSkypIcon();
 		let arr = val.split("-");
-		return (3 === arr.length) ? arr[0] + arr[1] + icon + '分機' + arr[2] :  val + icon;
+		return (3 === arr.length) ? arr[0] + arr[1] + icon + '分機' + arr[2] : val + icon;
 	}
 	addEmptyRow() {
 		$('#form3-companyCharges tr:last').before(super.getChargeContentHTML());
 		$('.currency').number(true, 0);
 	}
-	hasSameJsonInJsonArray(JSON) {
+	hasSameCharges(JSON) {
+		let tmp = JSON;
+		$.each(tmp, function(index, item){
+			delete item.pay;
+			delete item.fee;
+			delete item.os;
+		});
 		let isSame = false;
-		let len = JSON.length;
+		let len = tmp.length;
 		for (let i = 0; i <= len - 1 && !isSame; i++) {
 			for (let j = i + 1; j <= len - 1 && !isSame; j++) {
-				isSame = _.isEqual(JSON[i], JSON[j]);
+				isSame = _.isEqual(tmp[i], tmp[j]);
 			}
 		}
 		return isSame;
@@ -46,52 +57,48 @@ class Company extends companyTemplate{
 		let data = $('#input').val();
 		let vo = {};
 		if (/^\d+$/.test(data)) {
-			vo.id = data;
+			vo.no = data;
 		} else if (data) {
-			vo.name = data;
+			vo.short_name = data;
 		}
 		return vo;
-	}
-	companyInfoHTML(data) {
-		return super.getCompanyInformation(data);
 	}
 	query() {
 		$('#form2').empty();
 
 		let data = this.getQueryData();
-		// if ($.isEmptyObject(data)) {
-		// alert("請輸入資料");
-		// return;
-		// }
+		if ($.isEmptyObject(data)) {
+			alert("請輸入資料");
+			return;
+		}
 
 		let self = this;
-		commonUtils.doAjax('/company/find/list', data, function (resp) {
-
-			let data = resp.data.content;
-			if ($.isEmptyObject(data)) {
-				alert("無資料");
-			} else {
-				let html = self.companyInfoHTML(data);
-				$('#form2').append(html);
-			}
+		commonUtils.doAjax('/company/find/client', data, function (resp) {
+			self.querySuccCallBack(resp, self);
 		});
 	}
-	
-	doEditModal(id) {
-		let self = this;
-		commonUtils.doAjax('/company/find/' + id, {}, function (resp) {
-			let detail = resp.data.companyDetail;
-			$('#form3-id').val(detail.id);
-			$('#form3-name').val(resp.data.name);
-			$('#form3-companyDetail\\[name\\]').val(detail.name);
-			$('#form3-companyDetail\\[phone\\]').val(detail.phone);
-			$('#form3-companyDetail\\[guiNumber\\]').val(detail.guiNumber);
-			$('#form3-companyDetail\\[address\\]').val(detail.address);
-			$('#form3-companyDetail\\[memo\\]').val(detail.memo);
-			$('#form3-companyCharges').append(self.getEditChargeContentHTML(resp.data.companyCharges));
-			$("#editModal").modal();
-			$('.currency').number(true, 0);
-		});
+	querySuccCallBack(resp){
+		let data = resp.data.content;
+		if ($.isEmptyObject(data)) {
+			alert("無資料");
+		} else {
+			$('#form2').empty();
+			this.setTempData(data);
+			$('#form2').append(super.getCompanyInformation(data));
+		}
+	}
+	doEditModal(index) {
+		let data = this.getTempData(index);
+		$('#form3-no').val(data.no);
+		$('#form3-shortName').val(data.shortName);
+		$('#form3-companyDetail\\[fullName\\]').val(data.fullName);
+		$('#form3-companyDetail\\[phone\\]').val(data.phone);
+		$('#form3-companyDetail\\[guiNumber\\]').val(data.guiNumber);
+		$('#form3-companyDetail\\[address\\]').val(data.address);
+		$('#form3-companyDetail\\[memo\\]').val(data.memo);
+		$('#form3-companyCharges').append(super.getEditChargeContentHTML(data.charges));
+		$("#editModal").modal();
+		$('.currency').number(true, 0);
 	}
 	doEdit() {
 		let JSON = this.getEditData();
@@ -110,42 +117,40 @@ class Company extends companyTemplate{
 	}
 	getEditData() {
 		let JSON = {
-			id: $('#form3-id').val(),
-			name: $('#form3-name').val(),
-			companyCharges: [],
-			companyDetail: {
-				id: $('#form3-id').val(),
-				name: $('#form3-name').val(),
-				phone: $('#form3-companyDetail\\[phone\\]').val(),
-				address: $('#form3-companyDetail\\[address\\]').val(),
-				guiNumber: $('#form3-companyDetail\\[guiNumber\\]').val(),
-				memo: $('#form3-companyDetail\\[memo\\]').val()
-			}
+			no: $('#form3-no').val(),
+			shortName: $('#form3-shortName').val(),
+			fullName: $('#form3-companyDetail\\[fullName\\]').val(),
+			phone: $('#form3-companyDetail\\[phone\\]').val(),
+			address: $('#form3-companyDetail\\[address\\]').val(),
+			guiNumber: $('#form3-companyDetail\\[guiNumber\\]').val(),
+			memo: $('#form3-companyDetail\\[memo\\]').val(),
+			charges: []
 		};
 
-		let row = $('[name="form3-companyCharges\\[destinationCode\\]"]');
+		let row = $('[name="form3-companyCharges\\[dest\\]"]');
 
 		$.each(row, function (index, dom) {
 			let size = $('[name="form3-companyCharges\\[size\\]"]').eq(index).val();
 			let pay = $('[name="form3-companyCharges\\[pay\\]"]').eq(index).val();
 			let fee = $('[name="form3-companyCharges\\[fee\\]"]').eq(index).val();
-			let os = $('[name="form3-companyCharges\\[outsourcing\\]"]').eq(index).val();
+			let os = $('[name="form3-companyCharges\\[os\\]"]').eq(index).val();
 
 			if (commonUtils.isEmptyNum(pay) || (commonUtils.isEmptyNum(fee) && commonUtils.isEmptyNum(os))) {
 				return true;
 			} else {
 				let obj = {
-					destinationCode: $(this).val(),
+					no: $('#form3-no').val(),
+					dest: $(this).val(),
 					size: size,
-					pay: pay,
 					fee: fee,
-					outsourcing: os
+					pay: pay,
+					os: os
 				};
-				JSON.companyCharges.push(obj);
+				JSON.charges.push(obj);
 			}
 		});
 
-		if (this.hasSameJsonInJsonArray(JSON.companyCharges)) {
+		if (this.hasSameCharges(JSON.charges)) {
 			return false;
 		}
 

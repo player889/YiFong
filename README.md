@@ -10,3 +10,7 @@
 - yifong-security
 - yifong-domain
 - yifong-repository
+
+https://silviomoreto.github.io/bootstrap-select/
+http://bootstrap-growl.remabledesigns.com/
+https://craftpip.github.io/jquery-confirm/

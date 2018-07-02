@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.company.yifong.domain.AjaxResponse;
+import com.company.yifong.domain.request.ClientRequest;
 import com.company.yifong.domain.request.CompanyRequest;
 import com.company.yifong.domain.status.ApiSatus;
+import com.company.yifong.entity.Client;
 import com.company.yifong.entity.Company;
 import com.company.yifong.entity.CompanyCharge;
 import com.company.yifong.service.CompanyService;
@@ -34,6 +36,12 @@ public class CompanyController {
 		System.out.println("++++++++++++++++++++++++++++++++++");
 		Company data = objectMapper.convertValue(vo, Company.class);
 		return new AjaxResponse(ApiSatus.SUCC_QUERY, companyService.findList(data));
+	}
+
+	@PostMapping(value = "/find/client", produces = "application/json; charset=utf-8")
+	public AjaxResponse findClient(@RequestBody final ClientRequest vo, final BindingResult errors) throws IllegalAccessException, InvocationTargetException {
+		Client data = objectMapper.convertValue(vo, Client.class);
+		return new AjaxResponse(ApiSatus.SUCC_QUERY, companyService.findClient(data));
 	}
 
 	@PostMapping(value = "/find/{id}", produces = "application/json; charset=utf-8")

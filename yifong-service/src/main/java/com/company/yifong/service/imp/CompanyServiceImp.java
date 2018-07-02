@@ -11,7 +11,9 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.company.yifong.entity.Client;
 import com.company.yifong.entity.Company;
+import com.company.yifong.repository.ClientRepository;
 import com.company.yifong.repository.CompanyRepository;
 import com.company.yifong.security.exception.JpaException;
 import com.company.yifong.service.CompanyChargesService;
@@ -31,6 +33,9 @@ public class CompanyServiceImp implements CompanyService {
 	@Autowired
 	private CompanyRepository companyRepository;
 
+	@Autowired
+	private ClientRepository clientRepository;
+
 	public Company save(Company company) {
 		return companyRepository.saveAndFlush(company);
 	}
@@ -47,7 +52,6 @@ public class CompanyServiceImp implements CompanyService {
 
 	// NOTE Querydsl
 	public Page<Company> findList(Company company) {
-
 		// @formatter:off
 		ExampleMatcher matcher = ExampleMatcher.matching()
 				.withIgnoreNullValues()
@@ -58,6 +62,16 @@ public class CompanyServiceImp implements CompanyService {
 		Sort sort = new Sort(Direction.ASC, "name");
 		Page<Company> webPage = companyRepository.findAll(example, PageRequest.of(0, 10, sort));
 
+		return webPage;
+	}
+
+	// NOTE Querydsl
+	public Page<Client> findClient(Client client) {
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("seq");
+		Example<Client> example = Example.of(client, matcher);
+		Sort sort = new Sort(Direction.ASC, "no");
+		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(0, 10, sort));
+		System.out.println(webPage.getContent().get(0).toString());
 		return webPage;
 	}
 

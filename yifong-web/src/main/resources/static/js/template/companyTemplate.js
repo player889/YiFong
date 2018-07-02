@@ -22,14 +22,13 @@ class companyTemplate {
 		return this.addTd(commonUtils.createOptions('form3-companyCharges[size]', this._CNTRSize, val));
 	}
 	getDestDDL(val) {
-		val = ('' === val || Number.isInteger(val)) ? val : this.getDestinationIndex(val);
-		return this.addTd(commonUtils.createOptions('form3-companyCharges[destinationCode]', this._dest, val));
+		return this.addTd(commonUtils.createOptions('form3-companyCharges[dest]', this._dest, val));
 	}
 	getChargeContentHTML(size = '', ds = '', pay = '', fee = '', os = '') {
 		let payTxtInput = this.addInput("form3-companyCharges[pay]", pay, 'currency');
 		let feeTxtInput = this.addInput("form3-companyCharges[fee]", fee, 'currency');
-		let osTxtInput = this.addInput('form3-companyCharges[outsourcing]', os, 'currency');
-		return `<tr>${this.getDestDDL(ds)}${this.getCNTRSizeDDL(size)}${payTxtInput}${feeTxtInput}${osTxtInput}</tr>`;
+		let osTxtInput = this.addInput('form3-companyCharges[os]', os, 'currency');
+		return `<tr>${this.getDestDDL(ds)}${this.getCNTRSizeDDL(size)}${feeTxtInput}${payTxtInput}${osTxtInput}</tr>`;
 	}
 	getEditChargeContentHTML(charges) {
 		let html = `<table class="table table-sm">
@@ -53,13 +52,13 @@ class companyTemplate {
 	}
 	addChargeRowHTML(charges) {
 		let html = ``;
-		if(false === $.isEmptyObject(charges)){
+		if (false === $.isEmptyObject(charges)) {
 			for (let {
 				size: size,
-				destinationCode: ds,
+				dest: ds,
 				pay: pay,
 				fee: fee,
-				outsourcing: os
+				os: os
 			}
 				of charges) {
 				html += this.getChargeContentHTML(size, ds, pay, fee, os);
@@ -70,11 +69,11 @@ class companyTemplate {
 	getDestinationIndex(key) {
 		return this._dest.indexOf(key);
 	}
-	getCompanyInformation(data){
+	getCompanyInformation(data) {
 		let show = (0 === data.length - 1) ? 'show active' : '';
 		return this.getCompanyListHTML(data, show) + this.getCompanyInfoHTML(data, show);
 	}
-	getCompanyListHTML(data, show){
+	getCompanyListHTML(data, show) {
 		let html = ``;
 		html += `<div class="row" id="content">`;
 		html += `<div class="col-2">`;
@@ -82,11 +81,11 @@ class companyTemplate {
 
 		let index = 0;
 		for (let {
-			id: id,
-			name: name
+			no: no,
+			shortName: name
 		}
 			of data) {
-			html += `<a class="list-group-item list-group-item-action ${show}" href="#info_${index}" role="tab" data-toggle="list" id="infoList_${index}">${id} ${name}</a>`;
+			html += `<a class="list-group-item list-group-item-action ${show}" href="#info_${index}" role="tab" data-toggle="list" id="infoList_${index}">${no} ${name}</a>`;
 			index++;
 		}
 
@@ -94,31 +93,29 @@ class companyTemplate {
 		html += `</div>`;
 		return html;
 	}
-	getCompanyInfoHTML(data, show){
+	getCompanyInfoHTML(data, show) {
 		let index = 0;
 		let html = ``;
 		html += `<div class="col-10 scrollBar"><div class="tab-content">`;
 
 		for (let {
-			companyDetail: {
-				id: id,
-				name: name,
-				address: address,
-				phone: ph,
-				guiNumber: gn,
-				memo: me
-			},
-			companyCharges: charges
+			no: no,
+			fullName: name,
+			address: address,
+			phone: ph,
+			guiNumber: gn,
+			memo: me,
+			charges: charges
 		}
 			of data) {
-			
+
 			let chargeHTML = (true === $.isEmptyObject(charges)) ? `` : this.getViewChargeContentHTML(charges);
 
-			html += 
-				`<div class="tab-pane fade ${show}" id="info_${index}" role="tabpanel" aria-labelledby="infoList_${index}">
+			html +=
+			`<div class="tab-pane fade ${show}" id="info_${index}" role="tabpanel" aria-labelledby="infoList_${index}">
 					<div class="card">
 						<div class="card-body">
-							<input type="button" class="btn btn-outline-warning float-right" value="修改" onclick="c.doEditModal('${id}');"/>
+							<input type="button" class="btn btn-outline-warning float-right" value="修改" onclick="c.doEditModal('${index}');"/>
 							${name}<br>${address}<br>${this.phoneFilter(ph)}<br>${commonUtils.getValue(gn)}<br>${commonUtils.getValue(me)}
 							${chargeHTML}
 						</div>
@@ -133,7 +130,7 @@ class companyTemplate {
 	}
 	getViewChargeContentHTML(charges) {
 
-		let html =	`<table class="table table-sm table-condensed">
+		let html = `<table class="table table-sm table-condensed">
 						<thead>
 							<tr>
 								<th scope="col" style="width:15%">地點</th>
@@ -146,18 +143,17 @@ class companyTemplate {
 						<tbody>`;
 		for (let {
 			size: size,
-			destinationCode: ds,
+			dest: ds,
 			pay: pay,
 			fee: fee,
-			outsourcing: os
+			os: os
 		}
 			of charges) {
-			html += `<tr><td>${ds}</td><td>${this._CNTRSize[size]}</td><td>${pay}</td><td>${fee}</td><td>${os}</td></tr>`;
+			html += `<tr><td>${this._dest[parseInt(ds)]}</td><td>${this._CNTRSize[size]}</td><td>${fee}</td><td>${pay}</td><td>${os}</td></tr>`;
 		}
 
 		html += `</tbody></table>`;
 		return html;
 	}
 
-	
 }
