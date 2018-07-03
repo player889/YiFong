@@ -22,6 +22,9 @@ class CommonUtils {
 		}
 	}
 
+	isEmpty(val){
+		return 0 === val.length ? true : false;
+	}
 	getValue(val) {
 		return (undefined === val) ? '' : val;
 	}
@@ -35,9 +38,10 @@ class CommonUtils {
 		return ('' === val || 0 === parseInt(val)) ? true : false;
 	}
 	isEmptyObject(val) {
-		return (undefined === val || null === val || '' === val) ? true : false;
+		return (undefined === val || null === val || '' === val || isNaN(val)) ? true : false;
 	}
 	createOptions(name, data, val = undefined) {
+		console.log(val);
 		return $('<select/>', {
 			'class': 'form-control',
 			'name': name

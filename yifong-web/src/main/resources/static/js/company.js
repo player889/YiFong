@@ -25,7 +25,7 @@ class Company extends companyTemplate {
 		});
 
 		$('#editModal').on('hidden.bs.modal', function (e) {
-			$('#form3-companyCharges').empty();
+			$('#form3-companycharges').empty();
 		});
 	}
 	phoneFilter(val) {
@@ -34,16 +34,15 @@ class Company extends companyTemplate {
 		return (3 === arr.length) ? arr[0] + arr[1] + icon + '分機' + arr[2] : val + icon;
 	}
 	addEmptyRow() {
-		$('#form3-companyCharges tr:last').before(super.getChargeContentHTML());
+		$('#form3-companycharges tr:last').before(super.getchargesContentHTML());
 		$('.currency').number(true, 0);
 	}
-	hasSameCharges(JSON) {
-		let tmp = JSON;
+	hasSamecharges(JSON) {
+		let tmp = [];
 		$.each(tmp, function(index, item){
-			delete item.pay;
-			delete item.fee;
-			delete item.os;
+			tmp.push({dest: item.dest, size : item.size});
 		});
+		console.log(tmp);
 		let isSame = false;
 		let len = tmp.length;
 		for (let i = 0; i <= len - 1 && !isSame; i++) {
@@ -54,24 +53,23 @@ class Company extends companyTemplate {
 		return isSame;
 	}
 	getQueryData() {
-		let data = $('#input').val();
-		let vo = {};
-		if (/^\d+$/.test(data)) {
-			vo.no = data;
-		} else if (data) {
-			vo.short_name = data;
-		}
+
 		return vo;
 	}
 	query() {
-		$('#form2').empty();
-
-		let data = this.getQueryData();
-		if ($.isEmptyObject(data)) {
+		let data = {
+			client : {}
+		};
+		let inputs = $('#input').val();
+		if(commonUtils.isEmpty(inputs)){
 			alert("請輸入資料");
-			return;
+			return ;
+		}else if (/^\d+$/.test(inputs)) {
+			data.client.no = inputs;
+		}else if (inputs) {
+			data.client.shortName = data;
 		}
-
+		
 		let self = this;
 		commonUtils.doAjax('/company/find/client', data, function (resp) {
 			self.querySuccCallBack(resp, self);
@@ -96,7 +94,7 @@ class Company extends companyTemplate {
 		$('#form3-companyDetail\\[guiNumber\\]').val(data.guiNumber);
 		$('#form3-companyDetail\\[address\\]').val(data.address);
 		$('#form3-companyDetail\\[memo\\]').val(data.memo);
-		$('#form3-companyCharges').append(super.getEditChargeContentHTML(data.charges));
+		$('#form3-companycharges').append(super.getEditchargesContentHTML(data.charges));
 		$("#editModal").modal();
 		$('.currency').number(true, 0);
 	}
@@ -110,6 +108,7 @@ class Company extends companyTemplate {
 		if (true === confirm("是否確定更改資料")) {
 			let self = this;
 			commonUtils.doAjax('/company/edit', JSON, function (data) {
+				console.log(data);
 				alert(data.message);
 				self.query();
 			});
@@ -117,29 +116,30 @@ class Company extends companyTemplate {
 	}
 	getEditData() {
 		let JSON = {
-			no: $('#form3-no').val(),
-			shortName: $('#form3-shortName').val(),
-			fullName: $('#form3-companyDetail\\[fullName\\]').val(),
-			phone: $('#form3-companyDetail\\[phone\\]').val(),
-			address: $('#form3-companyDetail\\[address\\]').val(),
-			guiNumber: $('#form3-companyDetail\\[guiNumber\\]').val(),
-			memo: $('#form3-companyDetail\\[memo\\]').val(),
+			client : {
+				no: $('#form3-no').val(),
+				shortName: $('#form3-shortName').val(),
+				fullName: $('#form3-companyDetail\\[fullName\\]').val(),
+				phone: $('#form3-companyDetail\\[phone\\]').val(),
+				address: $('#form3-companyDetail\\[address\\]').val(),
+				guiNumber: $('#form3-companyDetail\\[guiNumber\\]').val(),
+				memo: $('#form3-companyDetail\\[memo\\]').val(),
+			},
 			charges: []
 		};
 
-		let row = $('[name="form3-companyCharges\\[dest\\]"]');
+		let row = $('[name="form3-companycharges\\[dest\\]"]');
 
 		$.each(row, function (index, dom) {
-			let size = $('[name="form3-companyCharges\\[size\\]"]').eq(index).val();
-			let pay = $('[name="form3-companyCharges\\[pay\\]"]').eq(index).val();
-			let fee = $('[name="form3-companyCharges\\[fee\\]"]').eq(index).val();
-			let os = $('[name="form3-companyCharges\\[os\\]"]').eq(index).val();
+			let size = $('[name="form3-companycharges\\[size\\]"]').eq(index).val();
+			let pay = $('[name="form3-companycharges\\[pay\\]"]').eq(index).val();
+			let fee = $('[name="form3-companycharges\\[fee\\]"]').eq(index).val();
+			let os = $('[name="form3-companycharges\\[os\\]"]').eq(index).val();
 
 			if (commonUtils.isEmptyNum(pay) || (commonUtils.isEmptyNum(fee) && commonUtils.isEmptyNum(os))) {
 				return true;
 			} else {
 				let obj = {
-					no: $('#form3-no').val(),
 					dest: $(this).val(),
 					size: size,
 					fee: fee,
@@ -150,7 +150,7 @@ class Company extends companyTemplate {
 			}
 		});
 
-		if (this.hasSameCharges(JSON.charges)) {
+		if (this.hasSamecharges(JSON.charges)) {
 			return false;
 		}
 

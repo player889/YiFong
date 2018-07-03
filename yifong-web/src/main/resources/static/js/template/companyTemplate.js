@@ -19,18 +19,18 @@ class companyTemplate {
 		return `<td>${html}</td>`;
 	}
 	getCNTRSizeDDL(val) {
-		return this.addTd(commonUtils.createOptions('form3-companyCharges[size]', this._CNTRSize, val));
+		return this.addTd(commonUtils.createOptions('form3-companycharges[size]', this._CNTRSize, val));
 	}
 	getDestDDL(val) {
-		return this.addTd(commonUtils.createOptions('form3-companyCharges[dest]', this._dest, val));
+		return this.addTd(commonUtils.createOptions('form3-companycharges[dest]', this._dest, parseInt(val)));
 	}
-	getChargeContentHTML(size = '', ds = '', pay = '', fee = '', os = '') {
-		let payTxtInput = this.addInput("form3-companyCharges[pay]", pay, 'currency');
-		let feeTxtInput = this.addInput("form3-companyCharges[fee]", fee, 'currency');
-		let osTxtInput = this.addInput('form3-companyCharges[os]', os, 'currency');
+	getchargesContentHTML(size = '', ds = '', pay = '', fee = '', os = '') {
+		let payTxtInput = this.addInput("form3-companycharges[pay]", pay, 'currency');
+		let feeTxtInput = this.addInput("form3-companycharges[fee]", fee, 'currency');
+		let osTxtInput = this.addInput('form3-companycharges[os]', os, 'currency');
 		return `<tr>${this.getDestDDL(ds)}${this.getCNTRSizeDDL(size)}${feeTxtInput}${payTxtInput}${osTxtInput}</tr>`;
 	}
-	getEditChargeContentHTML(charges) {
+	getEditchargesContentHTML(charges) {
 		let html = `<table class="table table-sm">
 						<thead>
 							<tr>
@@ -42,7 +42,7 @@ class companyTemplate {
 							</tr>
 						</thead>
 						<tbody>
-							${this.addChargeRowHTML(charges)}
+							${this.addchargesRowHTML(charges)}
 						<tr>
 							<td><input type="button" class="btn btn-outline-success" value="新增運費" onclick="c.addEmptyRow();" /></td>
 						</tr>
@@ -50,7 +50,7 @@ class companyTemplate {
 					</table>`;
 		return html;
 	}
-	addChargeRowHTML(charges) {
+	addchargesRowHTML(charges) {
 		let html = ``;
 		if (false === $.isEmptyObject(charges)) {
 			for (let {
@@ -61,7 +61,7 @@ class companyTemplate {
 				os: os
 			}
 				of charges) {
-				html += this.getChargeContentHTML(size, ds, pay, fee, os);
+				html += this.getchargesContentHTML(size, ds, pay, fee, os);
 			}
 		}
 		return html;
@@ -109,7 +109,7 @@ class companyTemplate {
 		}
 			of data) {
 
-			let chargeHTML = (true === $.isEmptyObject(charges)) ? `` : this.getViewChargeContentHTML(charges);
+			let chargesHTML = (true === $.isEmptyObject(charges)) ? `` : this.getViewchargesContentHTML(charges);
 
 			html +=
 			`<div class="tab-pane fade ${show}" id="info_${index}" role="tabpanel" aria-labelledby="infoList_${index}">
@@ -117,7 +117,7 @@ class companyTemplate {
 						<div class="card-body">
 							<input type="button" class="btn btn-outline-warning float-right" value="修改" onclick="c.doEditModal('${index}');"/>
 							${name}<br>${address}<br>${this.phoneFilter(ph)}<br>${commonUtils.getValue(gn)}<br>${commonUtils.getValue(me)}
-							${chargeHTML}
+							${chargesHTML}
 						</div>
 					</div>
 				</div>`;
@@ -128,7 +128,7 @@ class companyTemplate {
 
 		return html;
 	}
-	getViewChargeContentHTML(charges) {
+	getViewchargesContentHTML(charges) {
 
 		let html = `<table class="table table-sm table-condensed">
 						<thead>
@@ -149,6 +149,7 @@ class companyTemplate {
 			os: os
 		}
 			of charges) {
+			console.log("@" + ds);
 			html += `<tr><td>${this._dest[parseInt(ds)]}</td><td>${this._CNTRSize[size]}</td><td>${fee}</td><td>${pay}</td><td>${os}</td></tr>`;
 		}
 

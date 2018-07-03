@@ -15,4 +15,8 @@ public class EnumMap {
 		}
 		return list;
 	}
+
+	public static Destination[] getDestinationTT() throws JsonProcessingException {
+		return Destination.values();
+	}
 }

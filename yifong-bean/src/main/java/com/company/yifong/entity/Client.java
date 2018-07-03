@@ -2,8 +2,9 @@ package com.company.yifong.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +34,6 @@ public class Client implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
-
 	private int seq;
 
 	@Column(nullable = false, length = 45)
@@ -45,6 +45,7 @@ public class Client implements Serializable {
 	@Column(name = "gui_number", length = 8)
 	private String guiNumber;
 
+	@Column(length=255)
 	private String memo;
 
 	@Column(nullable = false, length = 5)
@@ -64,7 +65,7 @@ public class Client implements Serializable {
 	private Date updateTime;
 
 	@JsonManagedReference
-	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-	private Set<Charge> charges;
-
+	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private List<Charge> charges;
+	
 }

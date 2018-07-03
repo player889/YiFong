@@ -13,6 +13,12 @@ public class ClientRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String no;
-	private String name;
+	private String shortName;
+	private String fullName;
+	private String address;
+	private String phone;
+	private String guiNumber;
+	private String memo;
+	private String updateDate;
 
 }
