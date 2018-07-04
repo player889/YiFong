@@ -42,8 +42,7 @@ public class CompanyController {
 
 	@PostMapping(value = "/edit", produces = "application/json; charset=utf-8")
 	public AjaxResponse edit(@RequestBody final CompanyRequest vo, final BindingResult errors) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		companyService.edit(vo);
-		return new AjaxResponse(ApiSatus.SUCC_UPDATE);
+		return new AjaxResponse(ApiSatus.SUCC_UPDATE, companyService.edit(vo));
 	}
 
 	@PostMapping(value = "/save", produces = "application/json; charset=utf-8")

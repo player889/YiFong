@@ -41,7 +41,6 @@ class CommonUtils {
 		return (undefined === val || null === val || '' === val || isNaN(val)) ? true : false;
 	}
 	createOptions(name, data, val = undefined) {
-		console.log(val);
 		return $('<select/>', {
 			'class': 'form-control',
 			'name': name

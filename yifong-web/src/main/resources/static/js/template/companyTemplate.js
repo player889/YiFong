@@ -69,11 +69,10 @@ class companyTemplate {
 	getDestinationIndex(key) {
 		return this._dest.indexOf(key);
 	}
-	getCompanyInformation(data) {
-		let show = (0 === data.length - 1) ? 'show active' : '';
-		return this.getCompanyListHTML(data, show) + this.getCompanyInfoHTML(data, show);
+	getCompanyInformation(data, showHrefIndex) {
+		return this.getCompanyListHTML(data, showHrefIndex) + this.getCompanyInfoHTML(data, showHrefIndex);
 	}
-	getCompanyListHTML(data, show) {
+	getCompanyListHTML(data, showHrefIndex) {
 		let html = ``;
 		html += `<div class="row" id="content">`;
 		html += `<div class="col-2">`;
@@ -85,6 +84,7 @@ class companyTemplate {
 			shortName: name
 		}
 			of data) {
+			let show = ( index === showHrefIndex) ? 'show active' : '';
 			html += `<a class="list-group-item list-group-item-action ${show}" href="#info_${index}" role="tab" data-toggle="list" id="infoList_${index}">${no} ${name}</a>`;
 			index++;
 		}
@@ -93,7 +93,7 @@ class companyTemplate {
 		html += `</div>`;
 		return html;
 	}
-	getCompanyInfoHTML(data, show) {
+	getCompanyInfoHTML(data, showHrefIndex) {
 		let index = 0;
 		let html = ``;
 		html += `<div class="col-10 scrollBar"><div class="tab-content">`;
@@ -108,7 +108,7 @@ class companyTemplate {
 			charges: charges
 		}
 			of data) {
-
+			let show = ( index === showHrefIndex) ? 'show active' : '';
 			let chargesHTML = (true === $.isEmptyObject(charges)) ? `` : this.getViewchargesContentHTML(charges);
 
 			html +=
@@ -149,7 +149,6 @@ class companyTemplate {
 			os: os
 		}
 			of charges) {
-			console.log("@" + ds);
 			html += `<tr><td>${this._dest[parseInt(ds)]}</td><td>${this._CNTRSize[size]}</td><td>${fee}</td><td>${pay}</td><td>${os}</td></tr>`;
 		}
 

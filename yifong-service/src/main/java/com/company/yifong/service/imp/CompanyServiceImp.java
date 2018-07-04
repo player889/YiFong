@@ -1,12 +1,15 @@
 package com.company.yifong.service.imp;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -35,55 +38,57 @@ public class CompanyServiceImp implements CompanyService {
 	private ChargeRepository chargeRepository;
 
 	public Page<Client> findClient(Client client) {
-		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("seq");
+		// @formatter:off
+		ExampleMatcher matcher = ExampleMatcher.matching()
+				.withIgnoreNullValues()
+				.withIgnorePaths("seq")
+				.withMatcher("shortName", GenericPropertyMatchers.startsWith());
+		// @formatter:on
 		Example<Client> example = Example.of(client, matcher);
 		Sort sort = new Sort(Direction.ASC, "no");
 		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(0, 10, sort));
 		return webPage;
 	}
 
-	public void edit(CompanyRequest req) {
+	public Client edit(CompanyRequest req) {
 		try {
 
 			// delete
 			chargeRepository.removeByNo(req.getClient().getNo());
 
-			// client
+			// save
 			ClientRequest clientReq = req.getClient();
 			Client data = clientRepository.findByNo(clientReq.getNo()).get(0);
-			this.setClient(data, req);
+
+			data = this.dataFilter(data, req);
 			clientRepository.saveAndFlush(data);
 
+			return data;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new JpaException("系統發生錯誤");
 		}
+
 	}
 
-	private void setClient(Client data, CompanyRequest req) {
+	private Client dataFilter(Client data, CompanyRequest req) throws IllegalAccessException, InvocationTargetException {
+		// cilent
 		ClientRequest clientReq = req.getClient();
-		data.setAddress(clientReq.getAddress());
-		data.setFullName(clientReq.getFullName());
-		data.setGuiNumber(clientReq.getGuiNumber());
-		data.setMemo(clientReq.getMemo());
-		data.setPhone(clientReq.getPhone());
-		data.setShortName(clientReq.getShortName());
+		BeanUtils.copyProperties(data, clientReq);
 		data.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+
 		// charge
 		data.setCharges(this.getChargeData(data, req.getCharges()));
+
+		return data;
 	}
 
-	private List<Charge> getChargeData(Client client, List<ChargesRequest> charges) {
+	private List<Charge> getChargeData(Client client, List<ChargesRequest> charges) throws IllegalAccessException, InvocationTargetException {
 		List<Charge> list = new ArrayList<>();
 		for (ChargesRequest chargesRequest : charges) {
 			Charge c = new Charge();
 			c.setClient(client);
-			c.setDest(chargesRequest.getDest());
-			c.setFee(Integer.parseInt(chargesRequest.getFee()));
-			c.setOs(Integer.parseInt(chargesRequest.getOs()));
-			c.setPay(Integer.parseInt(chargesRequest.getPay()));
-			c.setSize(Integer.parseInt(chargesRequest.getSize()));
-			c.setUpdateTime(chargesRequest.getUpdateDate());
+			BeanUtils.copyProperties(c, chargesRequest);
 			list.add(c);
 		}
 		return list;

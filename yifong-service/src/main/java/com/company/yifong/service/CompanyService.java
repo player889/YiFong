@@ -17,6 +17,6 @@ public interface CompanyService {
 
 	Page<Client> findClient(Client client);
 	
-	void edit(CompanyRequest req);
+	Client edit(CompanyRequest req);
 
 }

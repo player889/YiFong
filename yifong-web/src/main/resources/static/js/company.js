@@ -21,7 +21,7 @@ class Company extends companyTemplate {
 	initEvent() {
 		$("#input").enterKey(function (e) {
 			e.preventDefault();
-			c.query(false);
+			c.query();
 		});
 
 		$('#editModal').on('hidden.bs.modal', function (e) {
@@ -39,10 +39,12 @@ class Company extends companyTemplate {
 	}
 	hasSamecharges(JSON) {
 		let tmp = [];
-		$.each(tmp, function(index, item){
-			tmp.push({dest: item.dest, size : item.size});
+		$.each(tmp, function (index, item) {
+			tmp.push({
+				dest: item.dest,
+				size: item.size
+			});
 		});
-		console.log(tmp);
 		let isSame = false;
 		let len = tmp.length;
 		for (let i = 0; i <= len - 1 && !isSame; i++) {
@@ -52,39 +54,37 @@ class Company extends companyTemplate {
 		}
 		return isSame;
 	}
-	getQueryData() {
-
-		return vo;
-	}
-	query() {
+	query(showHrefIndex) {
 		let data = {
-			client : {}
+			client: {}
 		};
 		let inputs = $('#input').val();
-		if(commonUtils.isEmpty(inputs)){
+		if (commonUtils.isEmpty(inputs)) {
 			alert("請輸入資料");
-			return ;
-		}else if (/^\d+$/.test(inputs)) {
+			return;
+		} else if (/^\d+$/.test(inputs)) {
 			data.client.no = inputs;
-		}else if (inputs) {
-			data.client.shortName = data;
+		} else if (inputs) {
+			data.client.shortName = inputs;
 		}
-		
+
 		let self = this;
 		commonUtils.doAjax('/company/find/client', data, function (resp) {
-			self.querySuccCallBack(resp, self);
+			self.querySuccCallBack(resp, showHrefIndex);
 		});
 	}
-	querySuccCallBack(resp){
+	querySuccCallBack(resp, showHrefIndex){
 		let data = resp.data.content;
 		if ($.isEmptyObject(data)) {
 			alert("無資料");
 		} else {
 			$('#form2').empty();
 			this.setTempData(data);
-			$('#form2').append(super.getCompanyInformation(data));
+			showHrefIndex = (undefined === showHrefIndex) ?  (1 === data.length) ? 0 : -1 : showHrefIndex
+			$('#form2').append(this.getCompanyInformation(data, showHrefIndex));
 		}
 	}
+	
 	doEditModal(index) {
 		let data = this.getTempData(index);
 		$('#form3-no').val(data.no);
@@ -108,15 +108,23 @@ class Company extends companyTemplate {
 		if (true === confirm("是否確定更改資料")) {
 			let self = this;
 			commonUtils.doAjax('/company/edit', JSON, function (data) {
-				console.log(data);
 				alert(data.message);
-				self.query();
+				self.query(self.getShowHrefId());
 			});
 		}
 	}
+	getShowHrefId(){
+		let index = 0;
+		$('.list-group-item').each(function(){
+			if($(this).hasClass("active")){
+				index = $(this).prop("id").replace('infoList_','');
+			}
+		});
+		return parseInt(index);
+	}
 	getEditData() {
 		let JSON = {
-			client : {
+			client: {
 				no: $('#form3-no').val(),
 				shortName: $('#form3-shortName').val(),
 				fullName: $('#form3-companyDetail\\[fullName\\]').val(),
@@ -136,7 +144,9 @@ class Company extends companyTemplate {
 			let fee = $('[name="form3-companycharges\\[fee\\]"]').eq(index).val();
 			let os = $('[name="form3-companycharges\\[os\\]"]').eq(index).val();
 
-			if (commonUtils.isEmptyNum(pay) || (commonUtils.isEmptyNum(fee) && commonUtils.isEmptyNum(os))) {
+			if (commonUtils.isEmptyNum(fee)) {
+				return true;
+			} else if (commonUtils.isEmptyNum(fee) && commonUtils.isEmptyNum(fee)) {
 				return true;
 			} else {
 				let obj = {
