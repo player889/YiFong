@@ -22,7 +22,7 @@ class CommonUtils {
 		}
 		this.initAlert();
 	}
-	initAlert(){
+	initAlert() {
 		iziToast.settings({
 			color: '', // blue, red, green, yellow
 			timeout: 2000,
@@ -37,14 +37,14 @@ class CommonUtils {
 			position: 'topRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter or center.
 			onOpening: function () {},
 			onClosing: function () {}
-		});	
+		});
 	}
-	doAlert(type, message, title ='') {
+	doAlert(type, message, title = '') {
 		iziToast.show({
 			title: title,
-		    message: message,
-		    color: ('info' === type) ? 'blue' : ('success' === type) ? 'green' : ('warning' === type) ? 'yellow' : '',
-		    icon: '<i class="iziToast-icon ico-'+type+' revealIn"></i>'
+			message: message,
+			color: ('info' === type) ? 'blue' : ('success' === type) ? 'green' : ('warning' === type) ? 'yellow' : '',
+			icon: '<i class="iziToast-icon ico-' + type + ' revealIn"></i>'
 		});
 	}
 	isEmpty(val) {
@@ -65,9 +65,10 @@ class CommonUtils {
 	isEmptyObject(val) {
 		return (undefined === val || null === val || '' === val || isNaN(val)) ? true : false;
 	}
-	createOptions(name, data, val = undefined) {
+	createOptions(name, data, val = undefined, size = 7) {
 		return $('<select/>', {
-			'class': 'form-control',
+			'class': 'form-control selectpicker',
+			'data-size': size,
 			'name': name
 		}).html($.map(data, function (text, index) {
 				return $('<option/>', {
@@ -129,14 +130,6 @@ class CommonUtils {
 			}
 		});
 	}
-//	doAlert(message, className) {
-//		$.notify(message, {
-//			autoHideDelay: 1000,
-//			style: 'bootstrap',
-//			arrowShow: true,
-//			className: className
-//		});
-//	}
 	doModal(url, data, contentId) {
 
 		var header = $("meta[name='_csrf_header']").attr("content");
@@ -158,26 +151,6 @@ class CommonUtils {
 	}
 }
 
-var message = {
-	info: function (status, title, msg) {
-		$('<div style="position: fixed;width: 100%;z-index: 999;" class="alert alert-' + status + '">' +
-			'<a href="#" class="close" data-dismiss="alert">&times;</a>' +
-			'<strong>' + title + '！</strong>' + msg +
-			'</div>').prependTo($('body')).hide().slideToggle(300).delay(2000).slideToggle(300, function () {
-			this.remove();
-		});
-	},
-	success: function (msg) {
-		this.info('success', '成功', msg);
-	},
-	error: function (msg) {
-		this.info('danger', '错误', msg);
-	},
-	warning: function (msg) {
-		this.info('warning', '警告', msg);
-	}
-};
-
 let commonUtils = new CommonUtils();
 //	commonUtils.initAlertUI();
 //NOTE
@@ -191,3 +164,23 @@ let commonUtils = new CommonUtils();
 //}
 //return result
 //}
+
+//var message = {
+//info: function (status, title, msg) {
+//	$('<div style="position: fixed;width: 100%;z-index: 999;" class="alert alert-' + status + '">' +
+//		'<a href="#" class="close" data-dismiss="alert">&times;</a>' +
+//		'<strong>' + title + '！</strong>' + msg +
+//		'</div>').prependTo($('body')).hide().slideToggle(300).delay(2000).slideToggle(300, function () {
+//		this.remove();
+//	});
+//},
+//success: function (msg) {
+//	this.info('success', '成功', msg);
+//},
+//error: function (msg) {
+//	this.info('danger', '错误', msg);
+//},
+//warning: function (msg) {
+//	this.info('warning', '警告', msg);
+//}
+//};

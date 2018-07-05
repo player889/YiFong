@@ -36,6 +36,7 @@ class Company extends companyTemplate {
 	addEmptyRow() {
 		$('#form3-companycharges tr:last').before(super.getchargesContentHTML());
 		$('.currency').number(true, 0);
+		$('.selectpicker').selectpicker();
 	}
 	query(showHrefIndex) {
 		let data = {
@@ -80,6 +81,7 @@ class Company extends companyTemplate {
 		$('#form3-companycharges').append(super.getEditchargesContentHTML(data.charges));
 		$("#editModal").modal();
 		$('.currency').number(true, 0);
+		$('.selectpicker').selectpicker();
 	}
 	doEdit() {
 		let JSON = this.getEditData();

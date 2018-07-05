@@ -149,7 +149,7 @@ class companyTemplate {
 			os: os
 		}
 			of charges) {
-			html += `<tr><td>${this._dest[parseInt(ds)]}</td><td>${this._CNTRSize[size]}</td><td>${pay}</td><td>${fee}</td><td>${os}</td></tr>`;
+			html += `<tr><td>${this._dest[parseInt(ds)]}</td><td>${this._CNTRSize[size]}</td><td>${$.number(pay)}</td><td>${$.number(fee)}</td><td>${$.number(os)}</td></tr>`;
 		}
 
 		html += `</tbody></table>`;
