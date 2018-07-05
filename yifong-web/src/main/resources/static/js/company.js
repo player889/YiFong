@@ -37,30 +37,13 @@ class Company extends companyTemplate {
 		$('#form3-companycharges tr:last').before(super.getchargesContentHTML());
 		$('.currency').number(true, 0);
 	}
-	hasSamecharges(JSON) {
-		let tmp = [];
-		$.each(tmp, function (index, item) {
-			tmp.push({
-				dest: item.dest,
-				size: item.size
-			});
-		});
-		let isSame = false;
-		let len = tmp.length;
-		for (let i = 0; i <= len - 1 && !isSame; i++) {
-			for (let j = i + 1; j <= len - 1 && !isSame; j++) {
-				isSame = _.isEqual(tmp[i], tmp[j]);
-			}
-		}
-		return isSame;
-	}
 	query(showHrefIndex) {
 		let data = {
 			client: {}
 		};
 		let inputs = $('#input').val();
 		if (commonUtils.isEmpty(inputs)) {
-			alert("請輸入資料");
+			commonUtils.doAlert('warning',"請輸入資料");
 			return;
 		} else if (/^\d+$/.test(inputs)) {
 			data.client.no = inputs;
@@ -76,7 +59,7 @@ class Company extends companyTemplate {
 	querySuccCallBack(resp, showHrefIndex){
 		let data = resp.data.content;
 		if ($.isEmptyObject(data)) {
-			alert("無資料");
+			commonUtils.doAlert("info", "無資料");
 		} else {
 			$('#form2').empty();
 			this.setTempData(data);
@@ -100,15 +83,14 @@ class Company extends companyTemplate {
 	}
 	doEdit() {
 		let JSON = this.getEditData();
-		if (false === JSON) {
-			alert("重複運費設定，請確認!");
+		if (true === this.hasSamecharges(JSON)) {
+			commonUtils.doAlert("warning", "重複運費設定，請確認!");
 			return;
 		}
-
 		if (true === confirm("是否確定更改資料")) {
 			let self = this;
 			commonUtils.doAjax('/company/edit', JSON, function (data) {
-				alert(data.message);
+				commonUtils.doAlert("success", data.message);
 				self.query(self.getShowHrefId());
 			});
 		}
@@ -123,21 +105,22 @@ class Company extends companyTemplate {
 		return parseInt(index);
 	}
 	getEditData() {
-		let JSON = {
-			client: {
-				no: $('#form3-no').val(),
-				shortName: $('#form3-shortName').val(),
-				fullName: $('#form3-companyDetail\\[fullName\\]').val(),
-				phone: $('#form3-companyDetail\\[phone\\]').val(),
-				address: $('#form3-companyDetail\\[address\\]').val(),
-				guiNumber: $('#form3-companyDetail\\[guiNumber\\]').val(),
-				memo: $('#form3-companyDetail\\[memo\\]').val(),
-			},
-			charges: []
-		};
-
+		return {
+				client: {
+					no: $('#form3-no').val(),
+					shortName: $('#form3-shortName').val(),
+					fullName: $('#form3-companyDetail\\[fullName\\]').val(),
+					phone: $('#form3-companyDetail\\[phone\\]').val(),
+					address: $('#form3-companyDetail\\[address\\]').val(),
+					guiNumber: $('#form3-companyDetail\\[guiNumber\\]').val(),
+					memo: $('#form3-companyDetail\\[memo\\]').val(),
+				},
+				charges: this.getChargesData()
+			};
+	}
+	getChargesData(){
+		let charges = [];
 		let row = $('[name="form3-companycharges\\[dest\\]"]');
-
 		$.each(row, function (index, dom) {
 			let size = $('[name="form3-companycharges\\[size\\]"]').eq(index).val();
 			let pay = $('[name="form3-companycharges\\[pay\\]"]').eq(index).val();
@@ -156,17 +139,31 @@ class Company extends companyTemplate {
 					pay: pay,
 					os: os
 				};
-				JSON.charges.push(obj);
+				charges.push(obj);
 			}
 		});
-
-		if (this.hasSamecharges(JSON.charges)) {
-			return false;
-		}
-
-		return JSON;
+		return charges; 
 	}
-	doSave() {}
-
+	hasSamecharges(JSON) {
+		let tmp = [];
+		$.each(JSON.charges, function (index, item) {
+			tmp.push({
+				dest: item.dest,
+				size: item.size
+			});
+		});
+		return this.isDuplicate(tmp);
+	}
+	isDuplicate(arr) {
+	    var cleaned = [];
+	    arr.forEach(function(itm) {
+	        var unique = true;
+	        cleaned.forEach(function(itm2) {
+	            if (_.isEqual(itm, itm2)) unique = false;
+	        });
+	        if (unique)  cleaned.push(itm);
+	    });
+	    return cleaned.length != arr.length;
+	}
 }
 let c = new Company();

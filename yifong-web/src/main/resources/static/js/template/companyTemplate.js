@@ -28,7 +28,7 @@ class companyTemplate {
 		let payTxtInput = this.addInput("form3-companycharges[pay]", pay, 'currency');
 		let feeTxtInput = this.addInput("form3-companycharges[fee]", fee, 'currency');
 		let osTxtInput = this.addInput('form3-companycharges[os]', os, 'currency');
-		return `<tr>${this.getDestDDL(ds)}${this.getCNTRSizeDDL(size)}${feeTxtInput}${payTxtInput}${osTxtInput}</tr>`;
+		return `<tr>${this.getDestDDL(ds)}${this.getCNTRSizeDDL(size)}${payTxtInput}${feeTxtInput}${osTxtInput}</tr>`;
 	}
 	getEditchargesContentHTML(charges) {
 		let html = `<table class="table table-sm">
@@ -38,7 +38,7 @@ class companyTemplate {
 								<th scope="col" style="width:20%">櫃子呎吋</th>
 								<th scope="col">應收費用</th>
 								<th scope="col">司機運費</th>
-								<th scope="col">外調費用</th>
+								<th scope="col">外調運費</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -137,7 +137,7 @@ class companyTemplate {
 								<th scope="col" style="width:20%">櫃子呎吋</th>
 								<th scope="col">應收費用</th>
 								<th scope="col">司機運費</th>
-								<th scope="col">外調費用</th>
+								<th scope="col">外調運費</th>
 							</tr>
 						</thead>
 						<tbody>`;
@@ -149,7 +149,7 @@ class companyTemplate {
 			os: os
 		}
 			of charges) {
-			html += `<tr><td>${this._dest[parseInt(ds)]}</td><td>${this._CNTRSize[size]}</td><td>${fee}</td><td>${pay}</td><td>${os}</td></tr>`;
+			html += `<tr><td>${this._dest[parseInt(ds)]}</td><td>${this._CNTRSize[size]}</td><td>${pay}</td><td>${fee}</td><td>${os}</td></tr>`;
 		}
 
 		html += `</tbody></table>`;

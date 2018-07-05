@@ -20,9 +20,34 @@ class CommonUtils {
 				})
 			})
 		}
+		this.initAlert();
 	}
-
-	isEmpty(val){
+	initAlert(){
+		iziToast.settings({
+			color: '', // blue, red, green, yellow
+			timeout: 2000,
+			resetOnHover: false,
+			pauseOnHover: false,
+			close: false,
+			closeOnEscape: true,
+			closeOnClick: true,
+			icon: 'material-icons',
+			transitionIn: 'fadeInLeft', //bounceInLeft, bounceInRight, bounceInUp, bounceInDown, fadeIn, fadeInDown, fadeInUp, fadeInLeft, fadeInRight or flipInX.
+			transitionOut: 'fadeOutRight', //fadeOut, fadeOutUp, fadeOutDown, fadeOutLeft, fadeOutRight, flipOutX
+			position: 'topRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter or center.
+			onOpening: function () {},
+			onClosing: function () {}
+		});	
+	}
+	doAlert(type, message, title ='') {
+		iziToast.show({
+			title: title,
+		    message: message,
+		    color: ('info' === type) ? 'blue' : ('success' === type) ? 'green' : ('warning' === type) ? 'yellow' : '',
+		    icon: '<i class="iziToast-icon ico-'+type+' revealIn"></i>'
+		});
+	}
+	isEmpty(val) {
 		return 0 === val.length ? true : false;
 	}
 	getValue(val) {
@@ -45,13 +70,13 @@ class CommonUtils {
 			'class': 'form-control',
 			'name': name
 		}).html($.map(data, function (text, index) {
-			return $('<option/>', {
-				'value': index,
-				'text': text,
-				'selected': (commonUtils.isEmptyObject(val) || index != val) ? false : true,
-				'disabled': (commonUtils.isEmptyObject(val) || index === val) ? false : true
-			});
-		})).prop("outerHTML");
+				return $('<option/>', {
+					'value': index,
+					'text': text,
+					'selected': (commonUtils.isEmptyObject(val) || index != val) ? false : true,
+					'disabled': (commonUtils.isEmptyObject(val) || index === val) ? false : true
+				});
+			})).prop("outerHTML");
 	}
 	doAjax(url, data, successFn, extraData) {
 
@@ -88,14 +113,13 @@ class CommonUtils {
 			},
 			success: function (data) {
 				if (!data.code.startsWith("S")) {
-					alert("!" + data.message);
+					this.doAlert("error", data.message);
 				} else {
 					if (typeof successFn === "function") {
 						successFn(data);
 					} else {
-						alert(data.message);
+						this.doAlert("success", data.message);
 					}
-
 				}
 			},
 			error: function (jqXHR, exception) {
@@ -105,6 +129,14 @@ class CommonUtils {
 			}
 		});
 	}
+//	doAlert(message, className) {
+//		$.notify(message, {
+//			autoHideDelay: 1000,
+//			style: 'bootstrap',
+//			arrowShow: true,
+//			className: className
+//		});
+//	}
 	doModal(url, data, contentId) {
 
 		var header = $("meta[name='_csrf_header']").attr("content");
@@ -126,7 +158,28 @@ class CommonUtils {
 	}
 }
 
+var message = {
+	info: function (status, title, msg) {
+		$('<div style="position: fixed;width: 100%;z-index: 999;" class="alert alert-' + status + '">' +
+			'<a href="#" class="close" data-dismiss="alert">&times;</a>' +
+			'<strong>' + title + '！</strong>' + msg +
+			'</div>').prependTo($('body')).hide().slideToggle(300).delay(2000).slideToggle(300, function () {
+			this.remove();
+		});
+	},
+	success: function (msg) {
+		this.info('success', '成功', msg);
+	},
+	error: function (msg) {
+		this.info('danger', '错误', msg);
+	},
+	warning: function (msg) {
+		this.info('warning', '警告', msg);
+	}
+};
+
 let commonUtils = new CommonUtils();
+//	commonUtils.initAlertUI();
 //NOTE
 //function allFalse(data) {
 //let result = true;
