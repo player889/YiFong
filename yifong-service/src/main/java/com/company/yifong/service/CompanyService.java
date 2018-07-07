@@ -18,5 +18,9 @@ public interface CompanyService {
 	Page<Client> findClient(Client client);
 	
 	Client edit(CompanyRequest req);
+	
+	Client save(CompanyRequest req);
+
+	String delete(String id);
 
 }

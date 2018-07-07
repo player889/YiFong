@@ -8,7 +8,6 @@
 <link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 <link href="/css/lib/iziToast.min.css" rel="stylesheet" media="screen" />
 <link href="/css/lib/bootstrap-select.min.css" rel="stylesheet" media="screen" />
-
 </head>
 <style>
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
@@ -68,6 +67,10 @@ textarea {
 .currency {
 	text-align: right;
 }
+
+.hideValidator {
+	display: none;
+}
 </style>
 <body>
 	<div class="container">
@@ -75,11 +78,12 @@ textarea {
 		<form>
 			<div class="form-row spacing">
 				<div class="col-md-5">
-					<input type="text" class="form-control" placeholder="客戶代碼或名稱" name="input" id="input" value="一" />
+					<input type="text" class="form-control" placeholder="客戶代碼或簡稱" name="input" id="input" value="" />
 				</div>
 				<div class="col-md-3">
 					<input type="button" class="btn btn-outline-secondary" onclick="c.query();" value="查詢" />
-					<input type="button" class="btn btn-outline-success" value="新增" onclick="c.saveFn();" disabled="disabled" />
+					<input type="button" class="btn btn-outline-success" value="新增" onclick="c.doSaveModal();" />
+					<input type="button" class="btn btn-outline-danger" value="刪除" data-toggle="modal" data-target="#deleteModal" />
 				</div>
 			</div>
 		</form>
@@ -93,30 +97,48 @@ textarea {
 						<div class="modal-body" id="editContent">
 							<div class="form-row">
 								<div class="form-group col-md-1">
-									<label for="form3-no">代號</label>
-									<input type="text" class="form-control" id="form3-no" name="form3-no" readonly />
+									<label for="form3-no">代碼</label>
+									<input type="text" class="form-control required" id="form3-no" name="form3-no" />
+									<div class="text-danger hideValidator">
+										<small>請輸入代碼</small>
+									</div>
 								</div>
 								<div class="form-group col-md-2">
 									<label for="form3-shortName">簡稱</label>
-									<input type="text" class="form-control" id="form3-shortName" />
+									<input type="text" class="form-control required" id="form3-shortName" required />
+									<div class="text-danger hideValidator">
+										<small>請輸入簡稱</small>
+									</div>
 								</div>
 								<div class="form-group col-md-6">
 									<label for="form3-companyDetail[fullName]">全名</label>
-									<input type="text" class="form-control" id="form3-companyDetail[fullName]" name="companyDetail[fullName]" />
+									<input type="text" class="form-control required" id="form3-companyDetail[fullName]" name="companyDetail[fullName]" />
+									<div class="text-danger hideValidator">
+										<small>請輸入全名</small>
+									</div>
 								</div>
 								<div class="form-group col-md-3">
 									<label for="form3-companyDetail[phone]">電話</label>
-									<input type="text" class="form-control" id="form3-companyDetail[phone]" name="companyDetail[phone]" />
+									<input type="text" class="form-control required" id="form3-companyDetail[phone]" name="companyDetail[phone]" />
+									<div class="text-danger hideValidator">
+										<small>請輸入電話</small>
+									</div>
 								</div>
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-3">
 									<label for="form3-companyDetail[guiNumber]">統一編號</label>
 									<input type="text" class="form-control" id="form3-companyDetail[guiNumber]" name="companyDetail[guiNumber]" />
+									<div class="text-danger hideValidator">
+										<small>請輸入正確統編</small>
+									</div>
 								</div>
 								<div class="form-group col-md-9">
 									<label for="form3-companyDetail[address]">地址</label>
-									<input type="text" class="form-control" id="form3-companyDetail[address]" name="companyDetail[address]" />
+									<input type="text" class="form-control required" id="form3-companyDetail[address]" name="companyDetail[address]" />
+									<div class="text-danger hideValidator">
+										<small>請輸入地址</small>
+									</div>
 								</div>
 							</div>
 							<div class="form-row">
@@ -133,8 +155,27 @@ textarea {
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-warning" onclick="c.doEdit()">修改</button>
+							<button type="button" class="btn" id="actionBTN"></button>
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+							<button type="button" class="btn" onclick="c.mock()">XXXXXXXXXXXXXXXXXXXx</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<form id="form4">
+			<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="form-group row">
+								<div class="col-sm-10">
+									<input type="number" class="form-control" id="deleteId" placeholder="請輸入代碼">
+								</div>
+								<div class="col-sm-2">
+									<input type="button" class="btn btn-danger" value="刪除" onclick="c.doDelete();" />
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -153,11 +194,10 @@ textarea {
 <script type="text/javascript" src="/js/lib/iziToast.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/template/companyTemplate.js"></script>
+<!-- sada -->
+<script type="text/javascript" src="/js/validator/companyValidator.js"></script>
 <script type="text/javascript" src="/js/company.js"></script>
 <!-- asdsad -->
-
 <script type="text/javascript" src="/js/lib/bootstrap-select.min.js"></script>
-
 <script type="text/javascript" src="/js/lib/i18n/defaults-zh_TW.min.js"></script>
-
 </html>

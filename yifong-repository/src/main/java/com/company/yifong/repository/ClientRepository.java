@@ -8,8 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.company.yifong.entity.Client;
 
 @Repository
-public interface ClientRepository  extends JpaRepository<Client, Long> {
+public interface ClientRepository extends JpaRepository<Client, Long> {
 
-	
 	List<Client> findByNo(String no);
+
+	void removeByNo(String no);
 }

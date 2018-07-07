@@ -24,6 +24,8 @@ import com.company.yifong.entity.Charge;
 import com.company.yifong.entity.Client;
 import com.company.yifong.repository.ChargeRepository;
 import com.company.yifong.repository.ClientRepository;
+import com.company.yifong.security.exception.DataNotFoundException;
+import com.company.yifong.security.exception.InputException;
 import com.company.yifong.security.exception.JpaException;
 import com.company.yifong.service.CompanyService;
 
@@ -50,25 +52,60 @@ public class CompanyServiceImp implements CompanyService {
 		return webPage;
 	}
 
+	public Client save(CompanyRequest req) {
+		if (isExist(req.getClient().getNo())) {
+			throw new InputException("代號已被使用，請重新輸入。");
+		}
+		Client data = new Client();
+		try {
+			// client
+			BeanUtils.copyProperties(data, req.getClient());
+			// charge
+			data.setCharges(this.getChargeData(data, req.getCharges()));
+			// save
+			clientRepository.saveAndFlush(data);
+		} catch (Exception e) {
+			throw new JpaException();
+		}
+		return data;
+	}
+
 	public Client edit(CompanyRequest req) {
 		try {
 
 			// delete
 			chargeRepository.removeByNo(req.getClient().getNo());
 
-			// save
 			ClientRequest clientReq = req.getClient();
 			Client data = clientRepository.findByNo(clientReq.getNo()).get(0);
 
 			data = this.dataFilter(data, req);
+			// save
 			clientRepository.saveAndFlush(data);
 
 			return data;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new JpaException("系統發生錯誤");
+			throw new JpaException();
 		}
 
+	}
+
+	public String delete(String no) {
+		List<Client> data = clientRepository.findByNo(no);
+		if (0 == data.size()) {
+			throw new DataNotFoundException("無刪除資料");
+		} else if (1 < data.size()) {
+			throw new JpaException();
+		} else {
+			clientRepository.removeByNo(no);
+		}
+		return no;
+	}
+
+	private boolean isExist(String no) {
+		List<Client> list = clientRepository.findByNo(no);
+		return (null == list || 0 == list.size()) ? false : true;
 	}
 
 	private Client dataFilter(Client data, CompanyRequest req) throws IllegalAccessException, InvocationTargetException {
@@ -93,46 +130,5 @@ public class CompanyServiceImp implements CompanyService {
 		}
 		return list;
 	}
-
-	// charge
-	// chargeServcie.update(this.getChargeData(data, req.getCharges()));
-
-	// @Autowired
-	// private CompanyDetailService compayDetailService;
-	// @Autowired
-	// private CompanyChargesService companyChargesService;
-	// @Autowired
-	// private CompanyRepository companyRepository;
-	// public Company save(Company company) {
-	// return companyRepository.saveAndFlush(company);
-	// }
-	//
-	// public void edit(Company company) {
-	// try {
-	// compayDetailService.update(company.getCompanyDetail());
-	// companyChargesService.update(company);
-	// } catch (Exception e) {
-	// throw new JpaException("系統發生錯誤");
-	// }
-	// }
-	//
-	// // NOTE Querydsl
-	// public Page<Company> findList(Company company) {
-//		// @formatter:off
-//		ExampleMatcher matcher = ExampleMatcher.matching()
-//				.withIgnoreNullValues()
-//				.withMatcher("name", GenericPropertyMatchers.startsWith());
-//		//@formatter:on
-	//
-	// Example<Company> example = Example.of(company, matcher);
-	// Sort sort = new Sort(Direction.ASC, "name");
-	// Page<Company> webPage = companyRepository.findAll(example, PageRequest.of(0, 10, sort));
-	//
-	// return webPage;
-	// }
-	//
-	// public Company findDetail(String id) {
-	// return companyRepository.findById(id);
-	// }
 
 }

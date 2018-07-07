@@ -10,6 +10,7 @@ $(document)
 class CommonUtils {
 
 	constructor() {
+		
 		$.fn.enterKey = function (fnc) {
 			return this.each(function () {
 				$(this).keypress(function (ev) {
@@ -20,9 +21,39 @@ class CommonUtils {
 				})
 			})
 		}
-		this.initAlert();
-	}
-	initAlert() {
+		
+		$.fn.addValidation = function(){
+			$(this).addClass("is-invalid");
+			$(this).next('.text-danger').removeClass('hideValidator');
+		}
+		
+		$.fn.isGuiNumner = function(){
+
+			let taxId = $(this).val();
+			
+			if ('' === taxId) {
+				return true;
+			}
+
+			var invalidList = "00000000,11111111";
+			if (/^\d{8}$/.test(taxId) == false || invalidList.indexOf(taxId) != -1) {
+				return false;
+			}
+
+			var validateOperator = [1, 2, 1, 2, 1, 2, 4, 1],
+			sum = 0,
+			calculate = function (product) {
+				var ones = product % 10,
+				tens = (product - ones) / 10;
+				return ones + tens;
+			};
+			for (var i = 0; i < validateOperator.length; i++) {
+				sum += calculate(taxId[i] * validateOperator[i]);
+			}
+
+			return sum % 10 == 0 || (taxId[6] == "7" && (sum + 1) % 10 == 0);
+		}
+		
 		iziToast.settings({
 			color: '', // blue, red, green, yellow
 			timeout: 2000,
@@ -32,8 +63,8 @@ class CommonUtils {
 			closeOnEscape: true,
 			closeOnClick: true,
 			icon: 'material-icons',
-			transitionIn: 'fadeInLeft', //bounceInLeft, bounceInRight, bounceInUp, bounceInDown, fadeIn, fadeInDown, fadeInUp, fadeInLeft, fadeInRight or flipInX.
-			transitionOut: 'fadeOutRight', //fadeOut, fadeOutUp, fadeOutDown, fadeOutLeft, fadeOutRight, flipOutX
+			transitionIn: 'fadeInLeft', // bounceInLeft, bounceInRight, bounceInUp, bounceInDown, fadeIn, fadeInDown, fadeInUp, fadeInLeft, fadeInRight or flipInX.
+			transitionOut: 'fadeOutRight', // fadeOut, fadeOutUp, fadeOutDown, fadeOutLeft, fadeOutRight, flipOutX
 			position: 'topRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter or center.
 			onOpening: function () {},
 			onClosing: function () {}
@@ -43,21 +74,18 @@ class CommonUtils {
 		iziToast.show({
 			title: title,
 			message: message,
-			color: ('info' === type) ? 'blue' : ('success' === type) ? 'green' : ('warning' === type) ? 'yellow' : '',
+			color: ('info' === type) ? 'blue' : ('success' === type) ? 'green' : ('warning' === type) ? 'yellow' : ('error' === type) ? 'red' : '',
 			icon: '<i class="iziToast-icon ico-' + type + ' revealIn"></i>'
 		});
 	}
 	isEmpty(val) {
-		return 0 === val.length ? true : false;
+		return 0 === val.trim().length ? true : false;
 	}
 	getValue(val) {
 		return (undefined === val) ? '' : val;
 	}
 	getSkypIcon() {
 		return '<a href="skype:echo123?call"><img src="images/skype.png" width="20" height="20"/></a>';
-	}
-	toCurrency(str) { //NOTE delete?
-		return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 	isEmptyNum(val) {
 		return ('' === val || 0 === parseInt(val)) ? true : false;
@@ -81,6 +109,8 @@ class CommonUtils {
 	}
 	doAjax(url, data, successFn, extraData) {
 
+		var self = this;
+		
 		var serializeSettings = {
 			parseNumbers: true,
 			skipFalsyValuesForTypes: ["string", "number"],
@@ -102,7 +132,7 @@ class CommonUtils {
 
 				xhr.setRequestHeader(header, token);
 
-				//NOTE delete?
+				// NOTE delete?
 				if (false === $.isEmptyObject(extraData)) {
 					settings.data = JSON.parse(settings.data);
 					let key = Object.keys(extraData)[0];
@@ -112,20 +142,20 @@ class CommonUtils {
 				}
 
 			},
-			success: function (data) {
-				if (!data.code.startsWith("S")) {
-					this.doAlert("error", data.message);
+			success: function (resp) {
+				if (!resp.code.startsWith("S")) {
+					self.doAlert("error", resp.data, resp.message);
 				} else {
 					if (typeof successFn === "function") {
-						successFn(data);
+						successFn(resp);
 					} else {
-						this.doAlert("success", data.message);
+						self.doAlert("success", resp.message);
 					}
 				}
 			},
 			error: function (jqXHR, exception) {
 				if (200 != jqXHR.status) {
-					alert("系統錯誤");
+					self.doAlert("error", "系統錯誤");
 				}
 			}
 		});
@@ -152,35 +182,35 @@ class CommonUtils {
 }
 
 let commonUtils = new CommonUtils();
-//	commonUtils.initAlertUI();
-//NOTE
-//function allFalse(data) {
-//let result = true;
-//for ( let i in data) {
-//if (data[i] === true) {
-//result = false;
-//break;
-//}
-//}
-//return result
-//}
+// commonUtils.initAlertUI();
+// NOTE
+// function allFalse(data) {
+// let result = true;
+// for ( let i in data) {
+// if (data[i] === true) {
+// result = false;
+// break;
+// }
+// }
+// return result
+// }
 
-//var message = {
-//info: function (status, title, msg) {
-//	$('<div style="position: fixed;width: 100%;z-index: 999;" class="alert alert-' + status + '">' +
-//		'<a href="#" class="close" data-dismiss="alert">&times;</a>' +
-//		'<strong>' + title + '！</strong>' + msg +
-//		'</div>').prependTo($('body')).hide().slideToggle(300).delay(2000).slideToggle(300, function () {
-//		this.remove();
-//	});
-//},
-//success: function (msg) {
-//	this.info('success', '成功', msg);
-//},
-//error: function (msg) {
-//	this.info('danger', '错误', msg);
-//},
-//warning: function (msg) {
-//	this.info('warning', '警告', msg);
-//}
-//};
+// var message = {
+// info: function (status, title, msg) {
+// $('<div style="position: fixed;width: 100%;z-index: 999;" class="alert alert-' + status + '">' +
+// '<a href="#" class="close" data-dismiss="alert">&times;</a>' +
+// '<strong>' + title + '！</strong>' + msg +
+// '</div>').prependTo($('body')).hide().slideToggle(300).delay(2000).slideToggle(300, function () {
+// this.remove();
+// });
+// },
+// success: function (msg) {
+// this.info('success', '成功', msg);
+// },
+// error: function (msg) {
+// this.info('danger', '错误', msg);
+// },
+// warning: function (msg) {
+// this.info('warning', '警告', msg);
+// }
+// };
