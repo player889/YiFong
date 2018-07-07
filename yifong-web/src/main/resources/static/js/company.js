@@ -97,21 +97,21 @@ class Company extends companyTemplate {
 			commonUtils.doAlert("warning", "重複運費設定，請確認!");
 			return;
 		}
-		
+
 		validator.reset();
 		validator.isInvalidRequired('form3');
 		validator.isInValideGuiNumber();
-		
-		if( 0 < $('.is-invalid').length){
+
+		if (0 < $('.is-invalid').length) {
 			commonUtils.doAlert("warning", "輸入資料有誤，請確認!");
-		}else{
-			 let self = this;
-				 commonUtils.doAjax('/company/save', JSON, function (resp) {
-				 $('#editModal').modal('hide');
-				 $('#input').val(resp.data.no);
-				 c.query();
-				 commonUtils.doAlert("success", resp.message);
-			 });
+		} else {
+			let self = this;
+			commonUtils.doAjax('/company/save', JSON, function (resp) {
+				$('#editModal').modal('hide');
+				$('#input').val(resp.data.no);
+				c.query();
+				commonUtils.doAlert("success", resp.message);
+			});
 		}
 	}
 	doEditModal(index) {
@@ -129,14 +129,14 @@ class Company extends companyTemplate {
 			commonUtils.doAlert("warning", "重複運費設定，請確認!");
 			return;
 		}
-		
+
 		validator.reset();
 		validator.isInvalidRequired('form3');
 		validator.isInValideGuiNumber();
 
-		if( 0 < $('.is-invalid').length){
+		if (0 < $('.is-invalid').length) {
 			commonUtils.doAlert("warning", "輸入資料有誤，請確認!");
-		}else{
+		} else {
 			let self = this;
 			commonUtils.doAjax('/company/edit', JSON, function (resp) {
 				$('#editModal').modal('hide');
@@ -175,7 +175,6 @@ class Company extends companyTemplate {
 				phone: $('#form3-companyDetail\\[phone\\]').val(),
 				address: $('#form3-companyDetail\\[address\\]').val(),
 				guiNumber: $('#form3-companyDetail\\[guiNumber\\]').val(),
-// memo: $('#form3-companyDetail\\[memo\\]').val(),
 				memo: $('#form3-companyDetail\\[memo\\]').val().replace(/\n/g, "<br/>")
 			},
 			charges: this.getChargesData()
@@ -238,19 +237,8 @@ class Company extends companyTemplate {
 		$('#form3-companyDetail\\[phone\\]').val(data.phone);
 		$('#form3-companyDetail\\[guiNumber\\]').val(data.guiNumber);
 		$('#form3-companyDetail\\[address\\]').val(data.address);
-		$('#form3-companyDetail\\[memo\\]').val((undefined === data.memo) ?  '' : data.memo.replace(/\<br\/\>/gi, "\n"));
+		$('#form3-companyDetail\\[memo\\]').val((undefined === data.memo) ? '' : data.memo.replace(/\<br\/\>/gi, "\n"));
 		$('#form3-companycharges').append(super.getEditchargesContentHTML(data.charges));
-	}
-
-	// NOTE
-	mock() {
-		$('#form3-no').val("9999");
-		$('#form3-shortName').val("XXXX");
-		$('#form3-companyDetail\\[fullName\\]').val("123132");
-		$('#form3-companyDetail\\[phone\\]').val("0916713554");
-		$('#form3-companyDetail\\[guiNumber\\]').val("21313");
-		$('#form3-companyDetail\\[address\\]').val("1231313");
-		$('#form3-companyDetail\\[memo\\]').val();
 	}
 }
 let c = new Company();

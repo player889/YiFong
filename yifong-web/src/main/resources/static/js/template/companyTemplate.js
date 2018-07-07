@@ -84,7 +84,7 @@ class companyTemplate {
 			shortName: name
 		}
 			of data) {
-			let show = ( index === showHrefIndex) ? 'show active' : '';
+			let show = (index === showHrefIndex) ? 'show active' : '';
 			html += `<a class="list-group-item list-group-item-action ${show}" href="#info_${index}" role="tab" data-toggle="list" id="infoList_${index}">${no} ${name}</a>`;
 			index++;
 		}
@@ -108,9 +108,9 @@ class companyTemplate {
 			charges: charges
 		}
 			of data) {
-			let show = ( index === showHrefIndex) ? 'show active' : '';
+			let show = (index === showHrefIndex) ? 'show active' : '';
 			let chargesHTML = (true === $.isEmptyObject(charges)) ? `` : this.getViewchargesContentHTML(charges);
-			let textArea = 	(me === undefined) ? '' : me.replace(/\n/g,"<br/>");
+			let textArea = (me === undefined) ? '' : me.replace(/\n/g, "<br/>");
 			html +=
 			`<div class="tab-pane fade ${show}" id="info_${index}" role="tabpanel" aria-labelledby="infoList_${index}">
 					<div class="card">

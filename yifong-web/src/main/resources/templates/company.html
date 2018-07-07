@@ -4,12 +4,13 @@
 <meta th:name="_csrf" th:content="${_csrf.token}" />
 <meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
 <meta charset="UTF-8" />
-<title>公司基本資料</title>
+<!-- common -->
 <link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 <link href="/css/lib/iziToast.min.css" rel="stylesheet" media="screen" />
 <link href="/css/lib/bootstrap-select.min.css" rel="stylesheet" media="screen" />
 <link href="/css/lib/jquery.loading.min.css" rel="stylesheet" media="screen" />
 <link href="/css/lib/common.css" rel="stylesheet" media="screen" />
+<title>公司基本資料</title>
 </head>
 <body>
 	<div class="container">
@@ -37,7 +38,7 @@
 							<div class="form-row">
 								<div class="form-group col-md-1">
 									<label for="form3-no">代碼</label>
-									<input type="text" class="form-control required" id="form3-no" name="form3-no" maxlength="5"/>
+									<input type="text" class="form-control required" id="form3-no" name="form3-no" maxlength="5" />
 									<div class="text-danger hideValidator">
 										<small>請輸入代碼</small>
 									</div>
@@ -58,7 +59,7 @@
 								</div>
 								<div class="form-group col-md-3">
 									<label for="form3-companyDetail[phone]">電話</label>
-									<input type="text" class="form-control required" id="form3-companyDetail[phone]" name="companyDetail[phone]" maxlength="15"/>
+									<input type="text" class="form-control required" id="form3-companyDetail[phone]" name="companyDetail[phone]" maxlength="15" />
 									<div class="text-danger hideValidator">
 										<small>請輸入電話</small>
 									</div>
@@ -67,7 +68,7 @@
 							<div class="form-row">
 								<div class="form-group col-md-3">
 									<label for="form3-companyDetail[guiNumber]">統一編號</label>
-									<input type="text" class="form-control" id="form3-companyDetail[guiNumber]" name="companyDetail[guiNumber]" maxlength="8"/>
+									<input type="text" class="form-control" id="form3-companyDetail[guiNumber]" name="companyDetail[guiNumber]" maxlength="8" />
 									<div class="text-danger hideValidator">
 										<small>請輸入正確統編</small>
 									</div>
@@ -96,7 +97,6 @@
 						<div class="modal-footer">
 							<button type="button" class="btn" id="actionBTN"></button>
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-							<button type="button" class="btn" onclick="c.mock()">XXXXXXXXXXXXXXXXXXXx</button>
 						</div>
 					</div>
 				</div>
@@ -132,13 +132,11 @@
 <script type="text/javascript" src="/js/lib/jquery.number.min.js"></script>
 <script type="text/javascript" src="/js/lib/iziToast.min.js"></script>
 <script type="text/javascript" src="/js/lib/jquery.loading.min.js"></script>
-<script type="text/javascript" src="/js/common.js"></script>
-<script type="text/javascript" src="/js/Validator.js"></script>
 <script type="text/javascript" src="/js/lib/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="/js/lib/i18n/defaults-zh_TW.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/Validator.js"></script>
 <!-- asdsad -->
 <script type="text/javascript" src="/js/template/companyTemplate.js"></script>
 <script type="text/javascript" src="/js/company.js"></script>
-<!-- sada -->
-<!-- asdsad -->
 </html>
