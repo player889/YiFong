@@ -8,70 +8,9 @@
 <link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 <link href="/css/lib/iziToast.min.css" rel="stylesheet" media="screen" />
 <link href="/css/lib/bootstrap-select.min.css" rel="stylesheet" media="screen" />
+<link href="/css/lib/jquery.loading.min.css" rel="stylesheet" media="screen" />
+<link href="/css/lib/common.css" rel="stylesheet" media="screen" />
 </head>
-<style>
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
-	/* 	-moz-appearance: textfield; */
-	/* 	text-align: right; */
-}
-
-/* option:disabled { */
-/* 	background: DarkGray; */
-/* } */
-.RbtnMargin {
-	margin-right: 5px;
-}
-
-.scrollBar {
-	height: 90vh;
-	overflow-y: auto;
-}
-
-/* .table-hover tbody tr:hover td, .table-hover tbody tr:hover th { */
-/* 	background-color: green; */
-/* } */
-/* .table-striped>tbody>tr:nth-child(2n+1)>td, .table-striped>tbody>tr:nth-child(2n+1)>th { */
-/* 	background-color: #f0f0f0; */
-/* } */
-.show {
-	display: block !important;
-}
-
-.hidden {
-	display: none !important;
-}
-
-.spacing {
-	margin-top: 10px;
-}
-
-.rightBtn {
-	position: absolute;
-	right: 0;
-}
-
-.modal-lg {
-	max-width: 90%;
-}
-
-textarea {
-	resize: none;
-}
-
-.borderless td, .borderless th {
-	border: none;
-}
-
-.currency {
-	text-align: right;
-}
-
-.hideValidator {
-	display: none;
-}
-</style>
 <body>
 	<div class="container">
 		<!-- Query -->
@@ -91,14 +30,14 @@ textarea {
 		<form id="form2" class="spacing"></form>
 		<!-- Edit / Add -->
 		<form id="form3">
-			<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+			<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="true">
 				<div class="modal-dialog modal-lg" role="document">
 					<div class="modal-content">
 						<div class="modal-body" id="editContent">
 							<div class="form-row">
 								<div class="form-group col-md-1">
 									<label for="form3-no">代碼</label>
-									<input type="text" class="form-control required" id="form3-no" name="form3-no" />
+									<input type="text" class="form-control required" id="form3-no" name="form3-no" maxlength="5"/>
 									<div class="text-danger hideValidator">
 										<small>請輸入代碼</small>
 									</div>
@@ -119,7 +58,7 @@ textarea {
 								</div>
 								<div class="form-group col-md-3">
 									<label for="form3-companyDetail[phone]">電話</label>
-									<input type="text" class="form-control required" id="form3-companyDetail[phone]" name="companyDetail[phone]" />
+									<input type="text" class="form-control required" id="form3-companyDetail[phone]" name="companyDetail[phone]" maxlength="15"/>
 									<div class="text-danger hideValidator">
 										<small>請輸入電話</small>
 									</div>
@@ -128,7 +67,7 @@ textarea {
 							<div class="form-row">
 								<div class="form-group col-md-3">
 									<label for="form3-companyDetail[guiNumber]">統一編號</label>
-									<input type="text" class="form-control" id="form3-companyDetail[guiNumber]" name="companyDetail[guiNumber]" />
+									<input type="text" class="form-control" id="form3-companyDetail[guiNumber]" name="companyDetail[guiNumber]" maxlength="8"/>
 									<div class="text-danger hideValidator">
 										<small>請輸入正確統編</small>
 									</div>
@@ -182,8 +121,8 @@ textarea {
 			</div>
 		</form>
 	</div>
-	<div id="loadingDiv">dasssssssssssssssssss</div>
 </body>
+<!-- common -->
 <script type="text/javascript" src="/webjars/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="/webjars/underscorejs/1.8.3/underscore-min.js"></script>
 <script type="text/javascript" src="/js/lib/popper.min.js"></script>
@@ -192,12 +131,14 @@ textarea {
 <script type="text/javascript" src="/js/lib/skypeCheck.js"></script>
 <script type="text/javascript" src="/js/lib/jquery.number.min.js"></script>
 <script type="text/javascript" src="/js/lib/iziToast.min.js"></script>
+<script type="text/javascript" src="/js/lib/jquery.loading.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
-<script type="text/javascript" src="/js/template/companyTemplate.js"></script>
-<!-- sada -->
-<script type="text/javascript" src="/js/validator/companyValidator.js"></script>
-<script type="text/javascript" src="/js/company.js"></script>
-<!-- asdsad -->
+<script type="text/javascript" src="/js/Validator.js"></script>
 <script type="text/javascript" src="/js/lib/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="/js/lib/i18n/defaults-zh_TW.min.js"></script>
+<!-- asdsad -->
+<script type="text/javascript" src="/js/template/companyTemplate.js"></script>
+<script type="text/javascript" src="/js/company.js"></script>
+<!-- sada -->
+<!-- asdsad -->
 </html>

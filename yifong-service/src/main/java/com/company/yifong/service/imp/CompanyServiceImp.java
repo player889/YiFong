@@ -94,7 +94,7 @@ public class CompanyServiceImp implements CompanyService {
 	public String delete(String no) {
 		List<Client> data = clientRepository.findByNo(no);
 		if (0 == data.size()) {
-			throw new DataNotFoundException("無刪除資料");
+			throw new DataNotFoundException("無資料");
 		} else if (1 < data.size()) {
 			throw new JpaException();
 		} else {

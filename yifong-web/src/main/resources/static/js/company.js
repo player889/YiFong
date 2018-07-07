@@ -28,10 +28,14 @@ class Company extends companyTemplate {
 			c.query();
 		});
 
+		$('#editModal,#deleteModal').on('show.bs.modal', function (e) {
+			validator.reset();
+		});
+
 		$('#editModal').on('hidden.bs.modal', function (e) {
 			$('#form3-companycharges').empty();
 		});
-		
+
 		$('#deleteModal').on('hidden.bs.modal', function (e) {
 			$('#form4')[0].reset();
 		});
@@ -85,7 +89,7 @@ class Company extends companyTemplate {
 		$('#form3-companycharges').append(super.getEditchargesContentHTML(null));
 		$("#editModal").modal();
 		this.initLib();
-		
+
 	}
 	doSave() {
 		let JSON = this.getFormData();
@@ -98,15 +102,17 @@ class Company extends companyTemplate {
 		validator.isInvalidRequired('form3');
 		validator.isInValideGuiNumber();
 		
-//		let self = this;
-//		commonUtils.doAjax('/company/save', JSON, function (resp) {
-//			$('#editModal').modal('hide');
-//			$('#input').val(resp.data.no);
-//			c.query();
-//			commonUtils.doAlert("success", resp.message);
-//		});
-		
-
+		if( 0 < $('.is-invalid').length){
+			commonUtils.doAlert("warning", "輸入資料有誤，請確認!");
+		}else{
+			 let self = this;
+				 commonUtils.doAjax('/company/save', JSON, function (resp) {
+				 $('#editModal').modal('hide');
+				 $('#input').val(resp.data.no);
+				 c.query();
+				 commonUtils.doAlert("success", resp.message);
+			 });
+		}
 	}
 	doEditModal(index) {
 		this.setDetailData(index);
@@ -124,18 +130,26 @@ class Company extends companyTemplate {
 			return;
 		}
 		
-		let self = this;
-		commonUtils.doAjax('/company/edit', JSON, function (resp) {
-			$('#editModal').modal('hide');
-			self.query(self.getShowHrefId());
-			commonUtils.doAlert("success", resp.message);
-		});
-	}
-	doDelete(){
-		let no = $('#deleteId').val();
-		if(commonUtils.isEmpty(no)){
-			commonUtils.doAlert('warning', "請輸入資料");
+		validator.reset();
+		validator.isInvalidRequired('form3');
+		validator.isInValideGuiNumber();
+
+		if( 0 < $('.is-invalid').length){
+			commonUtils.doAlert("warning", "輸入資料有誤，請確認!");
 		}else{
+			let self = this;
+			commonUtils.doAjax('/company/edit', JSON, function (resp) {
+				$('#editModal').modal('hide');
+				self.query(self.getShowHrefId());
+				commonUtils.doAlert("success", resp.message);
+			});
+		}
+	}
+	doDelete() {
+		let no = $('#deleteId').val();
+		if (commonUtils.isEmpty(no)) {
+			commonUtils.doAlert('warning', "請輸入資料");
+		} else {
 			commonUtils.doAjax('/company/delete/' + no, {}, function (resp) {
 				commonUtils.doAlert("success", resp.message);
 				$('#form2').empty();
@@ -161,7 +175,8 @@ class Company extends companyTemplate {
 				phone: $('#form3-companyDetail\\[phone\\]').val(),
 				address: $('#form3-companyDetail\\[address\\]').val(),
 				guiNumber: $('#form3-companyDetail\\[guiNumber\\]').val(),
-				memo: $('#form3-companyDetail\\[memo\\]').val(),
+// memo: $('#form3-companyDetail\\[memo\\]').val(),
+				memo: $('#form3-companyDetail\\[memo\\]').val().replace(/\n/g, "<br/>")
 			},
 			charges: this.getChargesData()
 		};
@@ -223,10 +238,10 @@ class Company extends companyTemplate {
 		$('#form3-companyDetail\\[phone\\]').val(data.phone);
 		$('#form3-companyDetail\\[guiNumber\\]').val(data.guiNumber);
 		$('#form3-companyDetail\\[address\\]').val(data.address);
-		$('#form3-companyDetail\\[memo\\]').val(data.memo);
+		$('#form3-companyDetail\\[memo\\]').val((undefined === data.memo) ?  '' : data.memo.replace(/\<br\/\>/gi, "\n"));
 		$('#form3-companycharges').append(super.getEditchargesContentHTML(data.charges));
 	}
-	
+
 	// NOTE
 	mock() {
 		$('#form3-no').val("9999");

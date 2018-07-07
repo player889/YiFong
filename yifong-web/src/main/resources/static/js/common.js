@@ -1,16 +1,7 @@
-var $loading = $('#loadingDiv').hide();
-$(document)
-.ajaxStart(function () {
-	$loading.show();
-})
-.ajaxStop(function () {
-	$loading.hide();
-});
-
 class CommonUtils {
 
 	constructor() {
-		
+
 		$.fn.enterKey = function (fnc) {
 			return this.each(function () {
 				$(this).keypress(function (ev) {
@@ -21,16 +12,16 @@ class CommonUtils {
 				})
 			})
 		}
-		
-		$.fn.addValidation = function(){
+
+		$.fn.addValidation = function () {
 			$(this).addClass("is-invalid");
 			$(this).next('.text-danger').removeClass('hideValidator');
 		}
-		
-		$.fn.isGuiNumner = function(){
+
+		$.fn.isGuiNumner = function () {
 
 			let taxId = $(this).val();
-			
+
 			if ('' === taxId) {
 				return true;
 			}
@@ -53,7 +44,7 @@ class CommonUtils {
 
 			return sum % 10 == 0 || (taxId[6] == "7" && (sum + 1) % 10 == 0);
 		}
-		
+
 		iziToast.settings({
 			color: '', // blue, red, green, yellow
 			timeout: 2000,
@@ -110,7 +101,7 @@ class CommonUtils {
 	doAjax(url, data, successFn, extraData) {
 
 		var self = this;
-		
+
 		var serializeSettings = {
 			parseNumbers: true,
 			skipFalsyValuesForTypes: ["string", "number"],
@@ -121,6 +112,8 @@ class CommonUtils {
 
 		var header = $("meta[name='_csrf_header']").attr("content");
 		var token = $("meta[name='_csrf']").attr("content");
+
+// self.ajaxStartLoading();
 
 		$.ajax({
 			url: url,
@@ -140,7 +133,7 @@ class CommonUtils {
 					_.extend(json, extraData[key]);
 					settings.data = JSON.stringify(settings.data);
 				}
-
+// self.ajaxStartLoading();
 			},
 			success: function (resp) {
 				if (!resp.code.startsWith("S")) {
@@ -153,12 +146,31 @@ class CommonUtils {
 					}
 				}
 			},
+			complete: function () {
+// self.ajaxStartLoading();
+			},
 			error: function (jqXHR, exception) {
 				if (200 != jqXHR.status) {
 					self.doAlert("error", "系統錯誤");
 				}
 			}
 		});
+	}
+	initAjaxLoading() {
+		$('body').loading({
+			onStart: function (loading) {
+				loading.overlay.fadeIn();
+			},
+			onStop: function (loading) {
+				loading.overlay.fadeOut();
+			}
+		});
+	}
+	ajaxStartLoading() {
+		$('body').loading('start');
+	}
+	ajaxStopLoading() {
+		$('body').loading('stop');
 	}
 	doModal(url, data, contentId) {
 

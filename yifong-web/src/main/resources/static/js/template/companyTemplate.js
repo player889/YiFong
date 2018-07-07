@@ -110,13 +110,13 @@ class companyTemplate {
 			of data) {
 			let show = ( index === showHrefIndex) ? 'show active' : '';
 			let chargesHTML = (true === $.isEmptyObject(charges)) ? `` : this.getViewchargesContentHTML(charges);
-
+			let textArea = 	(me === undefined) ? '' : me.replace(/\n/g,"<br/>");
 			html +=
 			`<div class="tab-pane fade ${show}" id="info_${index}" role="tabpanel" aria-labelledby="infoList_${index}">
 					<div class="card">
 						<div class="card-body">
 							<input type="button" class="btn btn-outline-warning float-right" value="修改" onclick="c.doEditModal('${index}');"/>
-							${name}<br>${address}<br>${this.phoneFilter(ph)}<br>${commonUtils.getValue(gn)}<br>${commonUtils.getValue(me)}
+							${name}<br>${address}<br>${this.phoneFilter(ph)}<br>${commonUtils.getValue(gn)}<br>${textArea}
 							${chargesHTML}
 						</div>
 					</div>
