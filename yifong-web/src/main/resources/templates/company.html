@@ -38,7 +38,7 @@
 							<div class="form-row">
 								<div class="form-group col-md-1">
 									<label for="form3-no">代碼</label>
-									<input type="text" class="form-control required" id="form3-no" name="form3-no" maxlength="5" />
+									<input type="number" class="form-control required" id="form3-no" name="form3-no" pattern="\d*" maxlength="5" />
 									<div class="text-danger hideValidator">
 										<small>請輸入代碼</small>
 									</div>
@@ -59,7 +59,7 @@
 								</div>
 								<div class="form-group col-md-3">
 									<label for="form3-companyDetail[phone]">電話</label>
-									<input type="text" class="form-control required" id="form3-companyDetail[phone]" name="companyDetail[phone]" maxlength="15" />
+									<input type="text" class="form-control required" id="form3-companyDetail[phone]" name="companyDetail[phone]" maxlength="15" pattern="[0-9\-]+" />
 									<div class="text-danger hideValidator">
 										<small>請輸入電話</small>
 									</div>
@@ -68,7 +68,7 @@
 							<div class="form-row">
 								<div class="form-group col-md-3">
 									<label for="form3-companyDetail[guiNumber]">統一編號</label>
-									<input type="text" class="form-control" id="form3-companyDetail[guiNumber]" name="companyDetail[guiNumber]" maxlength="8" />
+									<input type="text" class="form-control" id="form3-companyDetail[guiNumber]" name="companyDetail[guiNumber]" pattern="\d*" maxlength="8" />
 									<div class="text-danger hideValidator">
 										<small>請輸入正確統編</small>
 									</div>
@@ -97,6 +97,7 @@
 						<div class="modal-footer">
 							<button type="button" class="btn" id="actionBTN"></button>
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+							<button type="button" class="btn" onclick="c.mock()">XXXXXXXXXXXXXXXXXXXx</button>
 						</div>
 					</div>
 				</div>

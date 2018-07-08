@@ -50,6 +50,10 @@ class companyTemplate {
 					</table>`;
 		return html;
 	}
+	addEmptyRow() {
+		$('#form3-companycharges tr:last').before(this.getchargesContentHTML());
+		this.triggerEvent();
+	}
 	addchargesRowHTML(charges) {
 		let html = ``;
 		if (false === $.isEmptyObject(charges)) {
@@ -154,6 +158,9 @@ class companyTemplate {
 
 		html += `</tbody></table>`;
 		return html;
+	}
+	phoneFilter(val) {
+		return val.replace('#', '分機') + commonUtils.getSkypIcon();
 	}
 
 }

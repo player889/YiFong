@@ -12,7 +12,7 @@ class Company extends companyTemplate {
 			self._dest = resp.data;
 		});
 	}
-	initLib() {
+	triggerEvent() {
 		$('.currency').number(true, 0);
 		$('.selectpicker').selectpicker();
 	}
@@ -39,15 +39,6 @@ class Company extends companyTemplate {
 		$('#deleteModal').on('hidden.bs.modal', function (e) {
 			$('#form4')[0].reset();
 		});
-	}
-	phoneFilter(val) {
-		let icon = commonUtils.getSkypIcon();
-		let arr = val.split("-");
-		return (3 === arr.length) ? arr[0] + arr[1] + icon + '分機' + arr[2] : val + icon;
-	}
-	addEmptyRow() {
-		$('#form3-companycharges tr:last').before(super.getchargesContentHTML());
-		this.initLib();
 	}
 	query(showHrefIndex) {
 		let data = {
@@ -88,19 +79,20 @@ class Company extends companyTemplate {
 		$('#form3')[0].reset();
 		$('#form3-companycharges').append(super.getEditchargesContentHTML(null));
 		$("#editModal").modal();
-		this.initLib();
+		this.triggerEvent();
 
 	}
 	doSave() {
+		
+		validator.reset();
+		validator.isInvalidRequired('form3');
+		validator.isInValideGuiNumber();
+		
 		let JSON = this.getFormData();
 		if (true === this.hasSamecharges(JSON)) {
 			commonUtils.doAlert("warning", "重複運費設定，請確認!");
 			return;
 		}
-
-		validator.reset();
-		validator.isInvalidRequired('form3');
-		validator.isInValideGuiNumber();
 
 		if (0 < $('.is-invalid').length) {
 			commonUtils.doAlert("warning", "輸入資料有誤，請確認!");
@@ -121,18 +113,19 @@ class Company extends companyTemplate {
 			self.doEdit();
 		});
 		$("#editModal").modal();
-		this.initLib();
+		this.triggerEvent();
 	}
 	doEdit() {
+		
+		validator.reset();
+		validator.isInvalidRequired('form3');
+		validator.isInValideGuiNumber();
+		
 		let JSON = this.getFormData();
 		if (true === this.hasSamecharges(JSON)) {
 			commonUtils.doAlert("warning", "重複運費設定，請確認!");
 			return;
 		}
-
-		validator.reset();
-		validator.isInvalidRequired('form3');
-		validator.isInValideGuiNumber();
 
 		if (0 < $('.is-invalid').length) {
 			commonUtils.doAlert("warning", "輸入資料有誤，請確認!");
@@ -239,6 +232,16 @@ class Company extends companyTemplate {
 		$('#form3-companyDetail\\[address\\]').val(data.address);
 		$('#form3-companyDetail\\[memo\\]').val((undefined === data.memo) ? '' : data.memo.replace(/\<br\/\>/gi, "\n"));
 		$('#form3-companycharges').append(super.getEditchargesContentHTML(data.charges));
+	}
+	// NOTE
+	mock() {
+		$('#form3-no').val("9999");
+		$('#form3-shortName').val("XXXX");
+		$('#form3-companyDetail\\[fullName\\]').val("123132");
+		$('#form3-companyDetail\\[phone\\]').val("0916713554");
+		$('#form3-companyDetail\\[guiNumber\\]').val("21313");
+		$('#form3-companyDetail\\[address\\]').val("1231313");
+		$('#form3-companyDetail\\[memo\\]').val();
 	}
 }
 let c = new Company();

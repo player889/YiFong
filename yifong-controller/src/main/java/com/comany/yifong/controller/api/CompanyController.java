@@ -2,6 +2,8 @@ package com.comany.yifong.controller.api;
 
 import java.lang.reflect.InvocationTargetException;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -42,8 +44,9 @@ public class CompanyController {
 	}
 
 	@PostMapping(value = "/save", produces = "application/json; charset=utf-8")
-	public AjaxResponse save(@RequestBody final CompanyRequest vo, final BindingResult errors) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		return new AjaxResponse(ApiSatus.SUCC_SAVE, companyService.save(vo));
+	public AjaxResponse save(@RequestBody @Valid final CompanyRequest vo) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		return new AjaxResponse(ApiSatus.SUCC_SAVE);
+		// return new AjaxResponse(ApiSatus.SUCC_SAVE, companyService.save(vo));
 	}
 
 	@PostMapping(value = "/delete/{no}", produces = "application/json; charset=utf-8")
