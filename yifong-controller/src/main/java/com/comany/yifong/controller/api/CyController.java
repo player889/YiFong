@@ -3,7 +3,6 @@ package com.comany.yifong.controller.api;
 import java.lang.reflect.InvocationTargetException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +22,14 @@ public class CyController {
 	private CyService cyService;
 
 	@PostMapping(value = "/query", produces = "application/json; charset=utf-8")
-	public AjaxResponse edit(@RequestBody final CyRequest vo, final BindingResult errors) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+	public AjaxResponse query(@RequestBody final CyRequest vo) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		return new AjaxResponse(ApiSatus.SUCC_QUERY, cyService.query(vo));
+	}
+
+	@PostMapping(value = "/edit", produces = "application/json; charset=utf-8")
+	public AjaxResponse edit(@RequestBody final CyRequest vo) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		cyService.edit(vo);
+		return new AjaxResponse(ApiSatus.SUCC_UPDATE);
 	}
 
 }

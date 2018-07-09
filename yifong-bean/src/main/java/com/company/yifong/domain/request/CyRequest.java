@@ -16,7 +16,13 @@ import lombok.Setter;
 public class CyRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private Integer seq;
+	private String no;
 	private String area;
 	private String name;
+
+	private Integer used;
+	private String address;
+	private String phone;
 
 }

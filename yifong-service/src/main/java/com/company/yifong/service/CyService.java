@@ -8,4 +8,6 @@ import com.company.yifong.entity.Cy;
 public interface CyService {
 
 	List<Cy> query(CyRequest vo);
+
+	void edit(CyRequest vo);
 }

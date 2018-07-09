@@ -27,13 +27,14 @@
 				</div>
 			</div>
 		</form>
-		<table class="table table-sm spacing table-hover align-middle" id="content">
+		<table class="table table-sm spacing table-hover align-middle d-none" id="content">
 			<thead>
 				<tr>
+					<th scope="col" class="text-center">使用</th>
+					<th scope="col">代碼</th>
 					<th scope="col">名稱</th>
 					<th scope="col">地址</th>
 					<th scope="col">電話</th>
-					<th scope="col">使用</th>
 					<th scope="col"></th>
 				</tr>
 			</thead>
@@ -41,39 +42,39 @@
 			</tbody>
 		</table>
 		<!-- Modal -->
-		<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="true">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<form>
-							<div class="form-inline">
-								<div class="custom-control custom-checkbox">
-									<input type="checkbox" class="custom-control-input" id="used" />
-									<label class="custom-control-label" for="used" id="name"></label>
-								</div>
-							</div>
-							<div class="form-row">
-								<div class="form-group col-md-12">
-									<label for="edit-phone">電話</label>
-									<input type="text" class="form-control" id="edit-phone" placeholder="電話">
-								</div>
-							</div>
-							<div class="form-row">
-								<div class="form-group col-md-12">
-									<label for="edit-address">地址</label>
-									<input type="text" class="form-control" id="edit-address" placeholder="地址">
-								</div>
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-					
-						<button type="button" class="btn btn-warning">修改</button>
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<!-- 		<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="true"> -->
+		<!-- 			<div class="modal-dialog modal-dialog-centered" role="document"> -->
+		<!-- 				<div class="modal-content"> -->
+		<!-- 					<div class="modal-body"> -->
+		<!-- 						<form> -->
+		<!-- 							<div class="form-inline"> -->
+		<!-- 								<div class="custom-control custom-checkbox"> -->
+		<!-- 									<input type="checkbox" class="custom-control-input" id="used" /> -->
+		<!-- 									<label class="custom-control-label" for="used" id="name"></label> -->
+		<!-- 								</div> -->
+		<!-- 							</div> -->
+		<!-- 							<div class="form-row"> -->
+		<!-- 								<div class="form-group col-md-12"> -->
+		<!-- 									<label for="edit-phone">電話</label> -->
+		<!-- 									<input type="text" class="form-control" id="edit-phone" placeholder="電話" readonly /> -->
+		<!-- 								</div> -->
+		<!-- 							</div> -->
+		<!-- 							<div class="form-row"> -->
+		<!-- 								<div class="form-group col-md-12"> -->
+		<!-- 									<label for="edit-address">地址</label> -->
+		<!-- 									<input type="text" class="form-control" id="edit-address" placeholder="地址" readonly /> -->
+		<!-- 								</div> -->
+		<!-- 							</div> -->
+		<!-- 							<input type="hidden" id="edit-seq" /> -->
+		<!-- 						</form> -->
+		<!-- 					</div> -->
+		<!-- 					<div class="modal-footer"> -->
+		<!-- 						<button type="button" class="btn btn-warning" onclick="cy.edit()">修改</button> -->
+		<!-- 						<button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button> -->
+		<!-- 					</div> -->
+		<!-- 				</div> -->
+		<!-- 			</div> -->
+		<!-- 		</div> -->
 	</div>
 </body>
 <!-- common -->

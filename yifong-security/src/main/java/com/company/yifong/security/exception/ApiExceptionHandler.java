@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -75,6 +76,12 @@ public class ApiExceptionHandler {
 		List<ObjectError> objectErrorList = e.getBindingResult().getAllErrors();
 		objectErrorList.forEach(error -> sb.append((sb.length() > 0 ? ", " : "") + error.getDefaultMessage()));
 		return new AjaxResponse(ApiSatus.ERR_INPUT, sb.toString());
+	}
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	@ResponseBody
+	public final AjaxResponse handleValidationExceptions(DataIntegrityViolationException e) {
+		return new AjaxResponse(ApiSatus.ERR_INPUT, StringUtils.isEmpty(e.getMessage()) ? null : e.getMessage());
 	}
 
 }

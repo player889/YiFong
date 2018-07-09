@@ -27,7 +27,7 @@ public class Cy implements Serializable {
 	@Column(unique = true, nullable = false)
 	private int seq;
 
-	@Column(nullable = false, length = 100)
+	@Column(nullable = true, length = 100)
 	private String address;
 
 	@Column(nullable = false)
@@ -42,7 +42,7 @@ public class Cy implements Serializable {
 	@Column(nullable = false, length = 15)
 	private String phone;
 
-	@Column(nullable = false)
-	private boolean used;
+	@Column(nullable = false, columnDefinition = "TINYINT", length = 1)
+	private Integer used;
 
 }

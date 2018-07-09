@@ -132,7 +132,7 @@ class CommonUtils {
 			success: function (resp) {
 				if (!resp.code.startsWith("S")) {
 					console.log(resp);
-					self.doAlert("error", resp.message);
+					self.doAlert("error", resp.message, resp.data);
 				} else {
 					if (typeof successFn === "function") {
 						successFn(resp);
