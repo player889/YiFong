@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta th:name="_csrf" th:content="${_csrf.token}" />
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+<meta charset="UTF-8" />
+<!-- common -->
+<link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+<link href="/css/lib/iziToast.min.css" rel="stylesheet" media="screen" />
+<link href="/css/lib/bootstrap-select.min.css" rel="stylesheet" media="screen" />
+<link href="/css/lib/jquery.loading.min.css" rel="stylesheet" media="screen" />
+<link href="/css/lib/common.css" rel="stylesheet" media="screen" />
+<title>公司基本資料</title>
+</head>
+<body>
+	<div class="container">
+		<!-- Query -->
+		<form>
+			<table class="table text-center">
+				<tr>
+					<th>代號</th>
+					<th>名稱</th>
+					<th>電話</th>
+					<th>聯絡人</th>
+				</tr>
+				<tr th:each="data,row : ${list}">
+					<td th:text="${data.no}"></td>
+					<td th:text="${data.fullName}"></td>
+					<td th:text="${data.phone}"></td>
+					<td th:text="${data.createTime}"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+<!-- common -->
+<script type="text/javascript" src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/webjars/underscorejs/1.8.3/underscore-min.js"></script>
+<script type="text/javascript" src="/js/lib/popper.min.js"></script>
+<script type="text/javascript" src="/webjars/bootstrap/4.1.1/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/lib/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="/js/lib/skypeCheck.js"></script>
+<script type="text/javascript" src="/js/lib/jquery.number.min.js"></script>
+<script type="text/javascript" src="/js/lib/iziToast.min.js"></script>
+<script type="text/javascript" src="/js/lib/jquery.loading.min.js"></script>
+<script type="text/javascript" src="/js/lib/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="/js/lib/i18n/defaults-zh_TW.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/Validator.js"></script>
+<!-- asdsad -->
+<script type="text/javascript" src="/js/company/companyList.js"></script>
+</html>

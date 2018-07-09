@@ -16,7 +16,7 @@ class companyTemplate {
 		return this.addInputGroup(clazz, html);
 	}
 	addTd(html) {
-		return `<td>${html}</td>`;
+		return `<td class="align-middle">${html}</td>`;
 	}
 	getCNTRSizeDDL(val) {
 		return this.addTd(commonUtils.createOptions('form3-companycharges[size]', this._CNTRSize, val));

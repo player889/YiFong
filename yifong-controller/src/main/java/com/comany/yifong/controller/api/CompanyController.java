@@ -45,8 +45,7 @@ public class CompanyController {
 
 	@PostMapping(value = "/save", produces = "application/json; charset=utf-8")
 	public AjaxResponse save(@RequestBody @Valid final CompanyRequest vo) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		return new AjaxResponse(ApiSatus.SUCC_SAVE);
-		// return new AjaxResponse(ApiSatus.SUCC_SAVE, companyService.save(vo));
+		return new AjaxResponse(ApiSatus.SUCC_SAVE, companyService.save(vo));
 	}
 
 	@PostMapping(value = "/delete/{no}", produces = "application/json; charset=utf-8")

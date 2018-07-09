@@ -214,11 +214,13 @@ class Company extends companyTemplate {
 		arr.forEach(function (itm) {
 			var unique = true;
 			cleaned.forEach(function (itm2) {
-				if (_.isEqual(itm, itm2))
+				if (_.isEqual(itm, itm2)){
 					unique = false;
+				}
 			});
-			if (unique)
+			if (unique){
 				cleaned.push(itm);
+			}
 		});
 		return cleaned.length != arr.length;
 	}

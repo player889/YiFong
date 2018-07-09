@@ -76,7 +76,11 @@ class CommonUtils {
 		return (undefined === val) ? '' : val;
 	}
 	getSkypIcon() {
-		return '<a href="skype:echo123?call"><img src="images/skype.png" width="20" height="20"/></a>';
+		//NOTE
+//		<a href="callto://+***********">Link will initiate Skype to call my number!</a>
+//		<a href="tel://+1234567890">Call Me</a>
+		return '<a href="skype:+1234567890?call">Call Me</a>'; 
+//		return '<a href="skype:echo123?call"><img src="images/skype_PNG23.png" width="20" height="20" class="align-middle"/></a>';
 	}
 	isEmptyNum(val) {
 		return ('' === val || 0 === parseInt(val)) ? true : false;
@@ -84,11 +88,12 @@ class CommonUtils {
 	isEmptyObject(val) {
 		return (undefined === val || null === val || '' === val || isNaN(val)) ? true : false;
 	}
-	createOptions(name, data, val = undefined, size = 7) {
+	createOptions(name, data, val = undefined, size = 7, defaultTitle = '') {
 		return $('<select/>', {
 			'class': 'form-control selectpicker',
 			'data-size': size,
-			'name': name
+			'name': name,
+			'title': ('' === defaultTitle) ?  '' : defaultTitle 
 		}).html($.map(data, function (text, index) {
 				return $('<option/>', {
 					'value': index,
@@ -98,7 +103,7 @@ class CommonUtils {
 				});
 			})).prop("outerHTML");
 	}
-	doAjax(url, data, successFn, extraData) {
+	doAjax(url, data, successFn) {
 
 		var self = this;
 
@@ -113,7 +118,6 @@ class CommonUtils {
 		var header = $("meta[name='_csrf_header']").attr("content");
 		var token = $("meta[name='_csrf']").attr("content");
 
-// self.ajaxStartLoading();
 
 		$.ajax({
 			url: url,
@@ -122,18 +126,8 @@ class CommonUtils {
 			dataType: 'json',
 			data: (typeof data === 'object') ? JSON.stringify(data) : JSON.stringify($(data).serializeJSON(serializeSettings)),
 			beforeSend: function (xhr, settings) {
-
 				xhr.setRequestHeader(header, token);
-
-				// NOTE delete?
-				if (false === $.isEmptyObject(extraData)) {
-					settings.data = JSON.parse(settings.data);
-					let key = Object.keys(extraData)[0];
-					let json = (undefined === settings.data[key]) ? settings.data : settings.data[key];
-					_.extend(json, extraData[key]);
-					settings.data = JSON.stringify(settings.data);
-				}
-// self.ajaxStartLoading();
+				$('body').loading('start');
 			},
 			success: function (resp) {
 				if (!resp.code.startsWith("S")) {
@@ -148,7 +142,7 @@ class CommonUtils {
 				}
 			},
 			complete: function () {
-// self.ajaxStartLoading();
+				$('body').loading('stop');
 			},
 			error: function (jqXHR, exception) {
 				if (200 != jqXHR.status) {
@@ -166,12 +160,6 @@ class CommonUtils {
 				loading.overlay.fadeOut();
 			}
 		});
-	}
-	ajaxStartLoading() {
-		$('body').loading('start');
-	}
-	ajaxStopLoading() {
-		$('body').loading('stop');
 	}
 	doModal(url, data, contentId) {
 
@@ -195,35 +183,3 @@ class CommonUtils {
 }
 
 let commonUtils = new CommonUtils();
-// commonUtils.initAlertUI();
-// NOTE
-// function allFalse(data) {
-// let result = true;
-// for ( let i in data) {
-// if (data[i] === true) {
-// result = false;
-// break;
-// }
-// }
-// return result
-// }
-
-// var message = {
-// info: function (status, title, msg) {
-// $('<div style="position: fixed;width: 100%;z-index: 999;" class="alert alert-' + status + '">' +
-// '<a href="#" class="close" data-dismiss="alert">&times;</a>' +
-// '<strong>' + title + '！</strong>' + msg +
-// '</div>').prependTo($('body')).hide().slideToggle(300).delay(2000).slideToggle(300, function () {
-// this.remove();
-// });
-// },
-// success: function (msg) {
-// this.info('success', '成功', msg);
-// },
-// error: function (msg) {
-// this.info('danger', '错误', msg);
-// },
-// warning: function (msg) {
-// this.info('warning', '警告', msg);
-// }
-// };
