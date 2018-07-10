@@ -1,7 +1,5 @@
 package com.company.yifong.domain.request.list;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.company.yifong.domain.request.CompanyRequest;
