@@ -16,14 +16,13 @@
 	<div class="container spacing">
 		<form>
 			<div class="form-row spacing">
-				<div class="col-md-2">
+				<div class="col-md-4">
 					<div id="CYArea"></div>
 				</div>
-				<div class="col-md-2">
-					<input type="text" class="form-control" placeholder="名稱" name="name" id="name" value="" />
-				</div>
-				<div class="col-md-2">
+				<div class="col-md-6">
 					<input type="button" class="btn btn-outline-secondary" onclick="cy.query();" value="查詢" />
+					<input type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addModal" value="新增" />
+					<input type="button" class="btn btn-outline-danger" value="刪除" data-toggle="modal" data-target="#deleteModal" />
 				</div>
 			</div>
 		</form>
@@ -41,40 +40,66 @@
 			<tbody>
 			</tbody>
 		</table>
-		<!-- Modal -->
-		<!-- 		<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="true"> -->
-		<!-- 			<div class="modal-dialog modal-dialog-centered" role="document"> -->
-		<!-- 				<div class="modal-content"> -->
-		<!-- 					<div class="modal-body"> -->
-		<!-- 						<form> -->
-		<!-- 							<div class="form-inline"> -->
-		<!-- 								<div class="custom-control custom-checkbox"> -->
-		<!-- 									<input type="checkbox" class="custom-control-input" id="used" /> -->
-		<!-- 									<label class="custom-control-label" for="used" id="name"></label> -->
-		<!-- 								</div> -->
-		<!-- 							</div> -->
-		<!-- 							<div class="form-row"> -->
-		<!-- 								<div class="form-group col-md-12"> -->
-		<!-- 									<label for="edit-phone">電話</label> -->
-		<!-- 									<input type="text" class="form-control" id="edit-phone" placeholder="電話" readonly /> -->
-		<!-- 								</div> -->
-		<!-- 							</div> -->
-		<!-- 							<div class="form-row"> -->
-		<!-- 								<div class="form-group col-md-12"> -->
-		<!-- 									<label for="edit-address">地址</label> -->
-		<!-- 									<input type="text" class="form-control" id="edit-address" placeholder="地址" readonly /> -->
-		<!-- 								</div> -->
-		<!-- 							</div> -->
-		<!-- 							<input type="hidden" id="edit-seq" /> -->
-		<!-- 						</form> -->
-		<!-- 					</div> -->
-		<!-- 					<div class="modal-footer"> -->
-		<!-- 						<button type="button" class="btn btn-warning" onclick="cy.edit()">修改</button> -->
-		<!-- 						<button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button> -->
-		<!-- 					</div> -->
-		<!-- 				</div> -->
-		<!-- 			</div> -->
-		<!-- 		</div> -->
+		<div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="true">
+			<div class="modal-dialog " role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<form id="addModalForm">
+							<div class="form-row">
+								<div class="form-group col-md-12">
+									<div class="form-inline" style="margin-left: 10px">
+										<label class="switch ">
+											<input type="checkbox" id="add-used" checked />
+											<span class="slider"></span>
+										</label>
+										<div id="addCYArea" style="margin-left: 10px"></div>
+										<input type="text" class="form-control" style="margin-left: 10px;" id="add-no" placeholder="代碼" />
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-12">
+									<input type="text" class="form-control" id="add-name" placeholder="名稱" />
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-12">
+									<input type="text" class="form-control" id="add-address" placeholder="地址" />
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-12">
+									<input type="text" class="form-control" id="add-phone" placeholder="電話" />
+								</div>
+							</div>
+							<input type="hidden" id="add-seq" />
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success" onclick="cy.doSave()">新增</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<form id="deleteModalForm">
+							<div class="form-group row">
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="deleteNo" placeholder="請輸入代碼">
+								</div>
+								<div class="col-sm-2">
+									<input type="button" class="btn btn-danger" value="刪除" onclick="cy.doDelete();" />
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 <!-- common -->

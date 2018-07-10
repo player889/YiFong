@@ -24,7 +24,7 @@ public class Cy implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(unique = true, nullable = false)
+	@Column(unique = true, nullable = false, insertable = false, updatable = false)
 	private int seq;
 
 	@Column(nullable = true, length = 100)

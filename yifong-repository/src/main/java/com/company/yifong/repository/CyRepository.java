@@ -14,15 +14,17 @@ import com.company.yifong.entity.Cy;
 @Repository
 public interface CyRepository extends JpaRepository<Cy, Long> {
 
-	List<Cy> findByArea(String no);
+	List<Cy> findByAreaOrderByUsedDesc(String no);
 
-	List<Cy> findByNameContaining(String name);
+	Long countByNo(String no);
 
-	 Long countByNo(String no);
-	
 	@Modifying
 	@Transactional
-	@Query("update Cy set used = ?2, no = ?3 where seq = ?1")
-	void updateUsedBySeq(Integer seq, Integer used, String no);
+	@Query("update Cy set used = ?2, no = ?3, name = ?4, address = ?5, phone = ?6 where seq = ?1")
+	void updateUsedBySeq(Integer seq, Integer used, String no, String name, String address, String phone);
+
+	@Modifying
+	@Transactional
+	void removeByNo(String no);
 
 }

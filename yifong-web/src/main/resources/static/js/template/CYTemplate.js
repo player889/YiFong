@@ -23,48 +23,33 @@ class CYTemplate {
 			of data) {
 
 			let checked = (used) ? `checked` : ``;
-//			let icon = commonUtils.getSkypIcon();
+// let icon = commonUtils.getSkypIcon();
 			let icon = '';
 			
-			address =(typeof address === 'undefined') ?  '' : address;
+			address = (typeof address === 'undefined') ?  '' : address;
 			
 			let checkbox = `${template.radio(index,checked)}`;
-			let input = `<input type="text" class="form-control " value="${no}" id="no${index}"/>`;
-			let nameSpan = `<span id="name${index}">${name}</span>`;
-			let addressSpan = `<span id="address${index}">${address}</span>`;
-			let phoneSpan = `<span id="phone${index}">${phone}${icon}</span>`;
+			let input = `<input type="text" class="form-control" value="${no}" id="no${index}"/>`;
+			let nameSpan = `<input type="text" class="form-control" value="${name}" id="name${index}"/>`;
+			let addressSpan = `<input type="text" class="form-control" value="${address}" id="address${index}"/>`;
+			let phoneSpan = `<input type="text" class="form-control" value="${phone}" id="phone${index}"/>`;
 			let btn = template.fnBtn(index, seq); 
 			
-			let td0 = `<td class="align-middle">${checkbox}</td>`;
-			let td1 =  `<td class="align-middle" style="width:10%">${input}</td>`;
-		
-			let td2 = `${template.addTd(nameSpan)}`;
-			let td3 = `${template.addTd(addressSpan)}`;
-			let td4 = `${template.addTd(phoneSpan)}`;
-			let td5 = `${template.addTd(btn)}`;
+			let td0 = `<td class="align-middle" style="width:5%">${checkbox}</td>`;
+			let td1 = `<td class="align-middle" style="width:10%">${input}</td>`;
+			let td2 = `<td class="align-middle" style="width:10%">${nameSpan}</td>`;
+			let td3 = `<td class="align-middle" style="width:25%">${addressSpan}</td>`;
+			let td4 = `<td class="align-middle" style="width:10%">${phoneSpan}</td>`;
+			let td5 = `<td class="align-middle" style="width:10%">${btn}</td>`;
 			
 			html += `<tr>${td0}${td1}${td2}${td3}${td4}${td5}</tr>`;
 			index++;
 		}
 		return html;
 	}
-	addTd(html) {
-		return `<td class="align-middle">${html}</td>`;
-	}
 	radio(index, checked = '') {
 		return `<div class="form-inline centerBlock"><label class="switch"><input type="checkbox" id="used${index}" ${checked}> <span class="slider"></span> </label> </div>`;
 	}
-	
-// fnBtn(seq, no, name, address, phone, used) {
-// let btn = `<input type="button" class="btn btn-outline-warning" value="修改" data-toggle="modal"
-// data-target="#editModal"
-// data-seq=${seq}
-// data-no=${no}
-// data-name=${name}
-// data-address=${address}
-// data-phone=${phone}
-// data-used=${used}
-// />`;
 	fnBtn(index, seq) {
 		return `<input type="button" class="btn btn-outline-warning" value="修改" onclick="cy.doEdit(${index}, ${seq})"/>`;
 	}

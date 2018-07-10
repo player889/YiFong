@@ -1,41 +1,33 @@
 class CY extends CYTemplate {
+	
 	constructor() {
 		super();
-
-		let data = ["基隆關", "暖暖關", "六堵關", "五堵關", "桃園關", "新竹關", "台中關", "高雄關"];
-		$("#CYArea").append(commonUtils.createOptions("area", data, '', 8));
-
-// $('#editModal').on('show.bs.modal', function (event) {
-// let button = $(event.relatedTarget);
-//
-// let seq = button.data('seq');
-// let no = button.data('no');
-// let name = button.data('name');
-// let address = button.data('address');
-// let phone = button.data('phone');
-// let used = button.data('used');
-//
-// $('#used').prop('checked', (used == true) ? 'checked' : '')
-// $('#used').next("label").html('<h4>' + name + '</h4>');
-// $('#edit-address').val(address);
-// $('#edit-phone').val(phone);
-// $('#edit-name').val(name);
-// $('#edit-seq').val(seq);
-// });
+		this.initData();
+		this.initEvent();
+	}
+	initData(){
+		this._data = ["基隆關", "暖暖關", "六堵關", "五堵關", "桃園關", "新竹關", "台中關", "高雄關"];
+	}
+	initEvent(){
+		
+		$("#CYArea").append(this.createDDL("area", this._data));
+		$("#addCYArea").append(this.createDDL("add-area", this._data));
+		
+		$('#addModal, #deleteModal').on('show.bs.modal', function (e) {
+			$('#add-area').selectpicker('val', 0);
+			$('#deleteNo').val("");
+		});
 
 		$("#name").enterKey(function (e) {
 			e.preventDefault();
 			cy.query();
 		});
-
 	}
-
-	query() {
+	query(defatulArea = $('#area').val()) {
 		let data = {
-			area: $('select[name="area"]').val(),
-			name: $('#name').val()
+			area: defatulArea
 		}
-
+		
 		commonUtils.doAjax('/CY/query', data, function (resp) {
 			$('#content').removeClass("d-none")
 			$('#content > tbody').empty();
@@ -43,19 +35,56 @@ class CY extends CYTemplate {
 			$('#content > tbody:last-child').append(html);
 		});
 	}
-	
-	doEdit(index, seq){
-		let data ={
-			seq : seq,
-			no: $('#no'+index).val(),
-			used: $('#used'+index).prop("checked") ? 1 : 0,
-			address : $('#address'+index).text(),
-			phone : $('#phone'+index).text()
+	doSave(){
+		let data = {
+			no: $('#add-no').val(),
+			area : $('#add-area').val(),
+			used: $('#add-used').prop("checked") ? 1 : 0,
+			address: $('#add-address').val(),
+			name: $('#add-name').val(),
+			phone: $('#add-phone').val()
 		}
-		console.log(data);
+		commonUtils.doAjax('/CY/save', data, function(resp){
+			cy.query(data.area);
+			$('#addModalForm')[0].reset();
+			$('#add-area').selectpicker('val', 0);
+			commonUtils.doAlert("success", resp.message);
+		});
+	}
+	doEdit(index, seq) {
+		let data = {
+			seq: seq,
+			no: $('#no' + index).val(),
+			used: $('#used' + index).prop("checked") ? 1 : 0,
+			address: $('#address' + index).val(),
+			name: $('#name' + index).val(),
+			phone: $('#phone' + index).val()
+		};
 		commonUtils.doAjax('/CY/edit', data);
 	}
-
+	doDelete(){
+		let data = {
+			no : $('#deleteNo').val()
+		};
+		commonUtils.doAjax('/CY/delete', data, function(resp){
+			$('#deleteModal').modal('hide');
+			cy.query();
+			commonUtils.doAlert("success", resp.message);
+		});
+	}
+	createDDL(id, data){
+		return $('<select/>', {
+			'class': 'form-control selectpicker',
+			'data-size': '8',
+			'id': id,
+			'data-width':'auto'
+		}).html($.map(data, function (text, index) {
+				return $('<option/>', {
+					'value': index,
+					'text': text
+				});
+		})).prop("outerHTML");
+	}
 }
 
 var cy = new CY();

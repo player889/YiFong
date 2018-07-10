@@ -10,4 +10,8 @@ public interface CyService {
 	List<Cy> query(CyRequest vo);
 
 	void edit(CyRequest vo);
+	
+	void save(CyRequest vo);
+
+	void delete(CyRequest vo);
 }

@@ -32,4 +32,16 @@ public class CyController {
 		return new AjaxResponse(ApiSatus.SUCC_UPDATE);
 	}
 
+	@PostMapping(value = "/save", produces = "application/json; charset=utf-8")
+	public AjaxResponse save(@RequestBody final CyRequest vo) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		cyService.save(vo);
+		return new AjaxResponse(ApiSatus.SUCC_SAVE);
+	}
+
+	@PostMapping(value = "/delete", produces = "application/json; charset=utf-8")
+	public AjaxResponse delete(@RequestBody final CyRequest vo) throws JsonProcessingException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		cyService.delete(vo);
+		return new AjaxResponse(ApiSatus.SUCC_DELETE);
+	}
+
 }
