@@ -1,7 +1,13 @@
 package com.company.yifong.controller.page;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.company.yifong.repository.ClientRepository;
+import com.company.yifong.repository.CyRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
 public class MenuController {
@@ -22,8 +28,18 @@ public class MenuController {
 	}
 
 	@GetMapping(value = "/order")
-	public String orderPage() {
+	public String orderPage(Model model) throws JsonProcessingException {
+		model.addAttribute("clients", clientRepository.findAllNoAndName());
+		model.addAttribute("cy", cyRepository.queryAreaAndName());
 		return "order/order";
 	}
+
+	@Autowired
+	private ClientRepository clientRepository;
+	
+	@Autowired
+	private CyRepository cyRepository;
+	
+	
 
 }

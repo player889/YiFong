@@ -10,6 +10,9 @@
 <link href="/css/lib/bootstrap-select.min.css" rel="stylesheet" media="screen" />
 <link href="/css/lib/jquery.loading.min.css" rel="stylesheet" media="screen" />
 <link href="/css/lib/common.css" rel="stylesheet" media="screen" />
+<!-- <link href="/css/lib/bootstrap-datepicker.css" rel="stylesheet" media="screen" /> -->
+<link href="/css/lib/bootstrap-datepicker3.min.css" rel="stylesheet" media="screen" />
+<link href="/css/lib/fontawesome.css" rel="stylesheet" media="screen" />
 <title>訂單</title>
 </head>
 <body>
@@ -20,7 +23,8 @@
 				<form>
 					<div class="form-row">
 						<div class="form-group col-md-2">
-							<select class="selectpicker" data-live-search="true" title="請選擇客戶" data-width="100%" id="client">
+							<select class="selectpicker" data-live-search="true" data-width="100%" id="client" title="請選擇">
+								<option th:each="client,iter: ${clients}" th:value="${client.get('0')}" th:text="${client.get('0')}+'-'+${client.get('1')}" th:title="${client.get('1')}"></option>
 							</select>
 						</div>
 						<div class="form-group col-md-3">
@@ -39,23 +43,34 @@
 					</div>
 					<div class="form-row">
 						<div class="form-group col-md-2">
-							<input type="text" class="form-control required" id="form3-shortName" placeholder="結關日" />
+							<div class="input-group ">
+								<input type="text" class="form-control datepicker required" placeholder="結關日" id="closeDate">
+								<div class="input-group-append">
+									<label class="input-group-text" for="closeDate">
+										<i class="far fa-calendar-alt"></i>
+									</label>
+								</div>
+							</div>
 						</div>
 						<div class="form-group col-md-4">
 							<input type="text" class="form-control required" id="form3-shortName" placeholder="船公司" />
 						</div>
 					</div>
 					<div class="form-row">
-						<div class="form-group col-md-2">
+						<div class="form-group col-md-3">
 							<label for="form3-shortName">領櫃場</label>
-							<input type="text" class="form-control required" id="form3-shortName" required />
+							<select class="selectpicker" data-live-search="true" data-width="100%" id="leadingYard" title="請選擇">
+								<option th:each="item,iter: ${cy}" th:attr="data-area=${item.get('3')}" th:value="${item.get('1')}" th:text="${item.get('1')}+'-'+${item.get('2')}" th:title="${item.get('0')}+'-'+${item.get('2')}"></option>
+							</select>
 						</div>
-						<div class="form-group col-md-2">
+						<div class="form-group col-md-3">
 							<label for="form3-shortName">交櫃場</label>
-							<input type="text" class="form-control required" id="form3-shortName" required />
+							<select class="selectpicker" data-live-search="true" data-width="100%" id="junctionYard" title="請選擇">
+								<option th:each="item,iter: ${cy}" th:attr="data-area=${item.get('3')}" th:value="${item.get('1')}" th:text="${item.get('1')}+'-'+${item.get('2')}" th:title="${item.get('0')}+'-'+${item.get('2')}"></option>
+							</select>
 						</div>
 						<div class="form-group col-md-2">
-							<label for="form3-shortName">費用</label>
+							<label for="form3-shortName">費用選擇</label>
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
@@ -67,6 +82,17 @@
 							<input type="button" class="btn btn-outline-secondary" onclick="cy.query();" value="查詢" />
 							<input type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addModal" value="新增" />
 							<input type="button" class="btn btn-outline-danger" value="刪除" data-toggle="modal" data-target="#deleteModal" />
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-2">
+							<label for="form3-shortName">費用選擇</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
+								</div>
+								<input type="text" class="form-control required" id="form3-shortName" required />
+							</div>
 						</div>
 					</div>
 					<div class="form-row">
@@ -129,6 +155,9 @@
 <script type="text/javascript" src="/js/lib/i18n/defaults-zh_TW.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/Validator.js"></script>
+<script type="text/javascript" src="/js/lib/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="/js/lib/i18n/bootstrap-datepicker.zh-TW.min.js"></script>
+<script type="text/javascript" src="/js/lib/all.js"></script>
 <!-- asdsad -->
 <!-- <script type="text/javascript" src="/js/template/companyTemplate.js"></script> -->
 <script type="text/javascript" src="/js/order/order.js"></script>

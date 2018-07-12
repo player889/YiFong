@@ -27,4 +27,7 @@ public interface CyRepository extends JpaRepository<Cy, Long> {
 	@Transactional
 	void removeByNo(String no);
 
+	@Query("select NEW MAP(o.name, c.no, c.name, c.area) from Cy c left join Other o on c.area = o.code where c.used = '1' order by cast(c.area as int) asc, c.no asc")
+	List<Cy> queryAreaAndName();
+
 }

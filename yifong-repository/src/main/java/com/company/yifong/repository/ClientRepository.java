@@ -1,6 +1,7 @@
 package com.company.yifong.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -18,6 +19,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
 	void removeByNo(String no);
 
-	@Query("select NEW MAP(no, shortName) from Client order by cast(no as int) asc")
-	List<Client> findAllNoAndName();
+	@Query("select NEW MAP(no, shortName) from Client  c order by cast(c.no as int) asc")
+	List<Map<String, String>> findAllNoAndName();
+
 }

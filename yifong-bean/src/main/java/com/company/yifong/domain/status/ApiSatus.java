@@ -21,6 +21,7 @@ public enum ApiSatus {
 	ERR_NULL("E011", "NULL錯誤"),
 	ERR_SYS("E999", "系統錯誤"),
 
+	SUCC_INIT("S000","初始化成功"),
 	SUCC_SAVE("S001", "存檔成功"),
 	SUCC_QUERY("S002", "查詢成功"),
 	SUCC_UPDATE("S003", "更新成功"),

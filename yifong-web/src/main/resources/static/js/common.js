@@ -88,7 +88,7 @@ class CommonUtils {
 	isEmptyObject(val) {
 		return (undefined === val || null === val || '' === val || isNaN(val)) ? true : false;
 	}
-	createOptions(name, data, val = undefined, size = 7,defaultTitle = '') {
+	createOptions(name, data, val = undefined, size = 7,defaultTitle = '', clazz = '') {
 		return $('<select/>', {
 			'class': 'form-control selectpicker' + clazz,
 			'data-size': size,

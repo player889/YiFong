@@ -37,6 +37,5 @@
 			<artifactId>poi</artifactId>
 			<version>3.14-beta1</version>
 		</dependency>
-
 	</dependencies>
 </project>

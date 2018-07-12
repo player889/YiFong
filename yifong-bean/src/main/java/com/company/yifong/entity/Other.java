@@ -3,51 +3,46 @@ package com.company.yifong.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
-
 /**
- * The persistent class for the others database table.
+ * The persistent class for the other database table.
  * 
  */
 @Entity
-@Table(name="others")
-@NamedQuery(name="Other.findAll", query="SELECT o FROM Other o")
+@Table(name = "other")
 public class Other implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
-	private int destCode;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
+	private int seq;
 
-	@Column(nullable=false, length=10)
-	private String destName;
+	@Column(nullable = false, length = 5)
+	private String code;
 
-	@Column(nullable=false, length=3)
+	@Column(nullable = false, length = 45)
 	private String group;
 
-	@Column(nullable=false)
-	private int order;
-
-	@Column(nullable=false)
-	private int seq;
+	@Column(nullable = false, length = 45)
+	private String name;
 
 	public Other() {
 	}
 
-	public int getDestCode() {
-		return this.destCode;
+	public int getSeq() {
+		return this.seq;
 	}
 
-	public void setDestCode(int destCode) {
-		this.destCode = destCode;
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 
-	public String getDestName() {
-		return this.destName;
+	public String getCode() {
+		return this.code;
 	}
 
-	public void setDestName(String destName) {
-		this.destName = destName;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getGroup() {
@@ -58,20 +53,12 @@ public class Other implements Serializable {
 		this.group = group;
 	}
 
-	public int getOrder() {
-		return this.order;
+	public String getName() {
+		return this.name;
 	}
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
-
-	public int getSeq() {
-		return this.seq;
-	}
-
-	public void setSeq(int seq) {
-		this.seq = seq;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

@@ -18,14 +18,6 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
-
 @Entity
 @Table(name = "client")
 public class Client implements Serializable {
@@ -45,7 +37,7 @@ public class Client implements Serializable {
 	@Column(name = "gui_number", length = 8)
 	private String guiNumber;
 
-	@Column(length=255)
+	@Column(length = 255)
 	private String memo;
 
 	@Column(nullable = false, length = 5)
@@ -67,5 +59,93 @@ public class Client implements Serializable {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Charge> charges;
-	
+
+	public int getSeq() {
+		return seq;
+	}
+
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getGuiNumber() {
+		return guiNumber;
+	}
+
+	public void setGuiNumber(String guiNumber) {
+		this.guiNumber = guiNumber;
+	}
+
+	public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+
+	public String getNo() {
+		return no;
+	}
+
+	public void setNo(String no) {
+		this.no = no;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public List<Charge> getCharges() {
+		return charges;
+	}
+
+	public void setCharges(List<Charge> charges) {
+		this.charges = charges;
+	}
+
 }

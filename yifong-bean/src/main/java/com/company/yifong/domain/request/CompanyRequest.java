@@ -8,14 +8,11 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CompanyRequest implements Serializable {
+
+	CompanyRequest() {
+	}
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,5 +22,21 @@ public class CompanyRequest implements Serializable {
 	@NotNull
 	@Valid
 	private List<ChargesRequest> charges;
+
+	public ClientRequest getClient() {
+		return client;
+	}
+
+	public void setClient(ClientRequest client) {
+		this.client = client;
+	}
+
+	public List<ChargesRequest> getCharges() {
+		return charges;
+	}
+
+	public void setCharges(List<ChargesRequest> charges) {
+		this.charges = charges;
+	}
 
 }

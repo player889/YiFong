@@ -2,9 +2,15 @@ package com.company.yifong.service;
 
 import java.util.List;
 
-import com.company.yifong.entity.Client;
+import com.company.yifong.entity.Charge;
 
 public interface OrderService {
 
-	List<Client> queryClientNoAndNames();
+	/**
+	 * use in order
+	 * 
+	 * @param no
+	 * @return
+	 */
+	List<Charge> queryCharges(String no);
 }
