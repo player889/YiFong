@@ -14,129 +14,158 @@
 <link href="/css/lib/bootstrap-datepicker3.min.css" rel="stylesheet" media="screen" />
 <link href="/css/lib/fontawesome.css" rel="stylesheet" media="screen" />
 <title>訂單</title>
+<style>
+.header-collapse {
+	cursor: pointer;
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
+</style>
 </head>
 <body>
 	<div class="container">
-		<div class="card">
-			<div class="card-header bg-secondary text-white">Featured</div>
-			<div class="card-body">
-				<form>
-					<div class="form-row">
-						<div class="form-group col-md-2">
-							<select class="selectpicker" data-live-search="true" data-width="100%" id="client" title="請選擇">
-								<option th:each="client,iter: ${clients}" th:value="${client.get('0')}" th:text="${client.get('0')}+'-'+${client.get('1')}" th:title="${client.get('1')}"></option>
-							</select>
-						</div>
-						<div class="form-group col-md-3">
-							<select class="selectpicker" data-live-search="true" data-width="100%" id="io">
-								<option data-tokens="1">1-進口</option>
-								<option data-tokens="2">2-出口</option>
-							</select>
-						</div>
-						<div class="form-group col-md-3">
-							<select class="selectpicker" data-live-search="true" data-width="100%" id="size">
-								<option data-tokens="1">1-20呎</option>
-								<option data-tokens="2">2-40呎</option>
-								<option data-tokens="3">3-40呎HQ</option>
-							</select>
-						</div>
+		<div id="accordion">
+			<div class="card">
+				<div class="card-header header-collapse" data-toggle="collapse" data-parent="#accordion" data-target="#info">
+					<h5 class="mb-0">
+						<button class="btn btn-link" tabindex="-1">訂單設定</button>
+					</h5>
+				</div>
+				<div id="info" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+					<div class="card-body">
+						<form>
+							<div class="form-row">
+								<div class="form-group col-md-2">
+									<select class="selectpicker" data-live-search="true" data-live-search-style="startsWith" data-width="100%" id="info-client" title="請選擇" tabindex="1">
+										<option th:each="client,iter: ${clients}" th:value="${client.get('0')}" th:text="${client.get('0')}+'-'+${client.get('1')}" th:title="${client.get('1')}"></option>
+									</select>
+								</div>
+								<div class="form-group col-md-3">
+									<input type="text" class="form-control" id="info-carrier" placeholder="船公司" />
+								</div>
+								<div class="form-group col-md-1">
+									<select class="selectpicker" data-width="100%" id="info-size">
+										<option value="1">進口</option>
+										<option value="2">出口</option>
+									</select>
+								</div>
+								<div class="form-group col-md-2">
+									<div class="input-group ">
+										<input type="text" class="form-control datepicker required" placeholder="結關日" id="closeDate">
+										<div class="input-group-append">
+											<label class="input-group-text" for="closeDate">
+												<i class="far fa-calendar-alt"></i>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-2">
+									<select class="selectpicker" data-live-search="true" data-live-search-style="startsWith" data-width="100%" id="leadingYard" title="領櫃地點">
+										<!-- 									<option th:each="item,iter: ${cy}" th:attr="data-area=${item.get('3')}" th:value="${item.get('1')}" th:text="${item.get('1')}+'-'+${item.get('2')}" th:title="${item.get('0')}+'-'+${item.get('2')}"></option> -->
+										<option th:each="item,iter: ${cy}" th:attr="data-area=${item.get('3')}" th:value="${item.get('1')}" th:text="${item.get('1')}+'-'+${item.get('2')}" th:title="${item.get('2')}"></option>
+									</select>
+								</div>
+								<div class="form-group col-md-2">
+									<select class="selectpicker" data-live-search="true" data-live-search-style="startsWith" data-width="100%" id="junctionYard" title="交櫃地點">
+										<option th:each="item,iter: ${cy}" th:attr="data-area=${item.get('3')}" th:value="${item.get('1')}" th:text="${item.get('1')}+'-'+${item.get('2')}" th:title="${item.get('2')}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-2">
+									<select class="selectpicker" data-width="100%" id="info-size">
+										<option value="0">20呎</option>
+										<option value="1">40呎</option>
+									</select>
+								</div>
+								<div class="form-group col-md-3">
+									<input type="text" class="form-control uppercase" pattern="[a-zA-Z]{4}-[0-9]{7}" id="info-containerNo" maxlength="11" placeholder="貨櫃號螞" />
+								</div>
+							</div>
+						</form>
 					</div>
-					<div class="form-row">
-						<div class="form-group col-md-2">
-							<div class="input-group ">
-								<input type="text" class="form-control datepicker required" placeholder="結關日" id="closeDate">
-								<div class="input-group-append">
-									<label class="input-group-text" for="closeDate">
-										<i class="far fa-calendar-alt"></i>
+				</div>
+			</div>
+			<div class="card mt-1">
+				<div class="card-header header-collapse" data-toggle="collapse" data-parent="#accordion" data-target="#payment">
+					<h5 class="mb-0">
+						<button class="btn btn-link" tabindex="-1">運費設定</button>
+					</h5>
+				</div>
+				<div id="payment" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+					<div class="card-body">
+						<form class="form-row">
+							<div class="form-group col-md-2">
+								<select class="selectpicker" data-width="100%" id="info-size">
+									<option value="0">20呎</option>
+									<option value="1">40呎</option>
+									<option value="2">20呎/40呎</option>
+								</select>
+							</div>
+							<div class="form-group col-md-3">
+								<select class="selectpicker" data-live-search="true" data-width="100%" id="pay" title="領櫃運費">
+								</select>
+							</div>
+							<div class="form-group col-md-2">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
+									</div>
+									<input type="text" class="form-control required" id="lyfee" placeholder="應收運費" />
+								</div>
+							</div>
+							<div class="form-group col-md-2">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
+									</div>
+									<input type="text" class="form-control required" id="pay" placeholder="司機運費" />
+								</div>
+							</div>
+						</form>
+						<form class="form-row">
+							<div class="form-group col-md-2">
+								<div class="form-inline">
+									<label for="" class="text-secondary float-left">外調</label>
+									<label class="switch ml-3">
+										<input type="checkbox" id="">
+										<span class="slider"></span>
 									</label>
 								</div>
 							</div>
-						</div>
-						<div class="form-group col-md-4">
-							<input type="text" class="form-control required" id="form3-shortName" placeholder="船公司" />
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="form-group col-md-3">
-							<label for="form3-shortName">領櫃場</label>
-							<select class="selectpicker" data-live-search="true" data-width="100%" id="leadingYard" title="請選擇">
-								<option th:each="item,iter: ${cy}" th:attr="data-area=${item.get('3')}" th:value="${item.get('1')}" th:text="${item.get('1')}+'-'+${item.get('2')}" th:title="${item.get('0')}+'-'+${item.get('2')}"></option>
-							</select>
-						</div>
-						<div class="form-group col-md-3">
-							<label for="form3-shortName">交櫃場</label>
-							<select class="selectpicker" data-live-search="true" data-width="100%" id="junctionYard" title="請選擇">
-								<option th:each="item,iter: ${cy}" th:attr="data-area=${item.get('3')}" th:value="${item.get('1')}" th:text="${item.get('1')}+'-'+${item.get('2')}" th:title="${item.get('0')}+'-'+${item.get('2')}"></option>
-							</select>
-						</div>
+							<div class="form-group col-md-3">
+								<select class="selectpicker" data-live-search="true" data-width="100%" id="sad" title="交櫃運費">
+								</select>
+							</div>
+							<div class="form-group col-md-2 offset-md-2">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
+									</div>
+									<input type="text" class="form-control required" id="pay" placeholder="司機運費" />
+								</div>
+							</div>
+						</form>
+						
+						
+						<form class="form-row">
+							<div class="form-group col-md-12">
+								<hr class="">
+							</div>
+						</form>
 						<div class="form-group col-md-2">
-							<label for="form3-shortName">費用選擇</label>
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
 								</div>
-								<input type="text" class="form-control required" id="form3-shortName" required />
+								<input type="text" class="form-control required" id="pay" placeholder="司機運費" />
 							</div>
 						</div>
-						<div class="form-group col-md-4 justify-content-center">
-							<input type="button" class="btn btn-outline-secondary" onclick="cy.query();" value="查詢" />
-							<input type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addModal" value="新增" />
-							<input type="button" class="btn btn-outline-danger" value="刪除" data-toggle="modal" data-target="#deleteModal" />
-						</div>
+						</form>
 					</div>
-					<div class="form-row">
-						<div class="form-group col-md-2">
-							<label for="form3-shortName">費用選擇</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
-								</div>
-								<input type="text" class="form-control required" id="form3-shortName" required />
-							</div>
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="form-group col-md-2">
-							<label for="form3-shortName">司機領櫃費</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
-								</div>
-								<input type="text" class="form-control required" id="form3-shortName" required />
-							</div>
-						</div>
-						<div class="form-group col-md-2">
-							<label for="form3-shortName">司機交櫃費</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
-								</div>
-								<input type="text" class="form-control required" id="form3-shortName" required />
-							</div>
-						</div>
-						<div class="form-group col-md-4">
-							<label for="form3-shortName">其他</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
-								</div>
-								<input type="text" class="form-control required" id="form3-shortName" required />
-							</div>
-						</div>
-						<div class="form-group col-md-4">
-							<label for="form3-shortName">總費用</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
-								</div>
-								<input type="text" class="form-control required" id="form3-shortName" readonly />
-							</div>
-						</div>
-					</div>
-					<div class="form-row text-right">
-						<div class="form-group col-md-8"></div>
-					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -158,6 +187,7 @@
 <script type="text/javascript" src="/js/lib/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript" src="/js/lib/i18n/bootstrap-datepicker.zh-TW.min.js"></script>
 <script type="text/javascript" src="/js/lib/all.js"></script>
+<script type="text/javascript" src="/js/lib/ContainerValidator.js"></script>
 <!-- asdsad -->
 <!-- <script type="text/javascript" src="/js/template/companyTemplate.js"></script> -->
 <script type="text/javascript" src="/js/order/order.js"></script>
