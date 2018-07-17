@@ -1,12 +1,14 @@
 package com.company.yifong.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
-/**
- * The persistent class for the other database table.
- * 
- */
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 @Entity
 @Table(name = "other")
 public class Other implements Serializable {
@@ -17,8 +19,8 @@ public class Other implements Serializable {
 	@Column(unique = true, nullable = false)
 	private int seq;
 
-	@Column(nullable = false, length = 5)
-	private String code;
+	@Column(nullable = false, length = 3)
+	private int code;
 
 	@Column(nullable = false, length = 45)
 	private String group;
@@ -37,11 +39,11 @@ public class Other implements Serializable {
 		this.seq = seq;
 	}
 
-	public String getCode() {
+	public int getCode() {
 		return this.code;
 	}
 
-	public void setCode(String code) {
+	public void setCode(int code) {
 		this.code = code;
 	}
 

@@ -9,18 +9,17 @@ import com.company.yifong.entity.Client;
 @Transactional
 public interface CompanyService {
 
-//	Company save(Company company);
-//
-//	Page<Company> findList(Company company);
-//
-//	Company findDetail(String id);
-
 	Page<Client> findClient(Client client);
-	
+
 	Client edit(CompanyRequest req);
-	
+
 	Client save(CompanyRequest req);
 
 	String delete(String id);
+
+	// NOTE NEW
+	Page<Client> findClient(CompanyRequest client);
+
+	Client findOnlyOneByClient(CompanyRequest vo);
 
 }

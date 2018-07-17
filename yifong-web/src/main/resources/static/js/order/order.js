@@ -8,6 +8,10 @@ class Order {
 	}
 	initEvent() {
 
+	    $("#osSpan").on('click', function(){
+	    	$("#osChk").toggleClass("fa-square fa-check-square");
+	    });
+		
 		$('body').keyup(function (e) {
 			var code = e.keyCode || e.which;
 			if (code == '9') {
@@ -22,35 +26,35 @@ class Order {
 		$('#info-client').on('change', function () {
 			commonUtils.doAjax('/order/client/charges', { no: $('#info-client').val() }, function (resp) {
 				
-//				console.log(resp.data);
+// console.log(resp.data);
 //				
-//				self._size = _.map(resp.data, function(currentObject) {
-//					return currentObject.size;
-//				});
+// self._size = _.map(resp.data, function(currentObject) {
+// return currentObject.size;
+// });
 //				
-//				 $('#size > option').each(function(){
-//					 let isDsiabled = self._size.includes(parseInt($(this).val())) ? false : true;
-//					 $(this).prop("disabled" , isDsiabled);
-//				 });
-//				 $('#size').selectpicker({
-//					hideDisabled: true
-//				});
-//				 $('#size').selectpicker('refresh');
-//				 $("#size").selectpicker("val", $("#size option:enabled:first").val());
+// $('#size > option').each(function(){
+// let isDsiabled = self._size.includes(parseInt($(this).val())) ? false : true;
+// $(this).prop("disabled" , isDsiabled);
+// });
+// $('#size').selectpicker({
+// hideDisabled: true
+// });
+// $('#size').selectpicker('refresh');
+// $("#size").selectpicker("val", $("#size option:enabled:first").val());
 //				
-//				let obj = $('#area');
-//				if(false === $.isEmptyObject(resp.dat)){
-//					resp.data.forEach(function(item){
-//						obj.append('<option value="'+item.dest+'">'+self._areaCharge[item.dest]+'</option');
-//					});
+// let obj = $('#area');
+// if(false === $.isEmptyObject(resp.dat)){
+// resp.data.forEach(function(item){
+// obj.append('<option value="'+item.dest+'">'+self._areaCharge[item.dest]+'</option');
+// });
 //					
-//					obj.on("change", function(){
-//						let o = resp.data[$(this).prop('selectedIndex') - 1];
-//						$("#pay").val(o.pay);
-//						$("#lyfee").val(o.fee);
-//					});
-//					$('#area').selectpicker('refresh');
-//				}
+// obj.on("change", function(){
+// let o = resp.data[$(this).prop('selectedIndex') - 1];
+// $("#pay").val(o.pay);
+// $("#lyfee").val(o.fee);
+// });
+// $('#area').selectpicker('refresh');
+// }
 			
 			});
 		});
@@ -70,10 +74,10 @@ class Order {
 let o = new Order();
 
 
-//validator = new ContainerValidator();
-//console.log(validator.isValid('TEXU3070079'));
-//console.log(validator.isValid('TEXU3070070'));
-//console.log(validator.isValid('YMLU8305416'));
+ validator = new ContainerValidator();
+ console.log('TEXU3070079 :'  + validator.isValid('TEXU3070079'));
+ console.log('TEXU3070070 :'  + validator.isValid('TEXU3070070'));
+ console.log('YMLU8305416 :' 　+ validator.isValid('YMLU8305416'));
 
 // if(undefined != resp.data){
 // let usedArea = _.map(resp.data, function(currentObject) {

@@ -27,10 +27,8 @@
 <body>
 	<div class="container">
 		<div class="card">
-			<div class="card-header header-collapse" data-toggle="collapse" data-parent="#accordion" data-target="#info">
-				<h5 class="mb-0">
-					<button class="btn btn-link" tabindex="-1">訂單設定</button>
-				</h5>
+			<div class="card-header">
+				<h5 class="mb-0 card-title">訂單設定</h5>
 			</div>
 			<div id="info" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 				<div class="card-body">
@@ -41,10 +39,7 @@
 									<option th:each="client,iter: ${clients}" th:value="${client.get('0')}" th:text="${client.get('0')}+'-'+${client.get('1')}" th:title="${client.get('1')}"></option>
 								</select>
 							</div>
-							<div class="form-group col-md-3">
-								<input type="text" class="form-control" id="info-carrier" placeholder="船公司" />
-							</div>
-							<div class="form-group col-md-1">
+							<div class="form-group col-md-2">
 								<select class="selectpicker" data-width="100%" id="info-size">
 									<option value="1">進口</option>
 									<option value="2">出口</option>
@@ -60,6 +55,14 @@
 									</div>
 								</div>
 							</div>
+							<div class="form-group col-md-3">
+								<input type="text" class="form-control" id="info-carrier" placeholder="船公司" />
+							</div>
+							<div class="form-group col-md-3">
+								<input type="text" class="form-control" id="info-carrier" placeholder="放置地點" />
+							</div>
+						</div>
+						<div class="form-row">
 							<div class="form-group col-md-2">
 								<select class="selectpicker" data-live-search="true" data-live-search-style="startsWith" data-width="100%" id="leadingYard" title="領櫃地點">
 									<!-- 									<option th:each="item,iter: ${cy}" th:attr="data-area=${item.get('3')}" th:value="${item.get('1')}" th:text="${item.get('1')}+'-'+${item.get('2')}" th:title="${item.get('0')}+'-'+${item.get('2')}"></option> -->
@@ -71,12 +74,12 @@
 									<option th:each="item,iter: ${cy}" th:attr="data-area=${item.get('3')}" th:value="${item.get('1')}" th:text="${item.get('1')}+'-'+${item.get('2')}" th:title="${item.get('2')}"></option>
 								</select>
 							</div>
-						</div>
-						<div class="form-row">
 							<div class="form-group col-md-2">
 								<select class="selectpicker" data-width="100%" id="info-size">
 									<option value="0">20呎</option>
 									<option value="1">40呎</option>
+									<option value="1">40HQ</option>
+									<option value="1">冷凍櫃</option>
 								</select>
 							</div>
 							<div class="form-group col-md-3">
@@ -91,8 +94,8 @@
 						<div class="form-row">
 							<div class="form-group col-md-2">
 								<select class="selectpicker" data-width="100%" id="info-size">
-									<option value="0">20呎</option>
-									<option value="1">40呎</option>
+<!-- 									<option value="0">20呎</option> -->
+<!-- 									<option value="1">40呎</option> -->
 									<option value="2">20呎/40呎</option>
 								</select>
 							</div>
@@ -103,7 +106,9 @@
 							<div class="form-group col-md-2">
 								<div class="input-group">
 									<div class="input-group-prepend">
-										<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
+										<div class="input-group-text">
+											<i class="fas fa-dollar-sign fa-fw" style="color: #1E90FF;"></i>
+										</div>
 									</div>
 									<input type="text" class="form-control required" id="lyfee" placeholder="應收運費" />
 								</div>
@@ -111,18 +116,21 @@
 							<div class="form-group col-md-2">
 								<div class="input-group">
 									<div class="input-group-prepend">
-										<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
+										<div class="input-group-text">
+											<i class="fas fa-dollar-sign fa-fw" style="color: #1E90FF;"></i>
+										</div>
 									</div>
 									<input type="text" class="form-control required" id="pay" placeholder="司機運費" />
 								</div>
 							</div>
 							<div class="form-group col-md-2">
-								<div class="form-inline">
-									<label for="" class="text-secondary float-left">外調</label>
-									<label class="switch ml-3">
-										<input type="checkbox" id="">
-										<span class="slider"></span>
-									</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text" id="osSpan">
+											<span><i class="far fa-square fa-fw" id="osChk"></i></span>
+										</div>
+									</div>
+									<input type="text" class="form-control" aria-label="Text input with radio button">
 								</div>
 							</div>
 						</div>
@@ -131,10 +139,12 @@
 								<select class="selectpicker" data-live-search="true" data-width="100%" id="sad" title="交櫃運費">
 								</select>
 							</div>
-							<div class="form-group col-md-2">
+							<div class="form-group col-md-2 offset-md-2">
 								<div class="input-group">
 									<div class="input-group-prepend">
-										<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
+										<div class="input-group-text">
+											<i class="fas fa-dollar-sign fa-fw" style="color: #1E90FF;"></i>
+										</div>
 									</div>
 									<input type="text" class="form-control required" id="pay" placeholder="司機運費" />
 								</div>
@@ -142,7 +152,9 @@
 							<div class="form-group col-md-2">
 								<div class="input-group">
 									<div class="input-group-prepend">
-										<span class="input-group-text"><img src="images/dollar.png" width="20" height="20"></span>
+										<div class="input-group-text">
+											<i class="fas fa-dollar-sign fa-fw" style="color: #1E90FF;"></i>
+										</div>
 									</div>
 									<input type="text" class="form-control required" id="pay" placeholder="司機運費" />
 								</div>

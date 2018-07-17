@@ -60,13 +60,13 @@ public class ApiExceptionHandler {
 	@ExceptionHandler(DataNotFoundException.class)
 	@ResponseBody
 	public final AjaxResponse handlerCustomizedException(final DataNotFoundException e) {
-		return new AjaxResponse(ApiSatus.ERR_DATA_NOT_FOUND, StringUtils.isEmpty(e.getMessage()) ? null : e.getMessage());
+		return new AjaxResponse(ApiSatus.SUCC_DATA_NOT_FOUND, StringUtils.isEmpty(e.getMessage()) ? null : e.getMessage());
 	}
 
 	@ExceptionHandler(DataNotMatch.class)
 	@ResponseBody
 	public final AjaxResponse handlerCustomizedException(final DataNotMatch e) {
-		return new AjaxResponse(ApiSatus.ERR_DATA_NOT_FOUND, StringUtils.isEmpty(e.getMessage()) ? null : e.getMessage());
+		return new AjaxResponse(ApiSatus.SUCC_DATA_NOT_FOUND, StringUtils.isEmpty(e.getMessage()) ? null : e.getMessage());
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)

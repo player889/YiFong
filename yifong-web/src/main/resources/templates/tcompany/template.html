@@ -1,0 +1,106 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- 清單 -->
+<div th:fragment="clients" class="mt-1">
+	<div class="row" id="content">
+		<div class="col-2">
+			<div class="list-group" id="list-tab" role="tablist">
+				<a th:each="client,itr: ${clients}" th:id="'#Clients_'+${itr.index}" class="list-group-item list-group-item-action" th:classappend="${itr.size eq 1 } ? 'active' :'' " role="tab" data-toggle="list" th:text="${client.shortName}" th:href="|#info_${itr.index}"></a>
+			</div>
+		</div>
+		<div class="col-10">
+			<div class="tab-content" id="nav-tabContent">
+				<div th:each="client,itr: ${clients}" class="tab-pane fade" th:classappend="${itr.size eq 1 } ? 'show active' :'' " th:id="'info_'+${itr.index}" role="tabpanel" aria-labelledby="Clients_${itr.index}">
+					<input class="btn btn-outline-warning float-right" type="button" th:value="修改" th:onclick="'c.doEditModal(\'' + ${client.no} + '\')'">
+					<span th:text="${client.fullName}" />
+					<br />
+					<span th:text="${client.address}" />
+					<br />
+					<span class="phone" th:text="${client.phone}" />
+					<br />
+					<span th:text="${client.guiNumber}" />
+					<br />
+					<span th:utext="${client.memo}" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 修改 -->
+<div th:fragment="editModal" class="mt-1">
+	<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-body" id="editContent">
+					<div class="form-row">
+						<div class="form-group col-md-1">
+							<label for="edit-no">代碼</label>
+							<input type="number" class="form-control required" id="edit-no" name="edit-no" pattern="\d*" maxlength="5" th:value="${client.no}" />
+							<div class="text-danger hideValidator">
+								<small>請輸入代碼</small>
+							</div>
+						</div>
+						<div class="form-group col-md-2">
+							<label for="edit-shortName">簡稱</label>
+							<input type="text" class="form-control required" id="edit-shortName" required />
+							<div class="text-danger hideValidator">
+								<small>請輸入簡稱</small>
+							</div>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="edit-companyDetail[fullName]">全名</label>
+							<input type="text" class="form-control required" id="edit-companyDetail[fullName]" name="companyDetail[fullName]" th:value="${client.fullName}" />
+							<div class="text-danger hideValidator">
+								<small>請輸入全名</small>
+							</div>
+						</div>
+						<div class="form-group col-md-3">
+							<label for="edit-companyDetail[phone]">電話</label>
+							<input type="text" class="form-control required" id="edit-companyDetail[phone]" name="companyDetail[phone]" maxlength="15" pattern="[0-9\-]+" th:value="${client.phone}" />
+							<div class="text-danger hideValidator">
+								<small>請輸入電話</small>
+							</div>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-3">
+							<label for="edit-companyDetail[guiNumber]">統一編號</label>
+							<input type="text" class="form-control" id="edit-companyDetail[guiNumber]" name="companyDetail[guiNumber]" pattern="\d*" maxlength="8" th:value="${client.guiNumber}" />
+							<div class="text-danger hideValidator">
+								<small>請輸入正確統編</small>
+							</div>
+						</div>
+						<div class="form-group col-md-9">
+							<label for="edit-companyDetail[address]">地址</label>
+							<input type="text" class="form-control required" id="edit-companyDetail[address]" name="companyDetail[address]" th:value="${client.address}" />
+							<div class="text-danger hideValidator">
+								<small>請輸入地址</small>
+							</div>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-12">
+							<label for="edit-companyDetail[memo]">備註</label>
+							<textarea rows="3" class="form-control" id="edit-companyDetail[memo]" name="companyDetail[memo]" th:utext="${#strings.replace(client.memo,'<br/>','\n')}"></textarea>
+							<script th:inline="javascript">
+								/*<![CDATA[*/
+                                var memo = /*[[${client.memo}]]*/'';
+                                $('#edit-companyDetail\\[memo\\]').val(memo.replace("<br/>", "\n"));
+                                /*]]>*/
+							</script>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-12">
+							<table class="table borderless" id="edit-companycharges">
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn" id="actionBTN"></button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

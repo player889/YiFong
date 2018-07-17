@@ -22,6 +22,11 @@ public class MenuController {
 		return "company/company";
 	}
 
+	@GetMapping(value = "/tcompany")
+	public String tcompanyPage() {
+		return "tcompany/tcompany";
+	}
+
 	@GetMapping(value = "/CY")
 	public String CYPage() {
 		return "CY/CY";
@@ -31,15 +36,14 @@ public class MenuController {
 	public String orderPage(Model model) throws JsonProcessingException {
 		model.addAttribute("clients", clientRepository.findAllNoAndName());
 		model.addAttribute("cy", cyRepository.queryAreaAndName());
+		model.addAttribute("", "");
 		return "order/order";
 	}
 
 	@Autowired
 	private ClientRepository clientRepository;
-	
+
 	@Autowired
 	private CyRepository cyRepository;
-	
-	
 
 }

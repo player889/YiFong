@@ -52,6 +52,34 @@ public class CompanyServiceImp implements CompanyService {
 		return webPage;
 	}
 
+	public Client findOnlyOneByClient(CompanyRequest vo) {
+		List<Client> clients = clientRepository.findByNo(vo.getClient().getNo());
+		if (1 != clients.size()) {
+			throw new JpaException("@@資料發生錯誤");
+		}
+		return clients.get(0);
+	}
+
+	public Page<Client> findClient(CompanyRequest vo) {
+		Client client = new Client();
+		client.setShortName(vo.getClient().getShortName());
+		// @formatter:off
+		ExampleMatcher matcher = ExampleMatcher.matching()
+				.withIgnoreNullValues()
+				.withIgnorePaths("seq")
+				.withMatcher("shortName", GenericPropertyMatchers.startsWith());
+		// @formatter:on
+		Example<Client> example = Example.of(client, matcher);
+		Sort sort = new Sort(Direction.ASC, "no");
+		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(0, 10, sort));
+
+		if (webPage.getContent().isEmpty()) {
+			throw new DataNotFoundException();
+		}
+
+		return webPage;
+	}
+
 	public Client save(CompanyRequest req) {
 		if (isExist(req.getClient().getNo())) {
 			throw new InputException("代號已被使用，請重新輸入。");

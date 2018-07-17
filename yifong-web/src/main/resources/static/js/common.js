@@ -1,50 +1,6 @@
 class CommonUtils {
 
 	constructor() {
-
-		$.fn.enterKey = function (fnc) {
-			return this.each(function () {
-				$(this).keypress(function (ev) {
-					var keycode = (ev.keyCode ? ev.keyCode : ev.which);
-					if (keycode == '13') {
-						fnc.call(this, ev);
-					}
-				})
-			})
-		}
-
-		$.fn.addValidation = function () {
-			$(this).addClass("is-invalid");
-			$(this).next('.text-danger').removeClass('hideValidator');
-		}
-
-		$.fn.isGuiNumner = function () {
-
-			let taxId = $(this).val();
-
-			if ('' === taxId) {
-				return true;
-			}
-
-			var invalidList = "00000000,11111111";
-			if (/^\d{8}$/.test(taxId) == false || invalidList.indexOf(taxId) != -1) {
-				return false;
-			}
-
-			var validateOperator = [1, 2, 1, 2, 1, 2, 4, 1],
-			sum = 0,
-			calculate = function (product) {
-				var ones = product % 10,
-				tens = (product - ones) / 10;
-				return ones + tens;
-			};
-			for (var i = 0; i < validateOperator.length; i++) {
-				sum += calculate(taxId[i] * validateOperator[i]);
-			}
-
-			return sum % 10 == 0 || (taxId[6] == "7" && (sum + 1) % 10 == 0);
-		}
-
 		iziToast.settings({
 			color: '', // blue, red, green, yellow
 			timeout: 2000,
@@ -76,11 +32,11 @@ class CommonUtils {
 		return (undefined === val) ? '' : val;
 	}
 	getSkypIcon() {
-		//NOTE
-//		<a href="callto://+***********">Link will initiate Skype to call my number!</a>
-//		<a href="tel://+1234567890">Call Me</a>
+		// NOTE
+// <a href="callto://+***********">Link will initiate Skype to call my number!</a>
+// <a href="tel://+1234567890">Call Me</a>
 		return '<a href="skype:+1234567890?call">Call Me</a>'; 
-//		return '<a href="skype:echo123?call"><img src="images/skype_PNG23.png" width="20" height="20" class="align-middle"/></a>';
+// return '<a href="skype:echo123?call"><img src="images/skype_PNG23.png" width="20" height="20" class="align-middle"/></a>';
 	}
 	isEmptyNum(val) {
 		return ('' === val || 0 === parseInt(val)) ? true : false;
@@ -104,52 +60,7 @@ class CommonUtils {
 			})).prop("outerHTML");
 	}
 	doAjax(url, data, successFn) {
-
-		var self = this;
-
-		var serializeSettings = {
-			parseNumbers: true,
-			skipFalsyValuesForTypes: ["string", "number"],
-			parseWithFunction: function (val, inputName) {
-				return ("" === val || 0 === val) ? null : val;
-			}
-		};
-
-		var header = $("meta[name='_csrf_header']").attr("content");
-		var token = $("meta[name='_csrf']").attr("content");
-
-
-		$.ajax({
-			url: url,
-			type: 'POST',
-			contentType: 'application/json; charset=utf-8',
-			dataType: 'json',
-			data: (typeof data === 'object') ? JSON.stringify(data) : JSON.stringify($(data).serializeJSON(serializeSettings)),
-			beforeSend: function (xhr, settings) {
-				xhr.setRequestHeader(header, token);
-				$('body').loading('start');
-			},
-			success: function (resp) {
-				if (!resp.code.startsWith("S")) {
-					console.log(resp);
-					self.doAlert("error", resp.message, resp.data);
-				} else {
-					if (typeof successFn === "function") {
-						successFn(resp);
-					} else {
-						self.doAlert("success", resp.message);
-					}
-				}
-			},
-			complete: function () {
-				$('body').loading('stop');
-			},
-			error: function (jqXHR, exception) {
-				if (200 != jqXHR.status) {
-					self.doAlert("error", "系統錯誤");
-				}
-			}
-		});
+		Ajax.doPost(url,data,successFn);
 	}
 	initAjaxLoading() {
 		$('body').loading({
@@ -158,25 +69,6 @@ class CommonUtils {
 			},
 			onStop: function (loading) {
 				loading.overlay.fadeOut();
-			}
-		});
-	}
-	doModal(url, data, contentId) {
-
-		var header = $("meta[name='_csrf_header']").attr("content");
-		var token = $("meta[name='_csrf']").attr("content");
-
-		$.ajax({
-			url: url,
-			type: 'POST',
-			dataType: 'html',
-			data: JSON.stringify(data),
-			contentType: "application/json",
-			beforeSend: function (xhr, settings) {
-				xhr.setRequestHeader(header, token);
-			},
-			success: function (data) {
-				$(contentId).html(data);
 			}
 		});
 	}
