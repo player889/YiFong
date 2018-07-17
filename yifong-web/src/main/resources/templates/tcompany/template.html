@@ -26,8 +26,8 @@
 	</div>
 </div>
 <!-- 修改 -->
-<div th:fragment="editModal" class="mt-1">
-	<div class="modal fade" id="editModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="true">
+<div th:fragment="model" class="mt-1">
+	<div class="modal fade" id="model" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-body" id="editContent">
@@ -41,7 +41,7 @@
 						</div>
 						<div class="form-group col-md-2">
 							<label for="edit-shortName">簡稱</label>
-							<input type="text" class="form-control required" id="edit-shortName" required />
+							<input type="text" class="form-control required" id="edit-shortName" th:value="${client.shortName}" />
 							<div class="text-danger hideValidator">
 								<small>請輸入簡稱</small>
 							</div>
@@ -97,7 +97,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn" id="actionBTN"></button>
+					<button type="button" th:classappend="${type == 'edit'} ? 'btn-warning' : 'btn-success'" class="btn" id="actionBTN" th:text="${type == 'edit'} ? '修改' : '新增'"></button>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
 				</div>
 			</div>

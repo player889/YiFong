@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,12 +28,15 @@ public class tcompanyController {
 		return new ModelAndView("/tcompany/template :: clients");
 	}
 
-	@PostMapping(value = "/editModal", produces = "application/json; charset=utf-8")
-	public ModelAndView editModal(@RequestBody CompanyRequest vo, Model model) throws IllegalAccessException, InvocationTargetException {
+	@PostMapping(value = "/model/{type}", produces = "application/json; charset=utf-8")
+	public ModelAndView editModal(final @PathVariable String type, @RequestBody CompanyRequest vo, Model model) throws IllegalAccessException, InvocationTargetException {
+		System.out.println("XXXXXXXXX");
+		System.err.println(type);
 		Client client = companyService.findOnlyOneByClient(vo);
 		model.addAttribute("client", client);
 		model.addAttribute("charges", client.getCharges());
-		return new ModelAndView("/tcompany/template :: editModal");
+		model.addAttribute("type", type);
+		return new ModelAndView("/tcompany/template :: model");
 	}
 
 }

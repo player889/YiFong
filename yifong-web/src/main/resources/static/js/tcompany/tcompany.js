@@ -27,15 +27,15 @@ class Company {
 //		
 // // $('#editModal').modal('show')
 		
-		let url = '/tcompany/editModal';
+		let url = '/tcompany/model/edit';
 		let data = {
 			client: {}
 		};
 		data.client.no = no;
 		
-		$('#editBlock').loadTempalte(url,data, function(HTML){
-			$('#editBlock').html(HTML);
-			$('#editModal').modal('show')
+		$('#modelBlock').loadTempalte(url,data, function(HTML){
+			$('#modelBlock').html(HTML);
+			$('#model').modal('show')
 		});
 	}
 }
