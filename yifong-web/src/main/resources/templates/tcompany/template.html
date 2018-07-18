@@ -8,7 +8,7 @@
 			</div>
 		</div>
 		<div class="col-10">
-			<div class="tab-content" id="nav-tabContent">
+			<div class="tab-content bg-light rounded" id="nav-tabContent">
 				<div th:each="client,itr: ${clients}" class="tab-pane fade" th:classappend="${itr.size eq 1 } ? 'show active' :'' " th:id="'info_'+${itr.index}" role="tabpanel" aria-labelledby="Clients_${itr.index}">
 					<input class="btn btn-outline-warning float-right" type="button" th:value="修改" th:onclick="'c.doEditModal(\'' + ${client.no} + '\')'">
 					<span th:text="${client.fullName}" />
@@ -20,6 +20,30 @@
 					<span th:text="${client.guiNumber}" />
 					<br />
 					<span th:utext="${client.memo}" />
+					<div th:if="${not #lists.isEmpty(client.charges)}">
+						<table class="table table-sm text-center">
+							<thead class="table-info">
+								<tr>
+									<th scope="col">地點</th>
+									<th scope="col">櫃子呎吋</th>
+									<th scope="col">應收費用</th>
+									<th scope="col">司機運費</th>
+									<th scope="col">外調運費</th>
+								</tr>
+							</thead>
+							<tbody>
+								<div th:each="charge,stat:${client.charges}">
+									<tr>
+										<td class="w-15">[[${charge.dest}]]</td>
+										<td class="w-15">[[${charge.size}]]</td>
+										<td><span class="number">[[${charge.pay}]]</span></td>
+										<td><span class="number">[[${charge.fee}]]</span></td>
+										<td><span class="number">[[${charge.os}]]</span></td>
+									</tr>
+								</div>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -34,7 +58,7 @@
 					<div class="form-row">
 						<div class="form-group col-md-1">
 							<label for="edit-no">代碼</label>
-							<input type="number" class="form-control required" id="edit-no" name="edit-no" pattern="\d*" maxlength="5" th:value="${client.no}" />
+							<input type="number" class="form-control required" id="edit-no" name="edit-no" pattern="\d*" maxlength="5" th:value="${client.no}" th:readonly="${type == 'edit'}" />
 							<div class="text-danger hideValidator">
 								<small>請輸入代碼</small>
 							</div>

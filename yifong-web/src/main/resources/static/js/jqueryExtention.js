@@ -3,10 +3,9 @@ $.fn.extend({
 	loadTempalte(url, data, successFn) {
 		const $this = $(this);
 		const succ = function (data) {
+			$this.html(data);
 			if (typeof successFn === "function") {
-				successFn(data);
-			}else{
-				$this.html(data);
+				successFn();
 			}
 		}
 		Ajax.doPost(url, data, succ, 'html');

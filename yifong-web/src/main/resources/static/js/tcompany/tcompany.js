@@ -8,13 +8,11 @@ class Company {
 			data.client.shortName = inputs;
 		
 		let url = '/tcompany/tt';
-			
+
+		$('#resultsBlock').loadTempalte(url,data, function(){
+			$('span.number').number( true, 0 )
+		});
 		
-// commonUtils.doAjax('/company/find/client', data, function (resp) {
-// console.log(resp);
-// });
-		$('#resultsBlock').loadTempalte(url,data);
-			
 	}
 	
 	doEditModal(no){

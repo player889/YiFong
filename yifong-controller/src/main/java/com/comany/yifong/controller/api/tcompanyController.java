@@ -30,11 +30,11 @@ public class tcompanyController {
 
 	@PostMapping(value = "/model/{type}", produces = "application/json; charset=utf-8")
 	public ModelAndView editModal(final @PathVariable String type, @RequestBody CompanyRequest vo, Model model) throws IllegalAccessException, InvocationTargetException {
-		System.out.println("XXXXXXXXX");
-		System.err.println(type);
 		Client client = companyService.findOnlyOneByClient(vo);
 		model.addAttribute("client", client);
 		model.addAttribute("charges", client.getCharges());
+		System.out.println("XXXXXXXXX");
+		System.err.println(client.getCharges());
 		model.addAttribute("type", type);
 		return new ModelAndView("/tcompany/template :: model");
 	}
