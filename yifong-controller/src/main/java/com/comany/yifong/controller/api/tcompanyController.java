@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.company.yifong.domain.request.CompanyRequest;
 import com.company.yifong.entity.Client;
+import com.company.yifong.service.CommonService;
 import com.company.yifong.service.CompanyService;
 
 @RestController
@@ -20,10 +21,14 @@ import com.company.yifong.service.CompanyService;
 public class tcompanyController {
 
 	@Autowired
+	private CommonService commonService;
+
+	@Autowired
 	private CompanyService companyService;
 
 	@PostMapping(value = "/tt", produces = "application/json; charset=utf-8")
 	public ModelAndView findClient(@RequestBody CompanyRequest vo, Model model) throws IllegalAccessException, InvocationTargetException {
+		model.addAttribute("destDDL", commonService.findAllDestination());
 		model.addAttribute("clients", companyService.findClient(vo).getContent());
 		return new ModelAndView("/tcompany/template :: clients");
 	}

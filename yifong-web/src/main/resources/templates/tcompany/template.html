@@ -33,13 +33,21 @@
 							</thead>
 							<tbody>
 								<div th:each="charge,stat:${client.charges}">
-									<tr>
-										<td class="w-15">[[${charge.dest}]]</td>
-										<td class="w-15">[[${charge.size}]]</td>
-										<td><span class="number">[[${charge.pay}]]</span></td>
-										<td><span class="number">[[${charge.fee}]]</span></td>
-										<td><span class="number">[[${charge.os}]]</span></td>
-									</tr>
+								
+									<td><select>
+											<option th:each="entry : ${destDDL}" 
+											th:value="${entry.get('0')}" 
+											th:text="${entry.get('1')}"
+											th:selected="${entry.get('0')} == ${charge.dest}"
+											th:disabled="${entry.get('0')} != ${charge.dest}"
+											></option>
+										</select></td>
+									<!-- 										<td class="w-15">[[${charge.dest}]]</td> -->
+								<td class="w-15">[[${charge.size}]]</td>
+								<td><span class="number">[[${charge.pay}]]</span></td>
+								<td><span class="number">[[${charge.fee}]]</span></td>
+								<td><span class="number">[[${charge.os}]]</span></td>
+								</tr>
 								</div>
 							</tbody>
 						</table>

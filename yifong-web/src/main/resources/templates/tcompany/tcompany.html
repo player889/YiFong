@@ -19,6 +19,11 @@
 			<div class="form-row spacing">
 				<div class="col-md-5">
 					<input type="text" class="form-control" placeholder="客戶簡稱" name="input" id="input" value="伍" />
+					<!-- IF CUSTOMER IS ANONYMOUS -->
+					<html layout:decorate="template.html" th:with="greeting='Hello!'">
+<div th:if="${not #lists.isEmpty(destDDL)}">
+	<div>Welcome, Guest</div>
+</div>
 				</div>
 				<div class="col-md-3">
 					<input type="button" class="btn btn-outline-secondary" onclick="c.query();" value="查詢" />

@@ -7,10 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.company.yifong.repository.ClientRepository;
 import com.company.yifong.repository.CyRepository;
+import com.company.yifong.service.CommonService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
 public class MenuController {
+
+	@Autowired
+	private CommonService commonService;
 
 	@GetMapping(value = "/menu")
 	public String menuPage() {
@@ -18,12 +22,12 @@ public class MenuController {
 	}
 
 	@GetMapping(value = "/company")
-	public String companyPage() {
+	public String companyPage(Model model) {
 		return "company/company";
 	}
 
 	@GetMapping(value = "/tcompany")
-	public String tcompanyPage() {
+	public String tcompanyPage(Model model) {
 		return "tcompany/tcompany";
 	}
 
@@ -36,7 +40,6 @@ public class MenuController {
 	public String orderPage(Model model) throws JsonProcessingException {
 		model.addAttribute("clients", clientRepository.findAllNoAndName());
 		model.addAttribute("cy", cyRepository.queryAreaAndName());
-		model.addAttribute("", "");
 		return "order/order";
 	}
 
