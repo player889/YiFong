@@ -55,7 +55,7 @@ public class CompanyServiceImp implements CompanyService {
 	public Client findOnlyOneByClient(CompanyRequest vo) {
 		List<Client> clients = clientRepository.findByNo(vo.getClient().getNo());
 		if (1 != clients.size()) {
-			throw new JpaException("@@資料發生錯誤");
+			throw new JpaException("資料發生錯誤");
 		}
 		return clients.get(0);
 	}

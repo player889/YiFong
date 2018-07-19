@@ -19,11 +19,6 @@
 			<div class="form-row spacing">
 				<div class="col-md-5">
 					<input type="text" class="form-control" placeholder="客戶簡稱" name="input" id="input" value="伍" />
-					<!-- IF CUSTOMER IS ANONYMOUS -->
-					<html layout:decorate="template.html" th:with="greeting='Hello!'">
-<div th:if="${not #lists.isEmpty(destDDL)}">
-	<div>Welcome, Guest</div>
-</div>
 				</div>
 				<div class="col-md-3">
 					<input type="button" class="btn btn-outline-secondary" onclick="c.query();" value="查詢" />
@@ -52,10 +47,8 @@
 <script type="text/javascript" src="/js/lib/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="/js/lib/i18n/defaults-zh_TW.min.js"></script>
 <script type="text/javascript" src="/js/AjaxUtils.js"></script>
-<script type="text/javascript" src="/js/jqueryExtention.js"></script>
+<script type="text/javascript" src="/js/jquery.extention.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/Validator.js"></script>
-<!-- asdsad -->
-<!-- <script type="text/javascript" src="/js/template/tcompanyTemplate.js"></script> -->
 <script type="text/javascript" src="/js/tcompany/tcompany.js"></script>
 </html>

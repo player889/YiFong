@@ -7,14 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.company.yifong.repository.ClientRepository;
 import com.company.yifong.repository.CyRepository;
-import com.company.yifong.service.CommonService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
 public class MenuController {
-
-	@Autowired
-	private CommonService commonService;
 
 	@GetMapping(value = "/menu")
 	public String menuPage() {

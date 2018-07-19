@@ -5,33 +5,39 @@ class Company {
 			client: {}
 		};
 		let inputs = $('#input').val();
-			data.client.shortName = inputs;
-		
+		data.client.shortName = inputs;
+
 		let url = '/tcompany/tt';
 
-		$('#resultsBlock').loadTempalte(url,data, function(){
-			$('span.number').number( true, 0 )
+		$('#resultsBlock').loadTempalte(url, data, function () {
+			$('span.number').number(true, 0);
+			$('span.phone').phone();
+			
+			 $('.selectpicker').selectpicker({
+				 hideDisabled: true,
+				 dropupAuto : true
+			 });
 		});
-		
+
 	}
-	
-	doEditModal(no){
-//		
-// let fullName = $('[name="fullName"]').eq(index).text();
-// let address = $('span[name="address"]').eq(index).text();
-// let phone = $('span[name="phone"]').eq(index).text();
-// let guiNumber = $('span[name="guiNumber"]').eq(index).text();
-// let memo = $('span[name="memo"]').eq(index).html();
-//		
-// // $('#editModal').modal('show')
-		
+
+	doEditModal(no) {
+		//
+		// let fullName = $('[name="fullName"]').eq(index).text();
+		// let address = $('span[name="address"]').eq(index).text();
+		// let phone = $('span[name="phone"]').eq(index).text();
+		// let guiNumber = $('span[name="guiNumber"]').eq(index).text();
+		// let memo = $('span[name="memo"]').eq(index).html();
+		//
+		// // $('#editModal').modal('show')
+
 		let url = '/tcompany/model/edit';
 		let data = {
 			client: {}
 		};
 		data.client.no = no;
-		
-		$('#modelBlock').loadTempalte(url,data, function(HTML){
+
+		$('#modelBlock').loadTempalte(url, data, function (HTML) {
 			$('#modelBlock').html(HTML);
 			$('#model').modal('show')
 		});
@@ -45,7 +51,7 @@ let c = new Company();
 // });
 
 // let d = JSON.stringify(data);
-//	
+//
 // $("#resultsBlock").load(url,d, function(responseText, textStatus, XMLHttpRequest){
 // alert("XX");
 // });

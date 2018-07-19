@@ -1,9 +1,12 @@
 package com.company.yifong.service;
 
 import java.util.List;
-import java.util.Map;
+
+import com.company.yifong.entity.Other;
+import com.company.yifong.enums.DDL;
 
 public interface CommonService {
 
-	List<Map<String, String>> findAllDestination();
+	List<Other> getDDL(DDL ddl);
+
 }

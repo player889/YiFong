@@ -9,52 +9,73 @@
 		</div>
 		<div class="col-10">
 			<div class="tab-content bg-light rounded" id="nav-tabContent">
-				<div th:each="client,itr: ${clients}" class="tab-pane fade" th:classappend="${itr.size eq 1 } ? 'show active' :'' " th:id="'info_'+${itr.index}" role="tabpanel" aria-labelledby="Clients_${itr.index}">
-					<input class="btn btn-outline-warning float-right" type="button" th:value="修改" th:onclick="'c.doEditModal(\'' + ${client.no} + '\')'">
-					<span th:text="${client.fullName}" />
-					<br />
-					<span th:text="${client.address}" />
-					<br />
-					<span class="phone" th:text="${client.phone}" />
-					<br />
-					<span th:text="${client.guiNumber}" />
-					<br />
-					<span th:utext="${client.memo}" />
-					<div th:if="${not #lists.isEmpty(client.charges)}">
-						<table class="table table-sm text-center">
-							<thead class="table-info">
-								<tr>
-									<th scope="col">地點</th>
-									<th scope="col">櫃子呎吋</th>
-									<th scope="col">應收費用</th>
-									<th scope="col">司機運費</th>
-									<th scope="col">外調運費</th>
-								</tr>
-							</thead>
-							<tbody>
-								<div th:each="charge,stat:${client.charges}">
-								
-									<td><select>
-											<option th:each="entry : ${destDDL}" 
-											th:value="${entry.get('0')}" 
-											th:text="${entry.get('1')}"
-											th:selected="${entry.get('0')} == ${charge.dest}"
-											th:disabled="${entry.get('0')} != ${charge.dest}"
-											></option>
-										</select></td>
-									<!-- 										<td class="w-15">[[${charge.dest}]]</td> -->
-								<td class="w-15">[[${charge.size}]]</td>
-								<td><span class="number">[[${charge.pay}]]</span></td>
-								<td><span class="number">[[${charge.fee}]]</span></td>
-								<td><span class="number">[[${charge.os}]]</span></td>
-								</tr>
-								</div>
-							</tbody>
-						</table>
+				<div th:each="client,itr: ${clients}" class="tab-pane fade" th:classappend="${itr.size eq 1 } ? 'show active' :'' " th:id="'info_'+${itr.index}" role="tabpanel">
+					<div class="w-100 p-1 d-flex table-info">
+						<div class="mr-auto d-flex align-items-center">
+							<b>基本資料</b>
+						</div>
+						<div>
+							<input class="btn btn-outline-warning" type="button" th:value="修改" th:onclick="'c.doEditModal(\'' + ${client.no} + '\')'">
+						</div>
 					</div>
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">
+								<Strong> <span th:text="${client.fullName}" /></Strong> <small><span th:text="|(${client.guiNumber})|" /></small>
+								<span th:text="${client.address}" />
+								<div class="float-right">
+									<span class="phone" th:text="${client.phone}" />
+								</div>
+							</h5>
+							<div th:if="${not #strings.isEmpty(client.memo)}">
+								<hr class="my-1">
+								<span th:utext="${client.memo}" />
+							</div>
+						</div>
+					</div>
+					<div th:include="tcompany/template :: charges"></div>
 				</div>
 			</div>
 		</div>
+	</div>
+</div>
+<div th:fragment="charges">
+	<div th:if="${not #lists.isEmpty(client.charges)}">
+		<table class="table table-sm text-center border  rounded">
+			<thead class="table-info">
+				<tr>
+					<th scope="col">地點</th>
+					<th scope="col">櫃子呎吋</th>
+					<th scope="col">應收費用</th>
+					<th scope="col">司機運費</th>
+					<th scope="col">外調運費</th>
+				</tr>
+			</thead>
+			<tbody>
+				<div th:each="charge,stat:${client.charges}">
+					<tr>
+						<td>
+							<select class="selectpicker" disabled data-width="fit">
+								<option th:each="o:${destDDL}" th:text="${o.name}" th:value="${o.code}" th:selected="${o.code} == ${charge.dest}"></option>
+							</select>
+						</td>
+						<td>
+							<select class="selectpicker" disabled data-width="fit">
+								<option th:each="o:${sizeDDL}" th:text="${o.name}" th:value="${o.code}" th:selected="${o.code} == ${charge.size}"></option>
+							</select>
+						<td>
+							<span class="number">[[${charge.pay}]]</span>
+						</td>
+						<td>
+							<span class="number">[[${charge.fee}]]</span>
+						</td>
+						<td>
+							<span class="number">[[${charge.os}]]</span>
+						</td>
+					</tr>
+				</div>
+			</tbody>
+		</table>
 	</div>
 </div>
 <!-- 修改 -->

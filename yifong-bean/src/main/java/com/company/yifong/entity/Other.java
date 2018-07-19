@@ -31,6 +31,12 @@ public class Other implements Serializable {
 	public Other() {
 	}
 
+	public Other(int code, String name) {
+		super();
+		this.name = name;
+		this.code = code;
+	}
+
 	public int getSeq() {
 		return this.seq;
 	}

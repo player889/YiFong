@@ -1,5 +1,5 @@
 $.fn.extend({
-	
+
 	loadTempalte(url, data, successFn) {
 		const $this = $(this);
 		const succ = function (data) {
@@ -10,7 +10,7 @@ $.fn.extend({
 		}
 		Ajax.doPost(url, data, succ, 'html');
 	},
-	
+
 	enterKey(fnc) {
 		return this.each(function () {
 			$(this).keypress(function (ev) {
@@ -20,12 +20,12 @@ $.fn.extend({
 			})
 		})
 	},
-	
+
 	addValidation() {
 		$(this).addClass("is-invalid");
 		$(this).next('.text-danger').removeClass('hideValidator');
 	},
-	
+
 	isGuiNumner() {
 		let taxId = $(this).val();
 
@@ -50,6 +50,16 @@ $.fn.extend({
 		}
 
 		return sum % 10 == 0 || (taxId[6] == "7" && (sum + 1) % 10 == 0);
+	},
+
+	phone() {
+		$(this).each(function (ev) {
+			let phone = $(this).text();
+			if ('' != phone) {
+				let skeype = (phone.startsWith("0")) ? phone.replace("0", "+886").replace("-", "") : '';
+				$(this).html('<a href="callto://+' + skeype + '">' + phone + '</a>');
+			}
+		})
 	}
 
 });

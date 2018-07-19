@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.company.yifong.domain.request.CompanyRequest;
-import com.company.yifong.entity.Client;
+import com.company.yifong.enums.DDL;
 import com.company.yifong.service.CommonService;
 import com.company.yifong.service.CompanyService;
 
@@ -28,19 +28,16 @@ public class tcompanyController {
 
 	@PostMapping(value = "/tt", produces = "application/json; charset=utf-8")
 	public ModelAndView findClient(@RequestBody CompanyRequest vo, Model model) throws IllegalAccessException, InvocationTargetException {
-		model.addAttribute("destDDL", commonService.findAllDestination());
+		model.addAttribute("sizeDDL", commonService.getDDL(DDL.CONTAINER_SIZE));
+		model.addAttribute("destDDL", commonService.getDDL(DDL.CHARGE_DESTINATION));
 		model.addAttribute("clients", companyService.findClient(vo).getContent());
 		return new ModelAndView("/tcompany/template :: clients");
 	}
 
 	@PostMapping(value = "/model/{type}", produces = "application/json; charset=utf-8")
 	public ModelAndView editModal(final @PathVariable String type, @RequestBody CompanyRequest vo, Model model) throws IllegalAccessException, InvocationTargetException {
-		Client client = companyService.findOnlyOneByClient(vo);
-		model.addAttribute("client", client);
-		model.addAttribute("charges", client.getCharges());
-		System.out.println("XXXXXXXXX");
-		System.err.println(client.getCharges());
 		model.addAttribute("type", type);
+		model.addAttribute("client", companyService.findOnlyOneByClient(vo));
 		return new ModelAndView("/tcompany/template :: model");
 	}
 
