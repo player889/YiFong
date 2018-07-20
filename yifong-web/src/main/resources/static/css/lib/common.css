@@ -14,6 +14,13 @@
 	background-color: #E9E9E9
 }
 
+.footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+}
+
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
@@ -140,4 +147,66 @@ input:checked+.slider:before {
 
 .slider.round:before {
 	border-radius: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.btn-outline-cBlue { 
+  color: #000000; 
+  background-color: #99D3DF; 
+  border-color: #FF0077; 
+} 
+ 
+.btn-outline-cBlue:hover, 
+.btn-outline-cBlue:focus, 
+.btn-outline-cBlue:active, 
+.btn-outline-cBlue.active, 
+.open .dropdown-toggle.btn-outline-cBlue { 
+  color: #000000; 
+  background-color: #f8f9fa; 
+  border-color: #FF0077; 
+} 
+ 
+.btn-outline-cBlue:active, 
+.btn-outline-cBlue.active, 
+.open .dropdown-toggle.btn-outline-cBlue { 
+  background-image: none; 
+} 
+ 
+.btn-outline-cBlue.disabled, 
+.btn-outline-cBlue[disabled], 
+fieldset[disabled] .btn-outline-cBlue, 
+.btn-outline-cBlue.disabled:hover, 
+.btn-outline-cBlue[disabled]:hover, 
+fieldset[disabled] .btn-outline-cBlue:hover, 
+.btn-outline-cBlue.disabled:focus, 
+.btn-outline-cBlue[disabled]:focus, 
+fieldset[disabled] .btn-outline-cBlue:focus, 
+.btn-outline-cBlue.disabled:active, 
+.btn-outline-cBlue[disabled]:active, 
+fieldset[disabled] .btn-outline-cBlue:active, 
+.btn-outline-cBlue.disabled.active, 
+.btn-outline-cBlue[disabled].active, 
+fieldset[disabled] .btn-outline-cBlue.active { 
+  background-color: #99D3DF; 
+  border-color: #FF0077; 
+} 
+ 
+.btn-outline-cBlue .badge { 
+  color: #99D3DF; 
+  background-color: #000000; 
 }

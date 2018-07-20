@@ -1,0 +1,35 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head th:fragment="commonHead">
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta th:name="_csrf" th:content="${_csrf.token}" />
+	<meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+	<link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+	<link href="/css/lib/iziToast.min.css" rel="stylesheet" media="screen" />
+	<link href="/css/lib/bootstrap-select.min.css" rel="stylesheet" media="screen" />
+	<link href="/css/lib/jquery.loading.min.css" rel="stylesheet" media="screen" />
+	<link href="/css/lib/common.css" rel="stylesheet" media="screen" />
+	<title>系統</title>
+</head>
+
+<span th:fragment="commonOnLoadJs">
+	<script type="text/javascript" src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript" src="/webjars/underscorejs/1.8.3/underscore-min.js"></script>
+	<script type="text/javascript" src="/js/lib/popper.min.js"></script>
+	<!-- <script type="text/javascript" src="/webjars/popper.js/1.14.1/dist/popper.js"></script> -->
+	<script type="text/javascript" src="/webjars/bootstrap/4.1.1/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/lib/jquery.serializejson.min.js"></script>
+	<script type="text/javascript" src="/js/lib/skypeCheck.js"></script>
+	<script type="text/javascript" src="/js/lib/jquery.number.min.js"></script>
+	<script type="text/javascript" src="/js/lib/iziToast.min.js"></script>
+	<script type="text/javascript" src="/js/lib/jquery.loading.min.js"></script>
+	<script type="text/javascript" src="/js/lib/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="/js/lib/i18n/defaults-zh_TW.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.extention.js"></script>
+	<script type="text/javascript" src="/js/Utils.js"></script>
+	<!-- <script type="text/javascript" src="/js/common.js"></script> -->
+	<script type="text/javascript" src="/js/main.js"></script>
+	<script type="text/javascript" src="/js/Validator.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</span>

@@ -1,0 +1,18 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- content -->
+<div th:fragment="content">
+	<div class="container">
+		<form>
+			<div class="form-row spacing">
+				<div class="col-md-5">
+					<input type="text" class="form-control" placeholder="客戶代碼或簡稱" name="input" id="input" value="" />
+				</div>
+				<div class="col-md-3">
+					<input type="button" class="btn btn-outline-secondary" onclick="c.query();" value="查詢" />
+					<input type="button" class="btn btn-outline-success" value="新增" onclick="c.doSaveModal();" />
+					<input type="button" class="btn btn-outline-danger" value="刪除" data-toggle="modal" data-target="#deleteModal" />
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

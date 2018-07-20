@@ -12,24 +12,16 @@ class Company {
 		$('#resultsBlock').loadTempalte(url, data, function () {
 			$('span.number').number(true, 0);
 			$('span.phone').phone();
-			
-			 $('.selectpicker').selectpicker({
-				 hideDisabled: true,
-				 dropupAuto : true
-			 });
+
+			$('.selectpicker').selectpicker({
+				hideDisabled: true,
+				dropupAuto: true
+			});
 		});
 
 	}
 
 	doEditModal(no) {
-		//
-		// let fullName = $('[name="fullName"]').eq(index).text();
-		// let address = $('span[name="address"]').eq(index).text();
-		// let phone = $('span[name="phone"]').eq(index).text();
-		// let guiNumber = $('span[name="guiNumber"]').eq(index).text();
-		// let memo = $('span[name="memo"]').eq(index).html();
-		//
-		// // $('#editModal').modal('show')
 
 		let url = '/tcompany/model/edit';
 		let data = {
@@ -38,10 +30,31 @@ class Company {
 		data.client.no = no;
 
 		$('#modelBlock').loadTempalte(url, data, function (HTML) {
-			$('#modelBlock').html(HTML);
-			$('#model').modal('show')
+			
+			$('input.number').number(true, 0);
+			$('.selectpicker').selectpicker({
+				hideDisabled: true,
+				dropupAuto: true
+			});
+			
+			$('#collapseTwo').on('show.bs.collapse', function(){
+				$('#addRowBtn').removeClass("hidden");
+			});
+			
+			$('#collapseTwo').on('hide.bs.collapse', function(){
+				$('#addRowBtn').addClass("hidden");
+			});
+			
+			$('#model').modal('show');
 		});
 	}
+	
+	addChargeRow(){
+		console.log($('#newRow').length);
+		let $row = $('#newRow').html();
+		console.log($row);
+	}
+	
 }
 let c = new Company();
 

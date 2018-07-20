@@ -4,13 +4,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.company.yifong.repository.ClientRepository;
 import com.company.yifong.repository.CyRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+/**
+ * Page Navigator
+ * 
+ * @author Jay
+ * @date 2018-07-21
+ */
 @Controller
-public class MenuController {
+public class PnController {
+
+	@GetMapping(value = { "/login", "/", "" })
+	public String userLogin() {
+		return "login";
+	}
+
+	@GetMapping(value = "/main")
+	public String mainPage() {
+		return "main";
+	}
+
+	@PostMapping(value = "/index")
+	public String indexPage() {
+		return "index";
+	}
+
+	///////// ---------
 
 	@GetMapping(value = "/menu")
 	public String menuPage() {

@@ -28,14 +28,21 @@ public class tcompanyController {
 
 	@PostMapping(value = "/tt", produces = "application/json; charset=utf-8")
 	public ModelAndView findClient(@RequestBody CompanyRequest vo, Model model) throws IllegalAccessException, InvocationTargetException {
+
 		model.addAttribute("sizeDDL", commonService.getDDL(DDL.CONTAINER_SIZE));
 		model.addAttribute("destDDL", commonService.getDDL(DDL.CHARGE_DESTINATION));
+
+		model.addAttribute("type", "query");
 		model.addAttribute("clients", companyService.findClient(vo).getContent());
 		return new ModelAndView("/tcompany/template :: clients");
 	}
 
 	@PostMapping(value = "/model/{type}", produces = "application/json; charset=utf-8")
 	public ModelAndView editModal(final @PathVariable String type, @RequestBody CompanyRequest vo, Model model) throws IllegalAccessException, InvocationTargetException {
+
+		model.addAttribute("sizeDDL", commonService.getDDL(DDL.CONTAINER_SIZE));
+		model.addAttribute("destDDL", commonService.getDDL(DDL.CHARGE_DESTINATION));
+
 		model.addAttribute("type", type);
 		model.addAttribute("client", companyService.findOnlyOneByClient(vo));
 		return new ModelAndView("/tcompany/template :: model");

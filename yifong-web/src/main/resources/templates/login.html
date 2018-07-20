@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<link href="/css/login.css" rel="stylesheet" media="screen" />
+<title>系統</title>
+</head>
+<body>
+	<form th:action="@{/login}" method="post" class="login">
+		<h1 class="login-title">Simple Login</h1>
+		<div th:if="${param.error}">
+			<div class="login-error">錯誤帳號或密碼</div>
+		</div>
+		<div th:if="${param.logout}">
+			<div class="login-error">成功登出</div>
+		</div>
+		<input type="text" class="login-input" placeholder="Email Adress" id="username" name="username" autofocus value="root">
+		<input type="password" class="login-input" placeholder="Password" id="password" name="password" value="root">
+		<input type="submit" value="登入" class="login-button" name="login-submit" id="login-submit">
+	</form>
+</body>
+</html>

@@ -32,11 +32,7 @@ class CommonUtils {
 		return (undefined === val) ? '' : val;
 	}
 	getSkypIcon() {
-		// NOTE
-// <a href="callto://+***********">Link will initiate Skype to call my number!</a>
-// <a href="tel://+1234567890">Call Me</a>
 		return '<a href="skype:+1234567890?call">Call Me</a>'; 
-// return '<a href="skype:echo123?call"><img src="images/skype_PNG23.png" width="20" height="20" class="align-middle"/></a>';
 	}
 	isEmptyNum(val) {
 		return ('' === val || 0 === parseInt(val)) ? true : false;

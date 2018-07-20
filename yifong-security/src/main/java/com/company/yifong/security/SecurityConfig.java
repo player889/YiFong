@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addViewControllers(ViewControllerRegistry registry) {
-				registry.addViewController("login").setViewName("/index");
+				registry.addViewController("login").setViewName("/login");
 			}
 		};
 	}
@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.formLogin()
 					.loginPage("/login")
-					.defaultSuccessUrl("/menu")
+					.defaultSuccessUrl("/main")
 					.failureUrl("/login?error")
 					.permitAll()
 			.and()

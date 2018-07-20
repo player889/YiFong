@@ -8,7 +8,7 @@ $.fn.extend({
 				successFn();
 			}
 		}
-		Ajax.doPost(url, data, succ, 'html');
+		main.doPost(url, data, succ, 'html');
 	},
 
 	enterKey(fnc) {
