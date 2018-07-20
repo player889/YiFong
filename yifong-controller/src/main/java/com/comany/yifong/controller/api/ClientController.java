@@ -12,6 +12,6 @@ public class ClientController {
 
 	@PostMapping(value = "/content", produces = "application/json; charset=utf-8")
 	public ModelAndView tcompanyPage(Model model) {
-		return new ModelAndView("/client/content :: content");
+		return new ModelAndView("/content/client :: content");
 	}
 }
