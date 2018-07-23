@@ -18,14 +18,15 @@ class Utils {
 		});
 
 		$(document).ajaxSend(function (event, jqxhr, settings) {
+			console.log( settings.url);
 			var header = $("meta[name='_csrf_header']").attr("content");
 			var token = $("meta[name='_csrf']").attr("content");
 			jqxhr.setRequestHeader(header, token);
-			$('body').loading('start');
+//			$('body').loading('start');
 		});
 
 		$(document).ajaxComplete(function (event, jqxhr, settings) {
-			$('body').loading('stop');
+//			$('body').loading('stop');
 		});
 
 		$(document).ajaxError(function (event, jqxhr, settings, thrownError) {
@@ -43,9 +44,21 @@ class Utils {
 			icon: '<i class="iziToast-icon ico-' + type + ' revealIn"></i>'
 		});
 	}
-	
-	toPage(urlPath){
-		$('#content').loadTempalte(urlPath);
+
+	toPage(urlPath) {
+		
+		$.when($('.navbar-collapse').collapse('hide')).done(function () {
+			$('#content').loadTempalte(urlPath);
+			main.loadContentSrc(urlPath);
+		});
+	}
+
+	loadContentSrc(path) {
+		let css = $.getScript("/css" + path + ".css");
+		let js = $.getScript("/js" + path + ".js");
+		$.when(css, js).done(function () {
+			
+		});
 	}
 
 	doPost(url, data, successFn, dataType = 'json') {

@@ -4,8 +4,8 @@
 <head th:include="/template/src :: commonHead"></head>
 <body class="bg-light">
 	<div th:insert="/template/common :: header"></div>
-	<div th:insert="index :: content" id="content"></div>
-	<div th:insert="/template/common :: footer" class="footer"></div>
+	<div th:include="index :: content" id="content"></div>
+	<!-- 	<div th:insert="/template/common :: footer" class="footer"></div> -->
 </body>
 <span th:include="/template/src :: commonOnLoadJs"></span>
 </html>

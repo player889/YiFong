@@ -1,23 +1,49 @@
 <!-- header -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <div th:fragment="header">
-	<nav class="navbar sticky-top navbar-expand-lg navbar-light cblue">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-			<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-				<li class="nav-item"><a class="nav-link font-weight-bold" href="javascript:void(0)" onclick="main.toPage('/index')">首頁</a></li>
-				<li class="nav-item"><a class="nav-link font-weight-bold" href="javascript:void(0)" onclick="main.toPage('/client/content')">客戶</a></li>
-				<li class="nav-item"><a class="nav-link font-weight-bold" href="javascript:void(0)" onclick="main.toPage('/CY')">訂單</a></li>
-				<li class="nav-item"><a class="nav-link font-weight-bold" href="javascript:void(0)" onclick="main.toPage('/order')">貨櫃場設定</a></li>
-			</ul>
-			<form class="form-inline my-2 my-lg-0">
-				<span class="font-weight-bold mr-3">[[${#httpServletRequest.remoteUser}]]</span>
-				<a th:href="@{/logout}" class="btn btn-outline-cBlue" style="color: #4c696f; font-weight: bold;">登出</a>
-			</form>
-		</div>
-	</nav>
+	<div class="container">
+		<nav class="navbar navbar-expand-lg navbar-light cblue mt-2">
+			<a class="navbar-brand font-weight-bold" href="#">
+				<i class="fas fa-truck" style="font-size:20px;"></i>
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item"><a class="nav-link font-weight-bold" href="javascript:void(0)" onclick="main.toPage('/index')">首頁</a></li>
+					<li class="nav-item"><a class="nav-link font-weight-bold" href="javascript:void(0)" onclick="main.toPage('/content/client')">客戶</a></li>
+					<li class="nav-item"><a class="nav-link font-weight-bold" href="javascript:void(0)" onclick="main.toPage('/content/CY')">訂單</a></li>
+					<li class="nav-item"><a class="nav-link font-weight-bold" href="javascript:void(0)" onclick="main.toPage('/content/order')">貨櫃場設定</a></li>
+				</ul>
+				<form class="form-inline my-2 my-lg-0">
+					<span class="font-weight-bold mr-3">[[${#httpServletRequest.remoteUser}]]</span>
+					<a th:href="@{/logout}" class="btn btn-outline-cBlue" style="color: #4c696f; font-weight: bold;">登出</a>
+				</form>
+			</div>
+		</nav>
+	</div>
+	<!-- 	<div class="container"> -->
+	<!-- 		<nav class="navbar navbar-expand-lg navbar-light"> -->
+	<!-- 			<div class="container-fluid"> -->
+	<!-- 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation"> -->
+	<!-- 					<span class="navbar-toggler-icon"></span> -->
+	<!-- 				</button> -->
+	<!-- 				<div class="collapse navbar-collapse" id="navbarTogglerDemo01"> -->
+	<!-- 					<ul class="navbar-nav mr-auto mt-2 mt-lg-0"> -->
+	<!-- 						<li class="nav-item"><a class="nav-link font-weight-bold" href="javascript:void(0)" onclick="main.toPage('/index')">首頁</a></li> -->
+	<!-- 						<li class="nav-item"><a class="nav-link font-weight-bold" href="javascript:void(0)" onclick="main.toPage('/content/client')">客戶</a></li> -->
+	<!-- 						<li class="nav-item"><a class="nav-link font-weight-bold" href="javascript:void(0)" onclick="main.toPage('/content/CY')">訂單</a></li> -->
+	<!-- 						<li class="nav-item"><a class="nav-link font-weight-bold" href="javascript:void(0)" onclick="main.toPage('/content/order')">貨櫃場設定</a></li> -->
+	<!-- 					</ul> -->
+	<!-- 					<form class="form-inline my-2 my-lg-0"> -->
+	<!-- 						<span class="font-weight-bold mr-3">[[${#httpServletRequest.remoteUser}]]</span> -->
+	<!-- 						<a th:href="@{/logout}" class="btn btn-outline-cBlue" style="color: #4c696f; font-weight: bold;">登出</a> -->
+	<!-- 					</form> -->
+	<!-- 				</div> -->
+	<!-- 			</div> -->
+	<!-- 		</nav> -->
+	<!-- 	</div> -->
 </div>
 <!-- footer -->
 <div th:fragment="footer">

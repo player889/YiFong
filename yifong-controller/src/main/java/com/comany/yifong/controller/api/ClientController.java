@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/client")
+@RequestMapping("/content")
 public class ClientController {
 
-	@PostMapping(value = "/content", produces = "application/json; charset=utf-8")
+	@PostMapping(value = "/client", produces = "application/json; charset=utf-8")
 	public ModelAndView tcompanyPage(Model model) {
 		return new ModelAndView("/content/client :: content");
 	}
