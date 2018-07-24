@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.company.yifong.domain.AjaxResponse;
 import com.company.yifong.domain.request.CompanyRequest;
+import com.company.yifong.domain.status.ApiSatus;
+import com.company.yifong.entity.Client;
 import com.company.yifong.enums.DDL;
 import com.company.yifong.service.CommonService;
 import com.company.yifong.service.CompanyService;
@@ -42,7 +45,6 @@ public class tcompanyController {
 
 		model.addAttribute("sizeDDL", commonService.getDDL(DDL.CONTAINER_SIZE));
 		model.addAttribute("destDDL", commonService.getDDL(DDL.CHARGE_DESTINATION));
-
 		model.addAttribute("type", type);
 		model.addAttribute("client", companyService.findOnlyOneByClient(vo));
 		return new ModelAndView("/tcompany/template :: model");

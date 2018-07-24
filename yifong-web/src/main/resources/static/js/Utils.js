@@ -18,9 +18,11 @@ class Utils {
 		});
 
 		$(document).ajaxSend(function (event, jqxhr, settings) {
-			console.log( settings.url);
+			
 			var header = $("meta[name='_csrf_header']").attr("content");
 			var token = $("meta[name='_csrf']").attr("content");
+//			console.log( settings.url);
+//			console.log(header+","+token);
 			jqxhr.setRequestHeader(header, token);
 //			$('body').loading('start');
 		});
