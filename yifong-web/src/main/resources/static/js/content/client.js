@@ -53,24 +53,29 @@
 					"headers": {
 						header: token
 					},
-//					"data": {
-//						shortName: $('#shortName').val()
-//					},
 					
+					
+					
+//					{
+//						"draw": 1,
+//						"start": 0,
+//						"length": 10,
+//					}
+
 					
 					   data:function(data){
-						    let obj = {};//向后台传参数的
-						obj.shortName=$('#shortName').val();
-						return JSON.stringify(obj);
+						    let obj = {};
+						    	obj.shortName=$('#shortName').val();
+						    	obj.draw = 1;
+						    	obj.length = 10;
+						    	obj.start = 1;
+						    	return JSON.stringify(obj);
 						    },
-//					"data": function(d) {
-//			               return JSON.stringify(d);
-//			             },
+					
+				
 					"contentType": 'application/json',
 					"url": "/content/client/init",
 					"type": "POST",
-			     
-					
 //					   dataFilter: function(data){
 //				            var json = jQuery.parseJSON( data );
 //				            json.recordsTotal = json.total;
