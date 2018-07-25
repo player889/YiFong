@@ -49,6 +49,8 @@ public class CompanyServiceImp implements CompanyService {
 		Example<Client> example = Example.of(client, matcher);
 		Sort sort = new Sort(Direction.ASC, "no");
 		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(0, 10, sort));
+		System.out.println("QQ");
+		System.out.println(webPage.getContent().size());
 		return webPage;
 	}
 
