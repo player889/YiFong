@@ -2,11 +2,10 @@ class DataTable {
 
 	constructor(columns, url, data) {
 		this._defaultSettings = this.getDefaultSettings(columns);
-		this.initAjax(url, data);
-		this.initDataTable();
+		this.setAjax(url, data);
 	}
 
-	initAjax(url, vo) {
+	setAjax(url, vo) {
 		if (2 == arguments.length) {
 			var header = $("meta[name='_csrf_header']").attr("content");
 			var token = $("meta[name='_csrf']").attr("content");
