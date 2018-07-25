@@ -22,4 +22,5 @@ public interface CompanyService {
 
 	Client findOnlyOneByClient(CompanyRequest vo);
 
+	Page<Client> findClients(com.company.yifong.domain.request.Client client);
 }

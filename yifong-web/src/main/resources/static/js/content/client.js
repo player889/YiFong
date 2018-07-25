@@ -2,7 +2,8 @@
 	class Client {
 		constructor() {
 			this.columns = [{"data": "shortName"}];
-			this.qUrl = "/content/client/init"
+			this.qUrl = "/content/client/init";
+			this.doQuery();
 		}
 		
 		getQData(){
@@ -11,31 +12,41 @@
 			src.draw = 1;
 			src.length = 10;
 			src.start = 1;
-			return src;
+			return JSON.stringify(src);
 		}
 		
-		query(dataTable){
+		doQuery(){
 			
-			let table = $("#example").DataTable();
+			var header = $("meta[name='_csrf_header']").attr("content");
+			var token = $("meta[name='_csrf']").attr("content");
 			
-			table.clear();
-			table.destroy();
+			var header ={
+				header: token
+			};
 			
-			dataTable.setAjax(this.qUrl, this.getQData());
-			dataTable.init("#example");
+			$('#example').DataTable().clear();
+			$('#example').DataTable().destroy ();
+			
+			return $("#example").DataTable({
+				"ajax": {
+					"contentType": 'application/json',
+					"url": "/content/client/init",
+					"type": "POST",
+					"dataSrc": function (resp) {
+						return (typeof resp.data == "undefined")  ? [] : resp.data;
+					},
+					"headers": header,
+					"data": this.getQData
+				},
+				"columns" :  [{"data": "shortName"}]
+			});
 		}
 	}
 
 	$(document).ready(function () {
-		
 		let client = new Client();
-
-		let dataTable = new DataTable(client.columns, client.qUrl, client.getQData());
-			dataTable.init("#example");
-		
 		$('#query').on("click", function(){
-			client.query(dataTable);
-		});	
-		
+			client.doQuery();
+		});
 	});
 }

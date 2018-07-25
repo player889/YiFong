@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.company.yifong.domain.DataTableResponse;
-import com.company.yifong.domain.request.Client_S;
-import com.company.yifong.entity.Client;
+import com.company.yifong.domain.request.Client;
 import com.company.yifong.service.CompanyService;
 
 @RestController
@@ -28,9 +27,7 @@ public class ClientController {
 	}
 
 	@PostMapping(value = "/init", produces = "application/json; charset=utf-8")
-	public DataTableResponse initAll(@RequestBody Client_S data) throws IOException {
-		Client client = new Client();
-		client.setShortName(data.getShortName());
-		return new DataTableResponse(companyService.findClient(client));
+	public DataTableResponse initAll(@RequestBody Client client) throws IOException {
+		return new DataTableResponse(companyService.findClients(client));
 	}
 }

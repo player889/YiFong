@@ -1,29 +1,19 @@
 /**
  * 
  */
-package com.company.yifong.domain.request;
+package com.company.yifong.domain;
 
 /**
  *
  *
  * @author Jay
- * @date 2018-07-24
+ * @date 2018-07-25
  */
-public class Client_S {
-
-	private String shortName;
-
+public class BaseRequest {
+	
 	private int start;
 	private int length;
 	private int draw;
-
-	public String getShortName() {
-		return shortName;
-	}
-
-	public void setShortName(String shortName) {
-		this.shortName = shortName;
-	}
 
 	public int getLength() {
 		return length;

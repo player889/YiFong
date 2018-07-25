@@ -36,6 +36,26 @@ public class CompanyServiceImp implements CompanyService {
 	@Autowired
 	private ClientRepository clientRepository;
 
+	public Page<Client> findClients(com.company.yifong.domain.request.Client client) {
+		
+		int start = client.getDraw() -1;
+		int end = start  +10;
+		
+		Client entity = new Client();
+		entity.setShortName(client.getShortName());
+
+		// @formatter:off
+		ExampleMatcher matcher = ExampleMatcher.matching()
+				.withIgnoreNullValues()
+				.withIgnorePaths("seq")
+				.withMatcher("shortName", GenericPropertyMatchers.startsWith());
+		// @formatter:on
+		Example<Client> example = Example.of(entity, matcher);
+		Sort sort = new Sort(Direction.ASC, "no");
+		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(start, end, sort));
+		return webPage;
+	}
+	
 	@Autowired
 	private ChargeRepository chargeRepository;
 
@@ -49,8 +69,6 @@ public class CompanyServiceImp implements CompanyService {
 		Example<Client> example = Example.of(client, matcher);
 		Sort sort = new Sort(Direction.ASC, "no");
 		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(0, 10, sort));
-		System.out.println("QQ");
-		System.out.println(webPage.getContent().size());
 		return webPage;
 	}
 
