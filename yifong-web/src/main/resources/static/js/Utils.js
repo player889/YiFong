@@ -95,7 +95,29 @@ class Utils {
 			}
 		});
 	}
-
+	
+	doDataTableAjax(){
+		console.log("DA");
+		let header = $("meta[name='_csrf_header']").attr("content");
+		let token = $("meta[name='_csrf']").attr("content");
+		return {
+			"headers": {
+				header: token
+			},
+			data: function (data) {
+				let obj = {};
+				obj.shortName = $('#shortName').val();
+				obj.draw = 1;
+				obj.length = 10;
+				obj.start = 1;
+				return JSON.stringify(obj);
+			},
+			"contentType": 'application/json',
+			"url": "/content/client/init",
+			"type": "POST"
+		}
+	}
+	
 	doAlert(text, bgColor) {
 		Toastify({
 			text: text,
