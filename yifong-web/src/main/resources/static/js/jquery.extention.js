@@ -60,10 +60,6 @@ $.fn.extend({
 				$(this).html('<a href="callto://+' + skeype + '">' + phone + '</a>');
 			}
 		})
-	},
-	
-	DTable(columns, url, data) {
-		let dataTable = new DataTable(columns, url, data);
-		return $(this).DataTable();
 	}
+
 });

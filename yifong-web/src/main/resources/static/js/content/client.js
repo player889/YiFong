@@ -1,6 +1,8 @@
 {
 	class Client {
 		constructor() {
+			this.columns = [{"data": "shortName"}];
+			this.qUrl = "/content/client/init"
 		}
 		
 		getQData(){
@@ -14,36 +16,22 @@
 		
 		query(dataTable){
 			
-			$("#example").DataTable().clear();
-			$("#example").DataTable().destroy();
+			let table = $("#example").DataTable();
 			
-				dataTable.setAjax("/content/client/init", this.getQData());
-				dataTable.initDataTable();
-				
-			$("#example").DataTable();
-
+			table.clear();
+			table.destroy();
+			
+			dataTable.setAjax(this.qUrl, this.getQData());
+			dataTable.init("#example");
 		}
 	}
 
 	$(document).ready(function () {
 		
 		let client = new Client();
-		
-		let src = {};
-			src.shortName = $('#shortName').val();
-			src.draw = 1;
-			src.length = 10;
-			src.start = 1;
-		
-		var columns = [{"data": "shortName"}];
 
-		let dataTable = new DataTable(columns, "/content/client/init", src);
-			dataTable.initDataTable();
-			
-		let table = $("#example").DataTable();
-
-		var header = $("meta[name='_csrf_header']").attr("content");
-		var token = $("meta[name='_csrf']").attr("content");
+		let dataTable = new DataTable(client.columns, client.qUrl, client.getQData());
+			dataTable.init("#example");
 		
 		$('#query').on("click", function(){
 			client.query(dataTable);
