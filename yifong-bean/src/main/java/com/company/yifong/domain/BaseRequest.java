@@ -10,9 +10,11 @@ package com.company.yifong.domain;
  * @date 2018-07-25
  */
 public class BaseRequest {
-	
-	private int start;
-	private int length;
+	// current page
+	private int start = 1;
+	// row length per page
+	private int length = 10;
+	// counter
 	private int draw;
 
 	public int getLength() {

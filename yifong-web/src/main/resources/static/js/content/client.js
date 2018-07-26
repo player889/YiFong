@@ -6,10 +6,13 @@
 				}
 			];
 			this.qUrl = "/content/client/init";
-			this.doQuery();
+			this._draw = 1;
+			this._targetPage = 1;
 		}
 	
 		doQuery() {
+			
+			var self = this;
 
 			var header = $("meta[name='_csrf_header']").attr("content");
 			var token = $("meta[name='_csrf']").attr("content");
@@ -37,22 +40,24 @@
 					"type": "POST",
 					"headers": header,
 					"dataSrc": function (json) {
-						console.log(json);
+						console.log(JSON.stringify(json));
+						self._draw = json.draw;
 						return (typeof json.data == "undefined") ? [] : json.data;
 					},
 					"data": function(d){
+						console.log("FF");
 						let src = {};
 						src.shortName = $('#shortName').val();
-						src.draw = 1;
-						src.start = 1;
-						src.length = 10;
+						src.draw = self._draw;
+//						src.length = 10;
+						src.start = self._targetPage;
 						return JSON.stringify(src);
 					}
 				},
 				"columns": [{
 						"data": "shortName"
 					}
-				]
+				],
 //				"infoCallback": function (settings, start, end, max, total, pre) {
 //					var api = this.api();
 //					var pageInfo = api.page.info();
@@ -65,16 +70,18 @@
 	$(document).ready(function () {
 		
 		let client = new Client();
+		let dTable = client.doQuery();
 		
+			
 //		$('#query').on("click", function () {
-//			client.doQuery();
+//			dTable.page(1).draw("page");
+//			dTable.page(2);
+//			dTable.ajax.reload();
 //		});
-
-//		$('#example_paginate').click(function () {
-//			console.log('Showing page: ' + info.page + ' of ' + info.pages + ' ' + info.recordsTotal);
-//			var info = $('#example').DataTable().page.info();
-//			
-//			let currentPage = info.page + 1;
-//		});
+		
+		$('#example').on( 'page.dt', function () {
+			var info = dTable.page.info();
+			client._targetPage = info.page + 1;
+		} );
 	});
 }

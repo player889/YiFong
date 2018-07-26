@@ -28,6 +28,6 @@ public class ClientController {
 
 	@PostMapping(value = "/init", produces = "application/json; charset=utf-8")
 	public DataTableResponse initAll(@RequestBody Client client) throws IOException {
-		return new DataTableResponse(companyService.findClients(client));
+		return companyService.findClients(client);
 	}
 }

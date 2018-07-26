@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.company.yifong.domain.DataTableResponse;
 import com.company.yifong.domain.request.ChargesRequest;
 import com.company.yifong.domain.request.ClientRequest;
 import com.company.yifong.domain.request.CompanyRequest;
@@ -28,6 +29,7 @@ import com.company.yifong.security.exception.DataNotFoundException;
 import com.company.yifong.security.exception.InputException;
 import com.company.yifong.security.exception.JpaException;
 import com.company.yifong.service.CompanyService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -36,10 +38,12 @@ public class CompanyServiceImp implements CompanyService {
 	@Autowired
 	private ClientRepository clientRepository;
 
-	public Page<Client> findClients(com.company.yifong.domain.request.Client client) {
-		
+	public DataTableResponse findClients(com.company.yifong.domain.request.Client client) throws JsonProcessingException {
+
 		Client entity = new Client();
-		entity.setShortName(client.getShortName());
+		if ("".equals(client.getShortName().trim())) {
+			entity.setShortName(client.getShortName());
+		}
 
 		// @formatter:off
 		ExampleMatcher matcher = ExampleMatcher.matching()
@@ -49,12 +53,13 @@ public class CompanyServiceImp implements CompanyService {
 		// @formatter:on
 		Example<Client> example = Example.of(entity, matcher);
 		Sort sort = new Sort(Direction.ASC, "no");
-//		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(client.getDraw() - 1, client.getDraw() * 10, sort));
-//		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(client.getDraw() - 1, Integer.MAX_VALUE, sort));
-		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(1,10, sort));
-		return webPage;
+		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(client.getStart() -1, client.getLength(), sort));
+
+		int total = (int) clientRepository.count();
+
+		return new DataTableResponse(webPage, client.getDraw(), total, client.getStart());
 	}
-	
+
 	@Autowired
 	private ChargeRepository chargeRepository;
 
