@@ -1,13 +1,15 @@
 $(function () {
 	var settings = {
+		"processing": true,
+		"serverSide": true,
 		"retrieve": true,
 		"ordering": false,
 		"autoWidth": true,
 		"responsive": true,
 		"fixedHeader": true,
 		"scrollCollapse": true,
+		"pagingType": "simple_numbers",
 		"scrollY": '100vh',
-		"pagingType": "simple",
 		"dom": "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 		"language": {
 			"processing": "處理中...",

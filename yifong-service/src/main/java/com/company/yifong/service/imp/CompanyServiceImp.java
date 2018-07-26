@@ -38,9 +38,6 @@ public class CompanyServiceImp implements CompanyService {
 
 	public Page<Client> findClients(com.company.yifong.domain.request.Client client) {
 		
-		int start = client.getDraw() -1;
-		int end = start  +10;
-		
 		Client entity = new Client();
 		entity.setShortName(client.getShortName());
 
@@ -52,7 +49,9 @@ public class CompanyServiceImp implements CompanyService {
 		// @formatter:on
 		Example<Client> example = Example.of(entity, matcher);
 		Sort sort = new Sort(Direction.ASC, "no");
-		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(start, end, sort));
+//		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(client.getDraw() - 1, client.getDraw() * 10, sort));
+//		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(client.getDraw() - 1, Integer.MAX_VALUE, sort));
+		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(1,10, sort));
 		return webPage;
 	}
 	
