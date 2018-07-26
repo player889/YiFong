@@ -22,13 +22,11 @@ public class DataTableResponse {
 	private Object data;
 	private String error;
 
-	private int currentPage;
-
 	public DataTableResponse() {
 		super();
 	}
 
-	public DataTableResponse(Page<?> page, int draw, int total, int currentPage) throws JsonProcessingException {
+	public DataTableResponse(int draw, Page<?> page, int total) throws JsonProcessingException {
 		this.draw = draw + 1;
 		// page number
 		this.recordsTotal = total;
@@ -36,16 +34,6 @@ public class DataTableResponse {
 		this.recordsFiltered = total;
 		this.data = page.getContent();
 		this.length = 10;
-		this.currentPage = currentPage;
-		
-		System.out.println("currentPage" + currentPage);
-	}
-
-	public DataTableResponse(Page<?> page) throws JsonProcessingException {
-		this.draw = 1;
-		this.recordsTotal = 50; // page number
-		this.recordsFiltered = 50; // 第 1 至 8 項結果，共 8 項
-		this.data = page.getContent();
 	}
 
 	public int getDraw() {
@@ -70,10 +58,6 @@ public class DataTableResponse {
 
 	public int getLength() {
 		return length;
-	}
-
-	public int getCurrentPage() {
-		return currentPage;
 	}
 
 }

@@ -53,11 +53,11 @@ public class CompanyServiceImp implements CompanyService {
 		// @formatter:on
 		Example<Client> example = Example.of(entity, matcher);
 		Sort sort = new Sort(Direction.ASC, "no");
-		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(client.getStart() -1, client.getLength(), sort));
+		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(client.getStart() - 1, client.getLength(), sort));
 
 		int total = (int) clientRepository.count();
 
-		return new DataTableResponse(webPage, client.getDraw(), total, client.getStart());
+		return new DataTableResponse(client.getDraw(), webPage, total);
 	}
 
 	@Autowired
