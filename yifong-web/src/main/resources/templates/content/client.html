@@ -2,13 +2,15 @@
 <!-- content -->
 <div th:fragment="content">
 	<div class="container">
-		<div class="row mt-2">
-			<div class="col-md-auto">
+		<div class="row mt-1 no-gutters">
+			<div class="col-md-3 col-xs-12">
 				<input type="text" class="form-control" placeholder="客戶簡稱" name="shortName" id="shortName" />
 			</div>
-			<input type="button" class="btn btn-outline-secondary" value="查詢" id="query" />
+			<div class="col-md-1 col-xs-12 ml-md-2">
+				<input type="button" class="btn btn-outline-secondary btn-md btn-block " value="查詢" id="query" />
+			</div>
 		</div>
-		<table id="example" class="table table-striped table-bordered nowrap" style="width: 100%">
+		<table id="example" class="table table-striped table-bordered nowrap table-hover" style="width: 100%">
 			<thead>
 				<tr>
 					<th>Name</th>
@@ -18,4 +20,5 @@
 			</tbody>
 		</table>
 	</div>
+</div>
 </div>

@@ -9,6 +9,10 @@
 			this._draw = 1;
 			this._targetPage = 1;
 		}
+		
+		getQData(){
+			
+		}
 	
 		doQuery() {
 			
@@ -45,7 +49,6 @@
 						return (typeof json.data == "undefined") ? [] : json.data;
 					},
 					"data": function(d){
-						console.log("FF");
 						let src = {};
 						src.shortName = $('#shortName').val();
 						src.draw = self._draw;
@@ -73,11 +76,37 @@
 		let dTable = client.doQuery();
 		
 			
-//		$('#query').on("click", function () {
-//			dTable.page(1).draw("page");
-//			dTable.page(2);
-//			dTable.ajax.reload();
-//		});
+		$('#query').on("click", function () {
+			if($.fn.DataTable.isDataTable('#example')){
+				dTable.clear();
+				dTable.destroy();
+			}
+			$("#example").DataTable({
+				"ajax": {
+					"contentType": 'application/json',
+					"url": "/content/client/init",
+					"type": "POST",
+					"headers": header,
+					"dataSrc": function (json) {
+						console.log(JSON.stringify(json));
+						self._draw = json.draw;
+						return (typeof json.data == "undefined") ? [] : json.data;
+					},
+					"data": function(d){
+						console.log("FF");
+						let src = {};
+						src.shortName = $('#shortName').val();
+						src.draw = self._draw;
+						src.start = self._targetPage;
+						return JSON.stringify(src);
+					}
+				},
+				"columns": [{
+						"data": "shortName"
+					}
+				]
+			});
+		});
 		
 		$('#example').on( 'page.dt', function () {
 			var info = dTable.page.info();

@@ -41,7 +41,7 @@ public class CompanyServiceImp implements CompanyService {
 	public DataTableResponse findClients(com.company.yifong.domain.request.Client client) throws JsonProcessingException {
 
 		Client entity = new Client();
-		if ("".equals(client.getShortName().trim())) {
+		if (!"".equals(client.getShortName().trim())) {
 			entity.setShortName(client.getShortName());
 		}
 
@@ -55,7 +55,12 @@ public class CompanyServiceImp implements CompanyService {
 		Sort sort = new Sort(Direction.ASC, "no");
 		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(client.getStart() - 1, client.getLength(), sort));
 
-		int total = (int) clientRepository.count();
+		int total = 0;
+		if (!"".equals(client.getShortName().trim())) {
+			total = webPage.getContent().size();
+		} else {
+			total = (int) clientRepository.count();
+		}
 
 		return new DataTableResponse(client.getDraw(), webPage, total);
 	}
