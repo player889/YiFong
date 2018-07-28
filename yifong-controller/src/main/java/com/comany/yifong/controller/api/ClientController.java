@@ -28,6 +28,11 @@ public class ClientController {
 
 	@PostMapping(value = "/init", produces = "application/json; charset=utf-8")
 	public DataTableResponse initAll(@RequestBody Client client) throws IOException {
+		return companyService.initClients(client);
+	}
+	
+	@PostMapping(value = "/query", produces = "application/json; charset=utf-8")
+	public DataTableResponse queryClients(@RequestBody Client client) throws IOException {
 		return companyService.findClients(client);
 	}
 }

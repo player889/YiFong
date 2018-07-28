@@ -40,10 +40,14 @@ public class CompanyServiceImp implements CompanyService {
 
 	public DataTableResponse findClients(com.company.yifong.domain.request.Client client) throws JsonProcessingException {
 
+		List<Client> clients = clientRepository.findByShortNameStartingWith(client.getShortName());
+
+		return new DataTableResponse(client.getDraw(), clients);
+	}
+
+	public DataTableResponse initClients(com.company.yifong.domain.request.Client client) throws JsonProcessingException {
+
 		Client entity = new Client();
-		if (!"".equals(client.getShortName().trim())) {
-			entity.setShortName(client.getShortName());
-		}
 
 		// @formatter:off
 		ExampleMatcher matcher = ExampleMatcher.matching()
@@ -55,12 +59,7 @@ public class CompanyServiceImp implements CompanyService {
 		Sort sort = new Sort(Direction.ASC, "no");
 		Page<Client> webPage = clientRepository.findAll(example, PageRequest.of(client.getStart() - 1, client.getLength(), sort));
 
-		int total = 0;
-		if (!"".equals(client.getShortName().trim())) {
-			total = webPage.getContent().size();
-		} else {
-			total = (int) clientRepository.count();
-		}
+		int total = (int) clientRepository.count();
 
 		return new DataTableResponse(client.getDraw(), webPage, total);
 	}

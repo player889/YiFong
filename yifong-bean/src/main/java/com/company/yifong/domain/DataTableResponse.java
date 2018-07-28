@@ -3,6 +3,8 @@
  */
 package com.company.yifong.domain;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,6 +26,16 @@ public class DataTableResponse {
 
 	public DataTableResponse() {
 		super();
+	}
+	
+	public DataTableResponse(int draw, List<?> page) throws JsonProcessingException {
+		this.draw = draw + 1;
+		// page number
+		this.recordsTotal = page.size();
+		// 第 1 至 8 項結果，共 8 項
+		this.recordsFiltered = page.size();
+		this.data = page;
+		this.length = 10;
 	}
 
 	public DataTableResponse(int draw, Page<?> page, int total) throws JsonProcessingException {

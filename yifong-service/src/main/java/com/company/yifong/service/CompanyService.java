@@ -1,5 +1,7 @@
 package com.company.yifong.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,5 +26,8 @@ public interface CompanyService {
 
 	Client findOnlyOneByClient(CompanyRequest vo);
 
-	DataTableResponse findClients(com.company.yifong.domain.request.Client client)  throws JsonProcessingException;
+	DataTableResponse initClients(com.company.yifong.domain.request.Client client) throws JsonProcessingException;
+
+	DataTableResponse findClients(com.company.yifong.domain.request.Client client) throws JsonProcessingException;
+	
 }

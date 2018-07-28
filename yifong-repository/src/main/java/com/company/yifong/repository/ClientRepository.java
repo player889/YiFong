@@ -21,5 +21,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
 	@Query("select NEW MAP(no, shortName) from Client  c order by cast(c.no as int) asc")
 	List<Map<String, String>> findAllNoAndName();
+	
+	List<Client> findByShortNameStartingWith(String shortName);
 
 }

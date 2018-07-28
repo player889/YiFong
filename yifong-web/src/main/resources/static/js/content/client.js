@@ -1,17 +1,25 @@
 {
+	let _draw = 0;
+	let _targetPage = 1;
+	const _columns = [{"data": "shortName"}];
+	
+	let csrf_header = $("meta[name='_csrf_header']").attr("content");
+	let csrf = $("meta[name='_csrf']").attr("content");
+	let header = { csrf_header: csrf };
+	
+	const INIT_URL = "/content/client/init";
+	const INIT_QUERY = "/content/client/query";
+	
 	class Client {
-		constructor() {
-			this.columns = [{
-					"data": "shortName"
-				}
-			];
-			this.qUrl = "/content/client/init";
-			this._draw = 1;
-			this._targetPage = 1;
-		}
+		
+		constructor() {}
 		
 		getQData(){
-			
+			let src = {};
+			src.shortName = $('#shortName').val();
+			src.draw = _draw;
+			src.start = _targetPage;
+			return JSON.stringify(src);
 		}
 	
 		doQuery() {
@@ -21,51 +29,23 @@
 			var header = $("meta[name='_csrf_header']").attr("content");
 			var token = $("meta[name='_csrf']").attr("content");
 
-			var header = {
-				header: token
-			};
-
-//			$('#example').DataTable().clear();
-//			$('#example').DataTable().destroy();
-
-			return $("#example").on('xhr.dt', function (e, settings, json, xhr) {
-				// console.log("DD");
-				// console.log(json);
-				// var api = new $.fn.dataTable.Api( settings );
-				// console.log(api.page.info());
-				// for ( var i=0, ien=json.aaData.length ; i<ien ; i++ ) {
-				// json.aaData[i].sum = json.aaData[i].one + json.aaData[i].two;
-				// }
-			})
-			.DataTable({
+			return $("#example").DataTable({
 				"ajax": {
 					"contentType": 'application/json',
 					"url": "/content/client/init",
 					"type": "POST",
 					"headers": header,
 					"dataSrc": function (json) {
-						console.log(JSON.stringify(json));
-						self._draw = json.draw;
+						console.log(json);
+						_draw = json.draw;
 						return (typeof json.data == "undefined") ? [] : json.data;
 					},
-					"data": function(d){
-						let src = {};
-						src.shortName = $('#shortName').val();
-						src.draw = self._draw;
-//						src.length = 10;
-						src.start = self._targetPage;
-						return JSON.stringify(src);
-					}
+					"data": self.getQData
 				},
 				"columns": [{
 						"data": "shortName"
 					}
-				],
-//				"infoCallback": function (settings, start, end, max, total, pre) {
-//					var api = this.api();
-//					var pageInfo = api.page.info();
-//					return "第 " + start + " 至 " + end + " 項結果，共 " + total + " 項X";
-//				}
+				]
 			});
 		}
 	}
@@ -75,42 +55,15 @@
 		let client = new Client();
 		let dTable = client.doQuery();
 		
-			
 		$('#query').on("click", function () {
-			if($.fn.DataTable.isDataTable('#example')){
-				dTable.clear();
-				dTable.destroy();
-			}
-			$("#example").DataTable({
-				"ajax": {
-					"contentType": 'application/json',
-					"url": "/content/client/init",
-					"type": "POST",
-					"headers": header,
-					"dataSrc": function (json) {
-						console.log(JSON.stringify(json));
-						self._draw = json.draw;
-						return (typeof json.data == "undefined") ? [] : json.data;
-					},
-					"data": function(d){
-						console.log("FF");
-						let src = {};
-						src.shortName = $('#shortName').val();
-						src.draw = self._draw;
-						src.start = self._targetPage;
-						return JSON.stringify(src);
-					}
-				},
-				"columns": [{
-						"data": "shortName"
-					}
-				]
-			});
+			let path = ("" === $("#shortName").val().trim()) ? INIT_URL : INIT_QUERY;
+			dTable.ajax.url(path).load();
 		});
 		
-		$('#example').on( 'page.dt', function () {
+		// 導頁
+		$('#example').on('page.dt', function () {
 			var info = dTable.page.info();
-			client._targetPage = info.page + 1;
-		} );
+			_targetPage = info.page + 1;
+		});
 	});
 }
