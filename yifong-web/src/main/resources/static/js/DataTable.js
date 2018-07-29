@@ -1,4 +1,37 @@
 $(function () {
+	$.fn.DataTable.ext.pager.numbers_length = 6;
+	$.fn.DataTable.ext.pager.simple_numbers_no_ellipses = function (page, pages) {
+		var numbers = [];
+		var buttons = $.fn.DataTable.ext.pager.numbers_length;
+		var half = Math.floor(buttons / 2);
+		var _range = function (len, start) {
+			var end;
+			if (typeof start === "undefined") {
+				start = 0;
+				end = len;
+			} else {
+				end = start;
+				start = len;
+			}
+			var out = [];
+			for (var i = start; i < end; i++) {
+				out.push(i);
+			}
+			return out;
+		};
+		if (pages <= buttons) {
+			numbers = _range(0, pages);
+		} else if (page <= half) {
+			numbers = _range(0, buttons);
+		} else if (page >= pages - 1 - half) {
+			numbers = _range(pages - buttons, pages);
+		} else {
+			numbers = _range(page - half, page + half + 1);
+		}
+		numbers.DT_el = 'span';
+		return ['previous', numbers, 'next'];
+	};
+
 	var settings = {
 		"processing": true,
 		"serverSide": true,
@@ -8,7 +41,7 @@ $(function () {
 		"responsive": true,
 		"fixedHeader": true,
 		"scrollCollapse": true,
-		"pagingType": "simple_numbers",
+		"pagingType": "simple_numbers_no_ellipses",
 		"scrollY": '100vh',
 		"dom": "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 		"language": {
