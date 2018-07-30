@@ -26,6 +26,33 @@
 			src.start = _targetPage;
 			return JSON.stringify(src);
 		}
+		
+		getColumnDefs(){
+			let array = [];
+			let item = ["shortName","guiNumber","phone","address","memo"];
+			let obj = {};
+				obj.targets = "_all";
+				obj.defaultContent = "";
+				array.push(obj);
+				
+				item.forEach(function(item, index){
+					let obj3 = {};
+					obj3.targets = index;
+					obj3.data = item;
+					array.push(obj3);
+				});
+				
+			return array;
+		}
+		
+		format ( d ) {
+		    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+		        '<tr>'+
+		            '<td>備註</td>'+
+		            '<td>'+d.memo+'</td>'+
+		        '</tr>'+
+		    '</table>';
+		}
 
 		doQuery() {
 
@@ -43,54 +70,55 @@
 					},
 					"data": self.getQData
 				},
-				"columnDefs": [{
-						"targets": "_all",
-						"defaultContent": ""
-					}, {
-						"targets": 1,
-						"data": "shortName"
-
-					}, {
-						"targets": 2,
-						"data": "guiNumber"
-
-					}, {
-						"targets": 3,
-						"data": "phone"
-
-					}, {
-						"targets": 4,
-						"data": "address"
-
-					}, {
-						"targets": 5,
-						"data": "memo"
-					},
-					 {
-			            className: 'control',
-			            targets:   0
-					 } 
-				],
-				responsive: {
-					details: {
-						   type: 'column',
-			                target: 'tr',
-						renderer: function (api, rowIdx, columns) {
-							var data = $.map(columns, function (col, i) {
-								if (col.title === '備註' && col.data === '') {}
-								else {
-									return col.hidden ?
-									'<tr data-dt-row="' + col.rowIndex + '" data-dt-column="' + col.columnIndex + '">' +
-									'<td>' + col.title + ':' + '</td> ' +
-									'<td>' + col.data + '</td>' +
-									'</tr>' :
-									'';
-								}
-							}).join('');
-							return data ? $('<table/>').append(data) : false;
-						}
-					}
-				}
+				"columnDefs": self.getColumnDefs()
+//				"columnDefs": [{
+//					"targets": "_all",
+//					"defaultContent": "",
+//
+//				},
+//				{
+//					"targets": 0,
+//					"data": "shortName"
+//
+//				}, {
+//					"targets": 1,
+//					"data": "guiNumber"
+//
+//				}, {
+//					"targets": 2,
+//					"data": "phone"
+//
+//				}, {
+//					"targets": 3,
+//					"data": "address"
+//
+//				}, {
+//					"targets": 4,
+//					"data": "memo"
+//				}
+//			]
+//				"columnDefs": self.getColumnDefs()
+//				,responsive: {
+//					details: {
+//						type: 'column',
+//						target: 'tr',
+//						renderer: function (api, rowIdx, columns) {
+//							var data = $.map(columns, function (col, i) {
+//									console.log(columns);
+//									if (col.title === '備註' && col.data === '') {}
+//									else {
+//										return col.hidden ?
+//										'<tr data-dt-row="' + col.rowIndex + '" data-dt-column="' + col.columnIndex + '">' +
+//										'<td>' + col.title + ':' + '</td> ' +
+//										'<td>' + col.data + '</td>' +
+//										'</tr>' :
+//										'';
+//									}
+//								}).join('');
+//							return data ? $('<table/>').append(data) : false;
+//						}
+//					}
+//				}
 			});
 		}
 	}
@@ -110,5 +138,24 @@
 			var info = dTable.page.info();
 			_targetPage = info.page + 1;
 		});
+		
+//	    // Add event listener for opening and closing details
+//	    $('#example tbody').on('click', 'td.details-control', function () {
+//	    	
+//	    	let icon = $(this).children("svg").data("icon")
+//	    	
+//	        var tr = $(this).closest('tr');
+//	        var row = dTable.row( tr );
+//	        if ( row.child.isShown() ) {
+//	            // This row is already open - close it
+//	            row.child.hide();
+//	            tr.removeClass('shown');
+//	        }
+//	        else {
+//	            // Open this row
+//	            row.child(client.format(row.data()) ).show();
+//	            tr.addClass('shown');
+//	        }
+//	    } );
 	});
 }
