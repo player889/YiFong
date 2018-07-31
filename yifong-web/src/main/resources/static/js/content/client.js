@@ -43,31 +43,90 @@
 				if (index == 0) {
 					obj3.class = "control";
 				}
-
-				//				if(index <= 3){
-				//					obj3.width = "33%";
-				//				}
-
+				
+				if(index == item.length -1){
+					obj3.className = "none";
+				}
+				
 				array.push(obj3);
 			});
-
+			
+			let obj4 = {};
+				obj4.targets = item.length;
+				obj4.data = "charges";
+//				obj4.render= "[,]charges";
+				array.push(obj4);
+			
 			return array;
 		}
+		
+		getResponsiveColumns(col){
+			
+			if(col.hidden){
+				return '<tr class="data-dt-row="' + col.rowIndex + '" data-dt-column="' + col.columnIndex + '" style="border-style: none;">' +
+				'<td style="border-style: none;">' + col.title + ':' + '</td> ' +
+				'<td style="border-style: none;">' + col.data + '</td></tr>';
+			}
+			
+			return '';
+			
+			
+			
+//			if (col.title === '備註' && col.data === '') {
+//				
+//			} else if(col.title === "運費" && col.data.length > 0) {
+//				
+//				var html = '<table id="test" class="table table-hover responsive" style="width:100%"> <thead> <tr> <th>Name</th> <th>Position</th> </tr> </thead> <tbody> <tr> <td>Tiger Nixon</td> <td>System Architect</td>  </thead> </table>';
+//				return col.hidden ? html : '';
+//				return col.hidden ?
+//						'<tr data-dt-row="' + col.rowIndex + '" data-dt-column="' + col.columnIndex + '">' +
+//						'<td colspan="6">' + col.title + ':' + '</td> ' +
+//						'<tr data-dt-row="' + col.rowIndex + '" data-dt-column="' + col.columnIndex + '">' +
+//						col.data.map(function(item, index, array){
+//							return '<td>' + item.dest + '</td><td>' + item.size + '</td><td>' + item.pay + '</td><td>' + item.fee + '</td><td>' + item.os + '</td>'
+//						}).join("")
+//				
+//						+'</tr>'
+//						:
+//						'';
 
-		format(d) {
-			return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-			'<tr>' +
-			'<td>備註</td>' +
-			'<td>' + d.memo + '</td>' +
-			'</tr>' +
-			'</table>';
+//				console.log(a);
+//				{dest: "0", fee: 600, os: 0, pay: 7000, size: 2, …}
+//			} else {
+				
+//			<td class="child" colspan="8">
+//				<ul data-dtr-index="4" class="dtr-details">
+//					<li data-dtr-index="8" data-dt-row="4" data-dt-column="8">
+//						<span class="dtr-title">Extn.</span>
+//						<span class="dtr-data">5407</span>
+//					</li>
+//				</ul>
+//			</td>
+				
+//				return col.hidden ? 
+//					'<tr data-dt-row="' + col.rowIndex + '" data-dt-column="' + col.columnIndex + '">' +
+//					'<td>' + col.title + ':' + '</td> ' +
+//					'<td>' + col.data + '</td></tr>' :
+//					'';
+//			}
 		}
-
+		
 		doQuery() {
 
 			var self = this;
 
 			return $("#example").DataTable({
+//				createdRow: function( row, data, dataIndex ) {
+//					$(row).addClass("table-info");
+//					if(dataIndex % 2 == 0 ){
+//						$(row).addClass("table-warning");
+//						$(row).addClass("bg-light");
+//					}
+//				},
+//				  "formatNumber": function ( toFormat ) {
+//					     //使用正则表达式匹配，替换数字
+////					    return toFormat.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+//					  },
 				"ajax": {
 					"contentType": 'application/json',
 					"url": "/content/client/init",
@@ -83,7 +142,24 @@
 				responsive: {
 					details: {
 						type: 'column',
-						target: 'tr'
+						target: 'tr',
+						renderer: function (api, rowIdx, columns) {
+							var data = $.map(columns, function (col, i) {
+									return self.getResponsiveColumns(col);
+								}).join('');
+							
+					
+							let result = data ? $('<table/>').append(data) : false;
+							
+							
+//							var subTable = $("#test").DataTable({
+//								"responsive": true,
+//								"ajax": columns[5].data,
+//								"columnDefs": [{data:"pay", targets:0},{data:"dest", targets:0}]
+//							}).columns.adjust().responsive.recalc();
+							
+							return result;
+						}
 					}
 				}
 			}).columns.adjust().responsive.recalc();
