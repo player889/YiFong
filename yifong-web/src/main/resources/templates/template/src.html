@@ -10,12 +10,20 @@
 	<link href="/css/lib/jquery.loading.min.css" rel="stylesheet" media="screen" />
 	<link href="/css/lib/fontawesome.css" rel="stylesheet" media="screen" />
 	<link href="/css/lib/common.css" rel="stylesheet" media="screen" />
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css" rel="stylesheet" media="screen" id="contentCSS"/>
-<!-- 	<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" media="screen" /> -->
-	<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" media="screen" />
-	<link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css" rel="stylesheet" media="screen" />
 	
-	<link href="https://cdn.datatables.net/fixedheader/3.1.5/css/fixedHeader.bootstrap.min.css" rel="stylesheet" media="screen" />
+	
+	
+<!-- 	<link href="/css/lib/bootstrap-table.min.css" rel="stylesheet" media="screen" /> -->
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+
+	
+<!-- 	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css" rel="stylesheet" media="screen" id="contentCSS"/> -->
+<!-- 	<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" media="screen" /> -->
+<!-- 	<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" media="screen" /> -->
+<!-- 	<link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css" rel="stylesheet" media="screen" /> -->
+<!-- 	<link href="https://cdn.datatables.net/fixedheader/3.1.5/css/fixedHeader.bootstrap.min.css" rel="stylesheet" media="screen" /> -->
 	
 	
 	
@@ -24,7 +32,6 @@
 </head>
 
 <span th:fragment="commonOnLoadJs">
-<!-- 	<script type="text/javascript" src="/webjars/jquery/3.2.1/jquery.min.js"></script> -->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="/webjars/underscorejs/1.8.3/underscore-min.js"></script>
 	<script type="text/javascript" src="/js/lib/popper.min.js"></script>
@@ -45,19 +52,26 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 	
-<script type="text/javascript" src="/js/lib/all.js"></script><!-- 	font awsome -->
+	<script type="text/javascript" src="/js/lib/all.js"></script><!-- 	font awsome -->
+	<script type="text/javascript" src="/js/jquery.extention.js"></script> <!-- jquery init -->
 	
-<!-- 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
-	<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-	
-	<script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
-	
-	
-		<script type="text/javascript" src="/js/jquery.extention.js"></script>
-	<script type="text/javascript" src="/js/DataTable.js"></script>
+<!-- 	<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> -->
+<!-- 	<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script> -->
+<!-- 	<script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script> -->
+<!-- 	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script> -->
+<!-- 	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script> -->
+<!-- 	<script type="text/javascript" src="/js/DataTable.js"></script> -->
+
+<!-- 	<script type="text/javascript" src="/js/lib/bootstrap-table.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+
+
+<!-- Latest compiled and minified Locales -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
+	<script type="text/javascript" src="/js/table.js"></script>
 	
 	<script type="text/javascript" src="" id="contentJS"></script>
 </span>

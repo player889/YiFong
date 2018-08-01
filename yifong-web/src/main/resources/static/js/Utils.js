@@ -65,8 +65,8 @@ class Utils {
 
 	doPost(url, data, successFn, dataType = 'json') {
 
-		var header = $("meta[name='_csrf_header']").attr("content");
-		var token = $("meta[name='_csrf']").attr("content");
+//		var header = $("meta[name='_csrf_header']").attr("content");
+//		var token = $("meta[name='_csrf']").attr("content");
 
 		$.ajax({
 			url: url,
@@ -106,5 +106,9 @@ class Utils {
 			positionLeft: false,
 			backgroundColor: bgColor,
 		}).showToast();
+	}
+	
+	isEmpty(str) {
+	    return (!str || 0 === str.length);
 	}
 }

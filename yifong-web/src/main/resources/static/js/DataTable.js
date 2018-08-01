@@ -37,7 +37,7 @@ $(function () {
 		"serverSide": true,
 		"retrieve": true,
 		"ordering": false,
-		"autoWidth": true,
+//		"autoWidth": true,
 		"responsive": true,
 		"fixedHeader": true,
 		"scrollCollapse": true,

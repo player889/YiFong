@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.company.yifong.domain.BootstrapTable;
 import com.company.yifong.domain.DataTableResponse;
 import com.company.yifong.domain.request.Client;
 import com.company.yifong.service.CompanyService;
@@ -27,10 +28,18 @@ public class ClientController {
 	}
 
 	@PostMapping(value = "/init", produces = "application/json; charset=utf-8")
-	public DataTableResponse initAll(@RequestBody Client client) throws IOException {
-		return companyService.initClients(client);
-	}
+	public BootstrapTable initAll(@RequestBody Client client) throws IOException {
+
+		BootstrapTable bt = new BootstrapTable();
+		DataTableResponse data = companyService.initClients(client);
+
+		bt.setRows(data.getData());
+		bt.setTotal(data.getRecordsTotal());
 	
+		
+		return bt;
+	}
+
 	@PostMapping(value = "/query", produces = "application/json; charset=utf-8")
 	public DataTableResponse queryClients(@RequestBody Client client) throws IOException {
 		return companyService.findClients(client);
