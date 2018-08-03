@@ -23,6 +23,7 @@ $(function () {
 //        queryParamsType : "undefined",
 //		queryParamsType: 'limit',
 //		classes: 'table',
+//		showColumns: true,
 		sidePagination: "server",
 		sortable: false,
 		cache: false,
@@ -39,12 +40,14 @@ $(function () {
 		},
 		icons: {
 			refresh: 'fas fa-sync',
-//			paginationSwitchDown: 'glyphicon-collapse-down icon-chevron-down',
-//			paginationSwitchUp: 'glyphicon-collapse-up icon-chevron-up',
-//			toggle: 'glyphicon-list-alt icon-list-alt',
-//			columns: 'glyphicon-th icon-th',
-			detailOpen: 'glyphicon-plus icon-plus',
-			detailClose: 'glyphicon-minus icon-minus'
+            paginationSwitchDown: 'far fa-caret-square-down',
+            paginationSwitchUp: 'far fa-caret-square-up',
+            toggleOff: 'fas fa-toggle-off',
+            toggleOn: 'fas fa-toggle-on',
+            columns: 'fas fa-th-list',
+            detailOpen: 'fas fa-plus',
+            detailClose: 'fas fa-minus',
+            fullscreen: 'fas fa-expand-arrows-alt'
 		},
 		onRefresh: function () {
 			console.log("XXX");
